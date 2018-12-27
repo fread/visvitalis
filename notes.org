@@ -80,19 +80,20 @@ Gates:
 |  111 | write A and P, and store |
 
 ** Bits Jump
-| bit | if 0       | if 1                        | notes |
-|-----+------------+-----------------------------+-------|
-|  15 | not a jump | jump instruction if 14 == 1 |       |
-|  14 | not a jump | jump instruction if 15 == 1 |       |
-|  13 |            |                             |       |
-|  12 |            |                             |       |
-|  11 |            |                             |       |
-|  10 |            |                             |       |
-|   9 |            |                             |       |
-|   8 |            |                             |       |
-|-----+------------+-----------------------------+-------|
-| 7-0 | operand    |                             |       |
+| bit | if 0                 | if 1                        | notes |
+|-----+----------------------+-----------------------------+-------|
+|  15 | not a jump           | jump instruction if 14 == 1 |       |
+|  14 | not a jump           | jump instruction if 15 == 1 |       |
+|  13 | conditional jump     | unconditional jump          |       |
+|  12 | condition carry/sign | condition zero/odd          |       |
+|  11 | condition carry/zero | condition sign/odd          |       |
+|  10 | cond. noninverted    | cond. inverted              |       |
+|   9 |                      |                             |       |
+|   8 |                      |                             |       |
+|-----+----------------------+-----------------------------+-------|
+| 7-0 | operand              |                             |       |
 
+** Instruction List
 |   opcode | mnemonic       | instruction                     | sensible |
 |----------+----------------+---------------------------------+----------|
 | 00000000 | nop x          |                                 | x        |
