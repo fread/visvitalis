@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name add-rescue)(type Legacy)(uri ${KIPRJMOD}/add-rescue.lib)(options "")(descr ""))
+  (lib (name hk19f)(type Legacy)(uri ${KIPRJMOD}/library/hk19f.lib)(options "")(descr ""))
+)

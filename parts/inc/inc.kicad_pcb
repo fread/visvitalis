@@ -1,9 +1,6 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.7)
+(kicad_pcb (version 20171130) (host pcbnew 5.0.1)
 
   (general
-    (links 77)
-    (no_connects 0)
-    (area 127.226288 39.624 187.522382 147.480001)
     (thickness 1.6)
     (drawings 17)
     (tracks 178)
@@ -14,8 +11,8 @@
 
   (page A4)
   (layers
-    (0 F.Cu signal hide)
-    (31 B.Cu signal hide)
+    (0 F.Cu signal)
+    (31 B.Cu signal)
     (32 B.Adhes user)
     (33 F.Adhes user)
     (34 B.Paste user)
@@ -61,11 +58,15 @@
     (pad_size 1.5 1.5)
     (pad_drill 0.6)
     (pad_to_mask_clearance 0.0508)
+    (solder_mask_min_width 0.25)
     (aux_axis_origin 0 0)
     (visible_elements FFFFFE5F)
     (pcbplotparams
       (layerselection 0x00030_80000001)
       (usegerberextensions false)
+      (usegerberattributes false)
+      (usegerberadvancedattributes false)
+      (creategerberjobfile false)
       (excludeedgelayer true)
       (linewidth 0.100000)
       (plotframeref false)
@@ -74,8 +75,7 @@
       (useauxorigin false)
       (hpglpennumber 1)
       (hpglpenspeed 20)
-      (hpglpendiameter 15)
-      (hpglpenoverlay 2)
+      (hpglpendiameter 15.000000)
       (psnegative false)
       (psa4output false)
       (plotreference true)

@@ -1,39 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:switches
-LIBS:relays
-LIBS:motors
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:hk19f
+EESchema Schematic File Version 4
 LIBS:inc-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
@@ -48,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Conn_02x02_Odd_Even J1
+L inc-rescue:Conn_02x02_Odd_Even J1
 U 1 1 5A500D64
 P 950 600
 F 0 "J1" H 1000 700 50  0000 C CNN
@@ -59,7 +26,7 @@ F 3 "" H 950 600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +12V #PWR01
+L inc-rescue:+12V #PWR01
 U 1 1 5A500EE1
 P 750 600
 F 0 "#PWR01" H 750 450 50  0001 C CNN
@@ -70,7 +37,7 @@ F 3 "" H 750 600 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +12V #PWR02
+L inc-rescue:+12V #PWR02
 U 1 1 5A500EFB
 P 1250 600
 F 0 "#PWR02" H 1250 450 50  0001 C CNN
@@ -81,7 +48,7 @@ F 3 "" H 1250 600 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR03
+L inc-rescue:GND #PWR03
 U 1 1 5A500F15
 P 750 700
 F 0 "#PWR03" H 750 450 50  0001 C CNN
@@ -92,7 +59,7 @@ F 3 "" H 750 700 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR04
+L inc-rescue:GND #PWR04
 U 1 1 5A500F2F
 P 1250 700
 F 0 "#PWR04" H 1250 450 50  0001 C CNN
@@ -103,7 +70,7 @@ F 3 "" H 1250 700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K1
+L inc-rescue:HK19F K1
 U 1 1 5A50E2A1
 P 2600 3800
 F 0 "K1" H 3450 3950 50  0000 L CNN
@@ -114,7 +81,7 @@ F 3 "" H 2600 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J2
+L inc-rescue:Conn_02x04_Odd_Even J2
 U 1 1 5A5172A9
 P 7400 5200
 F 0 "J2" H 7450 5400 50  0000 C CNN
@@ -125,7 +92,7 @@ F 3 "" H 7400 5200 50  0001 C CNN
 	0    1    -1   0   
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J3
+L inc-rescue:Conn_02x04_Odd_Even J3
 U 1 1 5A68D225
 P 7400 2600
 F 0 "J3" H 7450 2800 50  0000 C CNN
@@ -136,7 +103,7 @@ F 3 "" H 7400 2600 50  0001 C CNN
 	0    1    -1   0   
 $EndComp
 $Comp
-L HK19F K2
+L inc-rescue:HK19F K2
 U 1 1 5A68D473
 P 4000 3800
 F 0 "K2" H 4850 3950 50  0000 L CNN
@@ -147,7 +114,7 @@ F 3 "" H 4000 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K3
+L inc-rescue:HK19F K3
 U 1 1 5A68D4C5
 P 5400 3800
 F 0 "K3" H 6250 3950 50  0000 L CNN
@@ -158,7 +125,7 @@ F 3 "" H 5400 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K4
+L inc-rescue:HK19F K4
 U 1 1 5A68D615
 P 6800 3800
 F 0 "K4" H 7650 3950 50  0000 L CNN
@@ -169,7 +136,7 @@ F 3 "" H 6800 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K5
+L inc-rescue:HK19F K5
 U 1 1 5A68D68B
 P 8200 3800
 F 0 "K5" H 9050 3950 50  0000 L CNN
@@ -180,7 +147,7 @@ F 3 "" H 8200 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K6
+L inc-rescue:HK19F K6
 U 1 1 5A68D7B5
 P 9600 3800
 F 0 "K6" H 10450 3950 50  0000 L CNN
@@ -191,7 +158,7 @@ F 3 "" H 9600 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K7
+L inc-rescue:HK19F K7
 U 1 1 5A68D81F
 P 11000 3800
 F 0 "K7" H 11850 3950 50  0000 L CNN
@@ -202,7 +169,7 @@ F 3 "" H 11000 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K8
+L inc-rescue:HK19F K8
 U 1 1 5A68FE7C
 P 12400 3800
 F 0 "K8" H 13250 3950 50  0000 L CNN
@@ -213,21 +180,21 @@ F 3 "" H 12400 3800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	2800 3500 3400 3500
+	2800 3500 3100 3500
 Wire Wire Line
-	4200 3500 4800 3500
+	4200 3500 4500 3500
 Wire Wire Line
-	5600 3500 6200 3500
+	5600 3500 5900 3500
 Wire Wire Line
-	7000 3500 7600 3500
+	7000 3500 7300 3500
 Wire Wire Line
-	8400 3500 9000 3500
+	8400 3500 8700 3500
 Wire Wire Line
-	9800 3500 10400 3500
+	9800 3500 10100 3500
 Wire Wire Line
-	11200 3500 11800 3500
+	11200 3500 11500 3500
 $Comp
-L GND #PWR05
+L inc-rescue:GND #PWR05
 U 1 1 5A692C26
 P 12300 4100
 F 0 "#PWR05" H 12300 3850 50  0001 C CNN
@@ -238,7 +205,7 @@ F 3 "" H 12300 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR06
+L inc-rescue:GND #PWR06
 U 1 1 5A692FFD
 P 10900 4100
 F 0 "#PWR06" H 10900 3850 50  0001 C CNN
@@ -249,7 +216,7 @@ F 3 "" H 10900 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR07
+L inc-rescue:GND #PWR07
 U 1 1 5A69302C
 P 9500 4100
 F 0 "#PWR07" H 9500 3850 50  0001 C CNN
@@ -260,7 +227,7 @@ F 3 "" H 9500 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR08
+L inc-rescue:GND #PWR08
 U 1 1 5A69305B
 P 8100 4100
 F 0 "#PWR08" H 8100 3850 50  0001 C CNN
@@ -271,7 +238,7 @@ F 3 "" H 8100 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR09
+L inc-rescue:GND #PWR09
 U 1 1 5A69308A
 P 6700 4100
 F 0 "#PWR09" H 6700 3850 50  0001 C CNN
@@ -282,7 +249,7 @@ F 3 "" H 6700 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR010
+L inc-rescue:GND #PWR010
 U 1 1 5A6930B9
 P 5300 4100
 F 0 "#PWR010" H 5300 3850 50  0001 C CNN
@@ -293,7 +260,7 @@ F 3 "" H 5300 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR011
+L inc-rescue:GND #PWR011
 U 1 1 5A693220
 P 3900 4100
 F 0 "#PWR011" H 3900 3850 50  0001 C CNN
@@ -304,7 +271,7 @@ F 3 "" H 3900 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR012
+L inc-rescue:GND #PWR012
 U 1 1 5A69324F
 P 2500 4100
 F 0 "#PWR012" H 2500 3850 50  0001 C CNN
@@ -315,7 +282,7 @@ F 3 "" H 2500 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR013
+L inc-rescue:GND #PWR013
 U 1 1 5A69327E
 P 11700 4100
 F 0 "#PWR013" H 11700 3850 50  0001 C CNN
@@ -326,7 +293,7 @@ F 3 "" H 11700 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR014
+L inc-rescue:GND #PWR014
 U 1 1 5A6932AD
 P 10300 4100
 F 0 "#PWR014" H 10300 3850 50  0001 C CNN
@@ -337,7 +304,7 @@ F 3 "" H 10300 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR015
+L inc-rescue:GND #PWR015
 U 1 1 5A6932DC
 P 8900 4100
 F 0 "#PWR015" H 8900 3850 50  0001 C CNN
@@ -348,7 +315,7 @@ F 3 "" H 8900 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR016
+L inc-rescue:GND #PWR016
 U 1 1 5A69330B
 P 7500 4100
 F 0 "#PWR016" H 7500 3850 50  0001 C CNN
@@ -359,7 +326,7 @@ F 3 "" H 7500 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR017
+L inc-rescue:GND #PWR017
 U 1 1 5A69333A
 P 6100 4100
 F 0 "#PWR017" H 6100 3850 50  0001 C CNN
@@ -370,7 +337,7 @@ F 3 "" H 6100 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR018
+L inc-rescue:GND #PWR018
 U 1 1 5A693369
 P 4700 4100
 F 0 "#PWR018" H 4700 3850 50  0001 C CNN
@@ -381,7 +348,7 @@ F 3 "" H 4700 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR019
+L inc-rescue:GND #PWR019
 U 1 1 5A693398
 P 3300 4100
 F 0 "#PWR019" H 3300 3850 50  0001 C CNN
@@ -392,7 +359,7 @@ F 3 "" H 3300 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR020
+L inc-rescue:GND #PWR020
 U 1 1 5A6933C7
 P 1900 4100
 F 0 "#PWR020" H 1900 3850 50  0001 C CNN
@@ -403,7 +370,7 @@ F 3 "" H 1900 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +12V #PWR021
+L inc-rescue:+12V #PWR021
 U 1 1 5A693642
 P 12100 4100
 F 0 "#PWR021" H 12100 3950 50  0001 C CNN
@@ -414,7 +381,7 @@ F 3 "" H 12100 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR022
+L inc-rescue:+12V #PWR022
 U 1 1 5A693A91
 P 10700 4100
 F 0 "#PWR022" H 10700 3950 50  0001 C CNN
@@ -425,7 +392,7 @@ F 3 "" H 10700 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR023
+L inc-rescue:+12V #PWR023
 U 1 1 5A693AC0
 P 9300 4100
 F 0 "#PWR023" H 9300 3950 50  0001 C CNN
@@ -436,7 +403,7 @@ F 3 "" H 9300 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR024
+L inc-rescue:+12V #PWR024
 U 1 1 5A693AEF
 P 7900 4100
 F 0 "#PWR024" H 7900 3950 50  0001 C CNN
@@ -447,7 +414,7 @@ F 3 "" H 7900 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR025
+L inc-rescue:+12V #PWR025
 U 1 1 5A693B1E
 P 6500 4100
 F 0 "#PWR025" H 6500 3950 50  0001 C CNN
@@ -458,7 +425,7 @@ F 3 "" H 6500 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR026
+L inc-rescue:+12V #PWR026
 U 1 1 5A693B4D
 P 5100 4100
 F 0 "#PWR026" H 5100 3950 50  0001 C CNN
@@ -469,7 +436,7 @@ F 3 "" H 5100 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR027
+L inc-rescue:+12V #PWR027
 U 1 1 5A693B7C
 P 3700 4100
 F 0 "#PWR027" H 3700 3950 50  0001 C CNN
@@ -480,7 +447,7 @@ F 3 "" H 3700 4100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +12V #PWR028
+L inc-rescue:+12V #PWR028
 U 1 1 5A693BAB
 P 2300 4100
 F 0 "#PWR028" H 2300 3950 50  0001 C CNN
@@ -493,54 +460,54 @@ $EndComp
 Wire Wire Line
 	7700 4100 7700 4400
 Wire Wire Line
-	7400 4400 8700 4400
+	7400 4400 7700 4400
 Wire Wire Line
 	7400 4400 7400 4900
 Wire Wire Line
 	8400 4400 8400 4100
 Connection ~ 7700 4400
 Wire Wire Line
-	7450 4500 10100 4500
+	7450 4500 9100 4500
 Wire Wire Line
 	9100 4500 9100 4100
 Wire Wire Line
 	9800 4500 9800 4100
 Connection ~ 9100 4500
 Wire Wire Line
-	7500 4600 11500 4600
+	7500 4600 10500 4600
 Wire Wire Line
 	11200 4600 11200 4100
 Wire Wire Line
 	10500 4100 10500 4600
 Connection ~ 10500 4600
 Wire Wire Line
-	7550 4700 12900 4700
+	7550 4700 11900 4700
 Wire Wire Line
 	12600 4700 12600 4100
 Wire Wire Line
 	11900 4100 11900 4700
 Connection ~ 11900 4700
 Wire Wire Line
-	6300 4400 7350 4400
+	6300 4400 7000 4400
 Wire Wire Line
 	6300 4400 6300 4100
 Connection ~ 7000 4400
 Wire Wire Line
-	4900 4500 7300 4500
+	4900 4500 5600 4500
 Wire Wire Line
 	4900 4500 4900 4100
 Wire Wire Line
 	5600 4100 5600 4500
 Connection ~ 5600 4500
 Wire Wire Line
-	3500 4600 7250 4600
+	3500 4600 4200 4600
 Wire Wire Line
 	3500 4600 3500 4100
 Wire Wire Line
 	4200 4100 4200 4600
 Connection ~ 4200 4600
 Wire Wire Line
-	2100 4700 7200 4700
+	2100 4700 2800 4700
 Wire Wire Line
 	2100 4700 2100 4100
 Wire Wire Line
@@ -627,7 +594,7 @@ Wire Wire Line
 Wire Wire Line
 	7000 4100 7000 4400
 $Comp
-L D_TVS D1
+L inc-rescue:D_TVS D1
 U 1 1 5A69AD17
 P 3100 3800
 F 0 "D1" H 3100 3900 50  0000 C CNN
@@ -638,7 +605,7 @@ F 3 "" H 3100 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D2
+L inc-rescue:D_TVS D2
 U 1 1 5A69BDEB
 P 4500 3800
 F 0 "D2" H 4500 3900 50  0000 C CNN
@@ -649,7 +616,7 @@ F 3 "" H 4500 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D3
+L inc-rescue:D_TVS D3
 U 1 1 5A69BE50
 P 5900 3800
 F 0 "D3" H 5900 3900 50  0000 C CNN
@@ -660,7 +627,7 @@ F 3 "" H 5900 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D4
+L inc-rescue:D_TVS D4
 U 1 1 5A69BEB8
 P 7300 3800
 F 0 "D4" H 7300 3900 50  0000 C CNN
@@ -671,7 +638,7 @@ F 3 "" H 7300 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D5
+L inc-rescue:D_TVS D5
 U 1 1 5A69BF1F
 P 8700 3800
 F 0 "D5" H 8700 3900 50  0000 C CNN
@@ -682,7 +649,7 @@ F 3 "" H 8700 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D6
+L inc-rescue:D_TVS D6
 U 1 1 5A69BF87
 P 10100 3800
 F 0 "D6" H 10100 3900 50  0000 C CNN
@@ -693,7 +660,7 @@ F 3 "" H 10100 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D7
+L inc-rescue:D_TVS D7
 U 1 1 5A69C386
 P 11500 3800
 F 0 "D7" H 11500 3900 50  0000 C CNN
@@ -704,7 +671,7 @@ F 3 "" H 11500 3800 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L D_TVS D8
+L inc-rescue:D_TVS D8
 U 1 1 5A69C408
 P 12900 3800
 F 0 "D8" H 12900 3900 50  0000 C CNN
@@ -762,9 +729,9 @@ Connection ~ 12600 4700
 Wire Wire Line
 	12900 3650 12900 3500
 Wire Wire Line
-	12600 3500 13100 3500
+	12600 3500 12900 3500
 $Comp
-L Conn_01x02 J4
+L inc-rescue:Conn_01x02 J4
 U 1 1 5A69E2CA
 P 13300 3400
 F 0 "J4" H 13300 3500 50  0000 C CNN
@@ -776,7 +743,7 @@ F 3 "" H 13300 3400 50  0001 C CNN
 $EndComp
 Connection ~ 12900 3500
 $Comp
-L GND #PWR029
+L inc-rescue:GND #PWR029
 U 1 1 5A69F0D5
 P 13100 3400
 F 0 "#PWR029" H 13100 3150 50  0001 C CNN
@@ -787,7 +754,7 @@ F 3 "" H 13100 3400 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Conn_01x02 J5
+L inc-rescue:Conn_01x02 J5
 U 1 1 5AB6E5CB
 P 1500 3400
 F 0 "J5" H 1500 3500 50  0000 C CNN
@@ -798,10 +765,10 @@ F 3 "" H 1500 3400 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR?
+L inc-rescue:GND #PWR0101
 U 1 1 5AB6F1C4
 P 1700 3400
-F 0 "#PWR?" H 1700 3150 50  0001 C CNN
+F 0 "#PWR0101" H 1700 3150 50  0001 C CNN
 F 1 "GND" H 1700 3250 50  0000 C CNN
 F 2 "" H 1700 3400 50  0001 C CNN
 F 3 "" H 1700 3400 50  0001 C CNN
@@ -812,4 +779,52 @@ Wire Wire Line
 	2000 3500 2000 3300
 Wire Wire Line
 	2000 3300 1700 3300
+Wire Wire Line
+	7700 4400 8400 4400
+Wire Wire Line
+	9100 4500 9800 4500
+Wire Wire Line
+	10500 4600 11200 4600
+Wire Wire Line
+	11900 4700 12600 4700
+Wire Wire Line
+	7000 4400 7300 4400
+Wire Wire Line
+	5600 4500 5900 4500
+Wire Wire Line
+	4200 4600 4500 4600
+Wire Wire Line
+	2800 4700 3100 4700
+Wire Wire Line
+	3100 3500 3400 3500
+Wire Wire Line
+	3100 4700 7200 4700
+Wire Wire Line
+	4500 4600 7250 4600
+Wire Wire Line
+	4500 3500 4800 3500
+Wire Wire Line
+	5900 4500 7300 4500
+Wire Wire Line
+	5900 3500 6200 3500
+Wire Wire Line
+	7300 4400 7350 4400
+Wire Wire Line
+	7300 3500 7600 3500
+Wire Wire Line
+	8400 4400 8700 4400
+Wire Wire Line
+	8700 3500 9000 3500
+Wire Wire Line
+	9800 4500 10100 4500
+Wire Wire Line
+	10100 3500 10400 3500
+Wire Wire Line
+	11200 4600 11500 4600
+Wire Wire Line
+	11500 3500 11800 3500
+Wire Wire Line
+	12600 4700 12900 4700
+Wire Wire Line
+	12900 3500 13100 3500
 $EndSCHEMATC
