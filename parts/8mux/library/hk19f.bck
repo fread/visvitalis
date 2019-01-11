@@ -1,15 +1,3 @@
 EESchema-DOCLIB  Version 2.0
 #
-$CMP AZ850P1-x
-D American Zettler, Microminiature Polarised Dual Pole Relay Bistable
-K Miniature Polarised Relay Dual Pole Bistable
-F http://www.azettler.com/pdfs/az850.pdf
-$ENDCMP
-#
-$CMP HK19F
-D American Zettler, Microminiature Polarised Dual Pole Relay
-K Miniature Polarised Relay Dual Pole
-F http://www.azettler.com/pdfs/az850.pdf
-$ENDCMP
-#
 #End Doc Library
