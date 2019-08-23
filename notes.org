@@ -50,12 +50,12 @@ Gates:
 |-----+-------------------------------+--------------------------+----------------------------------|
 | 7-0 |                               |                          | operand                          |
 
-| 15-14 | note              |
-|-------+-------------------|
-|    00 | direct operand    |
-|    01 | immediate operand |
-|    10 | indirect operand  |
-|    11 |                   |
+| 15-14 | note                                  |
+|-------+---------------------------------------|
+|    00 | direct operand                        |
+|    01 | immediate operand                     |
+|    10 | P-indirect operand                    |
+|    11 | P-indirect address, immediate operand |
 
 | 13-11 | note        |
 |-------+-------------|
