@@ -93,6 +93,17 @@ Gates:
 |-----+--------------------------+--------------------+--------------------------|
 | 7-0 | operand                  |                    |                          |
 
+| 13-11 | note                |
+|-------+---------------------|
+|   000 | Jump if carry set   |
+|   001 | Jump if carry clear |
+|   010 | Jump if A negative  |
+|   011 | Jump if A positive  |
+|   100 | Jump if A zero      |
+|   101 | Jump if A not zero  |
+|   110 | Jump if A odd       |
+|   111 | Jump if A even      |
+
 ** Instruction List
 | opcode     | mnemonic       | short mnemonic | instruction                     | sensible |
 |------------+----------------+----------------+---------------------------------+----------|
