@@ -1,39 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:switches
-LIBS:relays
-LIBS:motors
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:hk19f
+EESchema Schematic File Version 4
 LIBS:add-cache
-EELAYER 25 0
+EELAYER 29 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
@@ -48,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L HK19F K1
+L add-rescue:HK19F K1
 U 1 1 5AB7222C
 P 3700 4500
 F 0 "K1" H 4550 4650 50  0000 L CNN
@@ -59,7 +26,7 @@ F 3 "" H 3700 4500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K2
+L add-rescue:HK19F K2
 U 1 1 5AB72508
 P 3700 6100
 F 0 "K2" H 4550 6250 50  0000 L CNN
@@ -70,7 +37,7 @@ F 3 "" H 3700 6100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K3
+L add-rescue:HK19F K3
 U 1 1 5AB7264A
 P 4900 4600
 F 0 "K3" H 5750 4750 50  0000 L CNN
@@ -81,7 +48,7 @@ F 3 "" H 4900 4600 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K4
+L add-rescue:HK19F K4
 U 1 1 5AB72DF6
 P 4900 6200
 F 0 "K4" H 5750 6350 50  0000 L CNN
@@ -92,7 +59,7 @@ F 3 "" H 4900 6200 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D1
+L add-rescue:D_TVS D1
 U 1 1 5AB730A3
 P 3700 6700
 F 0 "D1" H 3700 6800 50  0000 C CNN
@@ -103,7 +70,7 @@ F 3 "" H 3700 6700 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L D_TVS D2
+L add-rescue:D_TVS D2
 U 1 1 5AB73301
 P 4900 6800
 F 0 "D2" H 4900 6900 50  0000 C CNN
@@ -114,7 +81,7 @@ F 3 "" H 4900 6800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J4
+L add-rescue:Conn_02x04_Odd_Even J4
 U 1 1 5AB73A55
 P 2800 8300
 F 0 "J4" H 2850 8500 50  0000 C CNN
@@ -125,7 +92,7 @@ F 3 "" H 2800 8300 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 $Comp
-L HK19F K5
+L add-rescue:HK19F K5
 U 1 1 5AB7488F
 P 6100 4700
 F 0 "K5" H 6950 4850 50  0000 L CNN
@@ -136,7 +103,7 @@ F 3 "" H 6100 4700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K6
+L add-rescue:HK19F K6
 U 1 1 5AB74895
 P 6100 6300
 F 0 "K6" H 6950 6450 50  0000 L CNN
@@ -147,7 +114,7 @@ F 3 "" H 6100 6300 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D3
+L add-rescue:D_TVS D3
 U 1 1 5AB7489B
 P 6100 6900
 F 0 "D3" H 6100 7000 50  0000 C CNN
@@ -158,7 +125,7 @@ F 3 "" H 6100 6900 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K7
+L add-rescue:HK19F K7
 U 1 1 5AB7502D
 P 7300 4800
 F 0 "K7" H 8150 4950 50  0000 L CNN
@@ -169,7 +136,7 @@ F 3 "" H 7300 4800 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K8
+L add-rescue:HK19F K8
 U 1 1 5AB75033
 P 7300 6400
 F 0 "K8" H 8150 6550 50  0000 L CNN
@@ -180,7 +147,7 @@ F 3 "" H 7300 6400 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D4
+L add-rescue:D_TVS D4
 U 1 1 5AB75039
 P 7300 7000
 F 0 "D4" H 7300 7100 50  0000 C CNN
@@ -191,7 +158,7 @@ F 3 "" H 7300 7000 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K9
+L add-rescue:HK19F K9
 U 1 1 5AB75DAD
 P 8500 4900
 F 0 "K9" H 9350 5050 50  0000 L CNN
@@ -202,7 +169,7 @@ F 3 "" H 8500 4900 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K10
+L add-rescue:HK19F K10
 U 1 1 5AB75DB3
 P 8500 6500
 F 0 "K10" H 9350 6650 50  0000 L CNN
@@ -213,7 +180,7 @@ F 3 "" H 8500 6500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K11
+L add-rescue:HK19F K11
 U 1 1 5AB75DB9
 P 9700 5000
 F 0 "K11" H 10550 5150 50  0000 L CNN
@@ -224,7 +191,7 @@ F 3 "" H 9700 5000 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K12
+L add-rescue:HK19F K12
 U 1 1 5AB75DBF
 P 9700 6600
 F 0 "K12" H 10550 6750 50  0000 L CNN
@@ -235,7 +202,7 @@ F 3 "" H 9700 6600 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D5
+L add-rescue:D_TVS D5
 U 1 1 5AB75DC5
 P 8500 7100
 F 0 "D5" H 8500 7200 50  0000 C CNN
@@ -246,7 +213,7 @@ F 3 "" H 8500 7100 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L D_TVS D6
+L add-rescue:D_TVS D6
 U 1 1 5AB75DCB
 P 9700 7200
 F 0 "D6" H 9700 7300 50  0000 C CNN
@@ -257,7 +224,7 @@ F 3 "" H 9700 7200 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K13
+L add-rescue:HK19F K13
 U 1 1 5AB75DD1
 P 10900 5100
 F 0 "K13" H 11750 5250 50  0000 L CNN
@@ -268,7 +235,7 @@ F 3 "" H 10900 5100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K14
+L add-rescue:HK19F K14
 U 1 1 5AB75DD7
 P 10900 6700
 F 0 "K14" H 11750 6850 50  0000 L CNN
@@ -279,7 +246,7 @@ F 3 "" H 10900 6700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D7
+L add-rescue:D_TVS D7
 U 1 1 5AB75DDD
 P 10900 7300
 F 0 "D7" H 10900 7400 50  0000 C CNN
@@ -290,7 +257,7 @@ F 3 "" H 10900 7300 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L HK19F K15
+L add-rescue:HK19F K15
 U 1 1 5AB75DE3
 P 12100 5200
 F 0 "K15" H 12950 5350 50  0000 L CNN
@@ -301,7 +268,7 @@ F 3 "" H 12100 5200 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L HK19F K16
+L add-rescue:HK19F K16
 U 1 1 5AB75DE9
 P 12100 6800
 F 0 "K16" H 12950 6950 50  0000 L CNN
@@ -312,7 +279,7 @@ F 3 "" H 12100 6800 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L D_TVS D8
+L add-rescue:D_TVS D8
 U 1 1 5AB75DEF
 P 12100 7400
 F 0 "D8" H 12100 7500 50  0000 C CNN
@@ -323,7 +290,7 @@ F 3 "" H 12100 7400 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J3
+L add-rescue:Conn_02x04_Odd_Even J3
 U 1 1 5AB77925
 P 2800 7700
 F 0 "J3" H 2850 7900 50  0000 C CNN
@@ -334,7 +301,7 @@ F 3 "" H 2800 7700 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J5
+L add-rescue:Conn_02x04_Odd_Even J5
 U 1 1 5AB78723
 P 2800 8900
 F 0 "J5" H 2850 9100 50  0000 C CNN
@@ -351,7 +318,7 @@ Text Notes 2250 8400 0    60   ~ 0
 Text Notes 2250 9000 0    60   ~ 0
 B
 $Comp
-L Conn_01x02 J2
+L add-rescue:Conn_01x02 J2
 U 1 1 5AB8D659
 P 2650 5650
 F 0 "J2" H 2650 5750 50  0000 C CNN
@@ -362,7 +329,7 @@ F 3 "" H 2650 5650 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Conn_01x02 J7
+L add-rescue:Conn_01x02 J7
 U 1 1 5AB95950
 P 13000 6350
 F 0 "J7" H 13000 6450 50  0000 C CNN
@@ -373,7 +340,7 @@ F 3 "" H 13000 6350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Conn_02x04_Odd_Even J6
+L add-rescue:Conn_02x04_Odd_Even J6
 U 1 1 5AB9C855
 P 12800 3550
 F 0 "J6" H 12850 3750 50  0000 C CNN
@@ -410,41 +377,41 @@ Wire Wire Line
 Wire Wire Line
 	3300 6300 3400 6300
 Wire Wire Line
-	3300 4700 3300 7600
+	3300 4700 3300 6000
 Wire Wire Line
 	3400 4700 3300 4700
 Connection ~ 3300 6300
 Wire Wire Line
 	4600 4800 4500 4800
 Wire Wire Line
-	4500 4800 4500 7650
+	4500 4800 4500 6100
 Wire Wire Line
 	4600 6400 4500 6400
 Connection ~ 4500 6400
 Wire Wire Line
 	5800 4900 5700 4900
 Wire Wire Line
-	5700 4900 5700 7700
+	5700 4900 5700 6200
 Wire Wire Line
 	7000 5000 6900 5000
 Wire Wire Line
-	6900 5000 6900 7750
+	6900 5000 6900 6300
 Wire Wire Line
 	8200 5100 8100 5100
 Wire Wire Line
-	8100 5100 8100 7800
+	8100 5100 8100 6400
 Wire Wire Line
 	9400 5200 9300 5200
 Wire Wire Line
-	9300 5200 9300 7850
+	9300 5200 9300 6500
 Wire Wire Line
 	10600 5300 10500 5300
 Wire Wire Line
-	10500 5300 10500 7900
+	10500 5300 10500 6600
 Wire Wire Line
 	11800 5400 11700 5400
 Wire Wire Line
-	11700 5400 11700 7950
+	11700 5400 11700 6700
 Wire Wire Line
 	5800 6500 5700 6500
 Connection ~ 5700 6500
@@ -562,35 +529,35 @@ Wire Wire Line
 Wire Wire Line
 	4000 4700 4100 4700
 Wire Wire Line
-	4100 4700 4100 8800
+	4100 4700 4100 6300
 Wire Wire Line
 	5200 4800 5300 4800
 Wire Wire Line
-	5300 4800 5300 8850
+	5300 4800 5300 6400
 Wire Wire Line
 	6400 4900 6500 4900
 Wire Wire Line
-	6500 4900 6500 8900
+	6500 4900 6500 6500
 Wire Wire Line
 	7600 5000 7700 5000
 Wire Wire Line
-	7700 5000 7700 8950
+	7700 5000 7700 6600
 Wire Wire Line
 	8800 5100 8900 5100
 Wire Wire Line
-	8900 5100 8900 9000
+	8900 5100 8900 6700
 Wire Wire Line
 	10000 5200 10100 5200
 Wire Wire Line
-	10100 5200 10100 9050
+	10100 5200 10100 6800
 Wire Wire Line
 	11200 5300 11300 5300
 Wire Wire Line
-	11300 5300 11300 9100
+	11300 5300 11300 6900
 Wire Wire Line
 	12400 5400 12500 5400
 Wire Wire Line
-	12500 5400 12500 9150
+	12500 5400 12500 7000
 Wire Wire Line
 	4000 6300 4100 6300
 Connection ~ 4100 6300
@@ -672,37 +639,37 @@ Wire Wire Line
 Wire Wire Line
 	11600 6300 11600 8550
 Wire Wire Line
-	4000 5500 4600 5500
+	4000 5500 4200 5500
 Wire Wire Line
-	4000 5900 4600 5900
+	4000 5900 4300 5900
 Wire Wire Line
-	5200 5600 5800 5600
+	5200 5600 5400 5600
 Wire Wire Line
-	5200 6000 5800 6000
+	5200 6000 5500 6000
 Wire Wire Line
-	6400 5700 7000 5700
+	6400 5700 6600 5700
 Wire Wire Line
-	6400 6100 7000 6100
+	6400 6100 6700 6100
 Wire Wire Line
-	7600 5800 8200 5800
+	7600 5800 7800 5800
 Wire Wire Line
-	7600 6200 8200 6200
+	7600 6200 7900 6200
 Wire Wire Line
-	8800 5900 9400 5900
+	8800 5900 9000 5900
 Wire Wire Line
-	8800 6300 9400 6300
+	8800 6300 9100 6300
 Wire Wire Line
-	10000 6000 10600 6000
+	10000 6000 10200 6000
 Wire Wire Line
-	10000 6400 10600 6400
+	10000 6400 10300 6400
 Wire Wire Line
-	11200 6100 11800 6100
+	11200 6100 11400 6100
 Wire Wire Line
-	11200 6500 11800 6500
+	11200 6500 11500 6500
 Wire Wire Line
-	3000 5800 3400 5800
+	3000 5800 3100 5800
 Wire Wire Line
-	3000 3800 3000 5550
+	3000 3800 3000 5400
 Wire Wire Line
 	3000 5400 3400 5400
 Wire Wire Line
@@ -851,4 +818,116 @@ Wire Wire Line
 	12400 4600 12500 4600
 Wire Wire Line
 	12500 4600 12500 3750
+Wire Wire Line
+	3300 6300 3300 6700
+Wire Wire Line
+	4500 6400 4500 6800
+Wire Wire Line
+	5700 6500 5700 6900
+Wire Wire Line
+	6900 6600 6900 7000
+Wire Wire Line
+	8100 6700 8100 7100
+Wire Wire Line
+	9300 6800 9300 7200
+Wire Wire Line
+	10500 6900 10500 7300
+Wire Wire Line
+	11700 7000 11700 7400
+Wire Wire Line
+	3300 6000 3300 6300
+Wire Wire Line
+	4500 6100 4500 6400
+Wire Wire Line
+	5700 6200 5700 6500
+Wire Wire Line
+	6900 6300 6900 6600
+Wire Wire Line
+	8100 6400 8100 6700
+Wire Wire Line
+	9300 6500 9300 6800
+Wire Wire Line
+	10500 6600 10500 6900
+Wire Wire Line
+	11700 6700 11700 7000
+Wire Wire Line
+	3300 6700 3300 7600
+Wire Wire Line
+	4500 6800 4500 7650
+Wire Wire Line
+	5700 6900 5700 7700
+Wire Wire Line
+	6900 7000 6900 7750
+Wire Wire Line
+	8100 7100 8100 7800
+Wire Wire Line
+	9300 7200 9300 7850
+Wire Wire Line
+	10500 7300 10500 7900
+Wire Wire Line
+	11700 7400 11700 7950
+Wire Wire Line
+	4100 6300 4100 6700
+Wire Wire Line
+	5300 6400 5300 6800
+Wire Wire Line
+	6500 6500 6500 6900
+Wire Wire Line
+	7700 6600 7700 7000
+Wire Wire Line
+	8900 6700 8900 7100
+Wire Wire Line
+	10100 6800 10100 7200
+Wire Wire Line
+	11300 6900 11300 7300
+Wire Wire Line
+	12500 7000 12500 7400
+Wire Wire Line
+	4100 6700 4100 8800
+Wire Wire Line
+	5300 6800 5300 8850
+Wire Wire Line
+	6500 6900 6500 8900
+Wire Wire Line
+	7700 7000 7700 8950
+Wire Wire Line
+	8900 7100 8900 9000
+Wire Wire Line
+	10100 7200 10100 9050
+Wire Wire Line
+	11300 7300 11300 9100
+Wire Wire Line
+	12500 7400 12500 9150
+Wire Wire Line
+	3100 5800 3400 5800
+Wire Wire Line
+	3000 5400 3000 5550
+Wire Wire Line
+	4300 5900 4600 5900
+Wire Wire Line
+	4200 5500 4600 5500
+Wire Wire Line
+	5500 6000 5800 6000
+Wire Wire Line
+	5400 5600 5800 5600
+Wire Wire Line
+	6700 6100 7000 6100
+Wire Wire Line
+	6600 5700 7000 5700
+Wire Wire Line
+	7900 6200 8200 6200
+Wire Wire Line
+	7800 5800 8200 5800
+Wire Wire Line
+	9100 6300 9400 6300
+Wire Wire Line
+	9000 5900 9400 5900
+Wire Wire Line
+	10300 6400 10600 6400
+Wire Wire Line
+	10200 6000 10600 6000
+Wire Wire Line
+	11500 6500 11800 6500
+Wire Wire Line
+	11400 6100 11800 6100
 $EndSCHEMATC

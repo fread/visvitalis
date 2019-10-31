@@ -1,11 +1,11 @@
-EESchema-LIBRARY Version 2.3
+EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# Conn_01x02
+# add-rescue_Conn_01x02
 #
-DEF Conn_01x02 J 0 40 Y N 1 F N
+DEF add-rescue_Conn_01x02 J 0 40 Y N 1 F N
 F0 "J" 0 100 50 H V C CNN
-F1 "Conn_01x02" 0 -200 50 H V C CNN
+F1 "add-rescue_Conn_01x02" 0 -200 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -25,11 +25,11 @@ X Pin_2 2 -200 -100 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# Conn_02x04_Odd_Even
+# add-rescue_Conn_02x04_Odd_Even
 #
-DEF Conn_02x04_Odd_Even J 0 40 Y N 1 F N
+DEF add-rescue_Conn_02x04_Odd_Even J 0 40 Y N 1 F N
 F0 "J" 50 200 50 H V C CNN
-F1 "Conn_02x04_Odd_Even" 50 -300 50 H V C CNN
+F1 "add-rescue_Conn_02x04_Odd_Even" 50 -300 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -61,11 +61,11 @@ X Pin_8 8 300 -200 150 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# D_TVS
+# add-rescue_D_TVS
 #
-DEF D_TVS D 0 40 N N 1 F N
+DEF add-rescue_D_TVS D 0 40 N N 1 F N
 F0 "D" 0 100 50 H V C CNN
-F1 "D_TVS" 0 -100 50 H V C CNN
+F1 "add-rescue_D_TVS" 0 -100 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -85,11 +85,11 @@ X A2 2 150 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# HK19F
+# add-rescue_HK19F
 #
-DEF HK19F K 0 40 Y Y 1 F N
+DEF add-rescue_HK19F K 0 40 Y Y 1 F N
 F0 "K" 850 150 50 H V L CNN
-F1 "HK19F" 850 50 50 H V L CNN
+F1 "add-rescue_HK19F" 850 50 50 H V L CNN
 F2 "Relay_DPDT_HK19F" 750 50 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -129,13 +129,13 @@ P 3 0 1 0 300 100 275 125 300 150 N
 P 3 0 1 0 500 100 525 125 500 150 F
 P 3 0 1 0 700 100 675 125 700 150 N
 X ~ 1 -200 300 100 D 50 50 1 1 P
+X ~ 11 500 300 100 D 50 50 1 1 P
+X ~ 13 600 -300 100 U 50 50 1 1 P
+X ~ 16 -200 -300 100 U 50 50 1 1 P
 X ~ 4 200 -300 100 U 50 50 1 1 P
 X ~ 6 100 300 100 D 50 50 1 1 P
 X ~ 8 300 300 100 D 50 50 1 1 P
 X ~ 9 700 300 100 D 50 50 1 1 P
-X ~ 11 500 300 100 D 50 50 1 1 P
-X ~ 13 600 -300 100 U 50 50 1 1 P
-X ~ 16 -200 -300 100 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
