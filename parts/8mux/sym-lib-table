@@ -1,4 +1,4 @@
 (sym_lib_table
-  (lib (name 8mux-rescue)(type Legacy)(uri ${KIPRJMOD}/8mux-rescue.lib)(options "")(descr ""))
-  (lib (name hk19f)(type Legacy)(uri ${KIPRJMOD}/library/hk19f.lib)(options "")(descr ""))
+  (version 0)
+  (lib (name "8mux-rescue")(type "Legacy")(uri "${KIPRJMOD}/8mux-rescue.lib")(options "")(descr ""))
 )

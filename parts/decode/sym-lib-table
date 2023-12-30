@@ -1,3 +1,5 @@
 (sym_lib_table
-  (lib (name hk19f)(type Legacy)(uri /home/andi/projects/visvitalis/parts/8mux/library/hk19f.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "hk19f")(type "Legacy")(uri "/home/andi/projects/visvitalis/parts/8mux/library/hk19f.lib")(options "")(descr ""))
+  (lib (name "decode-rescue")(type "KiCad")(uri "${KIPRJMOD}/decode-rescue.kicad_sym")(options "")(descr ""))
 )
