@@ -38,7 +38,8 @@
   )
 
   (setup
-    (pad_to_mask_clearance 0)
+    (pad_to_mask_clearance 0.038)
+    (solder_mask_min_width 0.1)
     (pcbplotparams
       (layerselection 0x00010fc_ffffffff)
       (plot_on_all_layers_selection 0x0000000_00000000)
@@ -118,7 +119,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp c08e177b-5494-416a-9e8e-5d400efae445)
     )
-    (fp_text value "BHR-10-VUA" (at 1.27 16.26) (layer "F.Fab")
+    (fp_text value "BHR-10-VUA" (at 1.27 16.26) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 5a17c0b4-7600-4a89-b904-2429be200bc3)
     )
@@ -232,7 +233,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 875b6801-5720-480e-aa44-c22b78960855)
     )
-    (fp_text value "SMAJ14CA" (at 0 2.6 90) (layer "F.Fab")
+    (fp_text value "SMAJ14CA" (at 0 2.6 90) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp ce8364d9-8249-47e3-a94f-44d5b2330fab)
     )
@@ -300,7 +301,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp f74d4c9a-1fb1-4f65-8791-6d3b5031b756)
     )
-    (fp_text value "J104D2C12VDC.15S" (at 8.4 2.4) (layer "F.Fab")
+    (fp_text value "J104D2C12VDC.15S" (at 8.4 2.4) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp b559b56f-fc0d-4caf-bf8d-bb9fd99ebb8e)
     )
@@ -392,7 +393,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 474e26ad-52c5-4b7a-ba18-242dda8748e6)
     )
-    (fp_text value "BHR-10-VUA" (at 1.27 16.26) (layer "F.Fab")
+    (fp_text value "BHR-10-VUA" (at 1.27 16.26) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp fbdcd32e-bcf9-49ad-bf5e-69192526cf0c)
     )
