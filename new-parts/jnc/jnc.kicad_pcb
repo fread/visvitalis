@@ -584,6 +584,9 @@
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp b0bc6e23-bf7d-4b3f-ac7b-dcf63e1e91d1))
   (gr_line (start 144.78 53.34) (end 144.78 151.13)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp cc7ff42c-7b41-4f09-aa29-d5eeef1735f9))
+  (gr_text "JLCJLCJLCJLC" (at 143.256 149.606) (layer "B.SilkS") (tstamp 6e7715b2-a85e-4dcf-a043-98b242bfa4dc)
+    (effects (font (size 1 1) (thickness 0.15)) (justify left bottom mirror))
+  )
 
   (segment (start 133.35 85.09) (end 127 85.09) (width 0.4) (layer "F.Cu") (net 1) (tstamp 2e27d21b-5b9e-41d5-a313-b4e329ec543a))
   (segment (start 133.35 109.22) (end 127 109.22) (width 0.4) (layer "F.Cu") (net 1) (tstamp 3ac4aa66-0b40-48ed-b7c1-987f2498754f))
