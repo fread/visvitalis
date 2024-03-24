@@ -1904,7 +1904,7 @@
     (property "Reference" "J5" (at 43.18 186.69 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "Conn_01x02" (at 43.18 189.23 0)
+    (property "Value" "Conn_01x01" (at 43.18 189.23 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" (at 43.18 193.04 0)
