@@ -5158,7 +5158,7 @@
     (property "Reference" "C2" (at 121.92 45.72 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "22u" (at 124.46 46.99 90)
+    (property "Value" "100n" (at 124.46 46.99 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" (at 124.1552 46.99 0)
