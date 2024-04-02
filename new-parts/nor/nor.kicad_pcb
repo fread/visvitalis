@@ -40,7 +40,6 @@
 	)
 	(setup
 		(pad_to_mask_clearance 0.038)
-		(solder_mask_min_width 0.1)
 		(allow_soldermask_bridges_in_footprints no)
 		(pcbplotparams
 			(layerselection 0x00010fc_ffffffff)

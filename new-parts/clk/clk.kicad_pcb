@@ -40,7 +40,6 @@
 	)
 	(setup
 		(pad_to_mask_clearance 0.038)
-		(solder_mask_min_width 0.1)
 		(allow_soldermask_bridges_in_footprints no)
 		(pcbplotparams
 			(layerselection 0x00010fc_ffffffff)
@@ -100,7 +99,7 @@
 		(descr "Resistor, Axial_DIN0204 series, Axial, Vertical, pin pitch=2.54mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0204 series Axial Vertical pin pitch 2.54mm 0.167W length 3.6mm diameter 1.6mm")
 		(property "Reference" "R6"
-			(at -2.54 0 270)
+			(at -2.54 0 -90)
 			(layer "F.SilkS")
 			(uuid "a226a1f9-9e3a-470d-bbf1-3a96ea195ce3")
 			(effects
@@ -111,7 +110,7 @@
 			)
 		)
 		(property "Value" "15kR"
-			(at 1.27 1.92 270)
+			(at 1.27 1.92 -90)
 			(layer "F.Fab")
 			(uuid "35872dfb-f307-406f-9ee9-e0d20e642b3b")
 			(effects
@@ -245,7 +244,7 @@
 			(uuid "dfe6347c-a750-4ac1-8563-36d66961f9a0")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 1.27 -1.92 270)
+			(at 1.27 -1.92 -90)
 			(layer "F.Fab")
 			(uuid "9aebc553-8760-4857-adf2-fc19d7cd475a")
 			(effects
@@ -294,7 +293,7 @@
 		(descr "Resistor, Axial_DIN0204 series, Axial, Vertical, pin pitch=2.54mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0204 series Axial Vertical pin pitch 2.54mm 0.167W length 3.6mm diameter 1.6mm")
 		(property "Reference" "R3"
-			(at 1.27 -1.92 360)
+			(at 1.27 -1.92 0)
 			(layer "F.SilkS")
 			(uuid "94cb54d1-cdcc-4eae-ac38-23b8f97081a1")
 			(effects
@@ -305,7 +304,7 @@
 			)
 		)
 		(property "Value" "15kR"
-			(at 1.27 1.92 360)
+			(at 1.27 1.92 0)
 			(layer "F.Fab")
 			(uuid "47f2e9d3-891a-472a-b433-f850f9717c0b")
 			(effects
@@ -439,7 +438,7 @@
 			(uuid "4b509930-a728-4fb2-accb-9ea75c5efb99")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 1.27 -1.92 360)
+			(at 1.27 -1.92 0)
 			(layer "F.Fab")
 			(uuid "d08e4dd6-943d-4a62-a0cf-61cae978ad7a")
 			(effects
@@ -7068,7 +7067,7 @@
 		(descr "Resistor, Axial_DIN0204 series, Axial, Vertical, pin pitch=2.54mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0204 series Axial Vertical pin pitch 2.54mm 0.167W length 3.6mm diameter 1.6mm")
 		(property "Reference" "R5"
-			(at -2.54 0 360)
+			(at -2.54 0 0)
 			(layer "F.SilkS")
 			(uuid "5ec20b45-4024-4de0-b48f-919a954592ea")
 			(effects
@@ -7079,7 +7078,7 @@
 			)
 		)
 		(property "Value" "15kR"
-			(at 1.27 1.92 360)
+			(at 1.27 1.92 0)
 			(layer "F.Fab")
 			(uuid "55740c30-9f7e-4769-84bc-66d46cecbb7b")
 			(effects
@@ -7213,7 +7212,7 @@
 			(uuid "8a27131c-de11-4f41-abca-a9adc98ebec3")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 1.27 -1.92 360)
+			(at 1.27 -1.92 0)
 			(layer "F.Fab")
 			(uuid "2a84950f-4689-4beb-bec5-dcdc10da705d")
 			(effects
