@@ -3778,6 +3778,27 @@
 		)
 		(uuid "25136f6a-8408-4840-99b0-fae761ae4011")
 	)
+	(text_box "The calculation below is wrong, it gives 5V for the series resistor and 7V for the coil.\n\nShould be 1.2kΩ, 1kΩ also works. "
+		(exclude_from_sim no)
+		(at 20.32 58.42 0)
+		(size 35.56 12.7)
+		(stroke
+			(width 0)
+			(type default)
+			(color 255 0 0 1)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 255 0 0 1)
+			)
+			(justify left top)
+		)
+		(uuid "e28a4e00-443b-4e14-98b9-7a3c3ef2d5d1")
+	)
 	(text "override"
 		(exclude_from_sim no)
 		(at 24.13 125.73 0)
