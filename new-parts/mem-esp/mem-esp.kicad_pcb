@@ -79,7 +79,6 @@
 			(dielectric_constraints no)
 		)
 		(pad_to_mask_clearance 0.038)
-		(solder_mask_min_width 0.1)
 		(allow_soldermask_bridges_in_footprints no)
 		(pcbplotparams
 			(layerselection 0x00010fc_ffffffff)
@@ -21181,6 +21180,19 @@
 				(thickness 0.15)
 			)
 			(justify right bottom mirror)
+		)
+	)
+	(gr_text "github.com/fread/visvitalis"
+		(at 228.289777 116.050405 0)
+		(layer "B.SilkS")
+		(uuid "a6959d9e-5a24-4bce-a380-1990184f6188")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.3)
+				(bold yes)
+			)
+			(justify left mirror)
 		)
 	)
 	(gr_text "data2 out"
