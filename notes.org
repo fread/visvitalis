@@ -13,9 +13,9 @@
 - SUB
 - (SUBI)
 - SUBP
-- NAND (might turn out to be NOR)
-- NANDI
-- NANDP
+- NOR
+- NORI
+- NORP
 - SHR1
 - (SHR1I)
 - (SHR1P)
@@ -40,8 +40,8 @@ Gates:
 |-----+-------------------------------+--------------------------+----------------------------------|
 |  15 | RAM address from operand      | RAM address from P       | shared with jumps                |
 |  14 | operand bus from RAM data     | operand bus from operand | immediate                        |
-|  13 | ALU right shift or NAND       | ALU add or subtract      | enable adder                     |
-|  12 | ALU right shift or add        | ALU NAND or subtract     | only if 11 == 1, enable inverter |
+|  13 | ALU right shift or NOR        | ALU add or subtract      | enable adder                     |
+|  12 | ALU right shift or add        | ALU NOR or subtract      | only if 11 == 1, enable inverter |
 |  12 | result bus from operand bus   | result bus from A        | only if 11 == 0                  |
 |  11 | result bus from operand bus/A | result bus from ALU      |                                  |
 |  10 | keep A                        | write result bus to A    | register clock enable            |
@@ -62,7 +62,7 @@ Gates:
 |   000 | op. bus     |
 |   001 | right shift |
 |   010 | A           |
-|   011 | nand        |
+|   011 | nor         |
 |   100 | op. bus     |
 |   101 | add         |
 |   110 | A           |
@@ -132,13 +132,13 @@ Gates:
 | 00 010 110 | a.ap x         |                |                                 |          |
 | 00 010 111 | a.aps a        |                |                                 |          |
 | 00 011 000 | jmp a          |                | Jump to a                       |          |
-| 00 011 001 | nand0.s a      |                |                                 |          |
-| 00 011 010 | nand.p a       |                | P = A nand M[a]                 | x        |
-| 00 011 011 | nand0.ps a     |                |                                 |          |
-| 00 011 100 | nand.a a       | nand a         | A = A nand M[a]                 | x        |
-| 00 011 101 | nand0.as a     |                |                                 |          |
-| 00 011 110 | nand.ap a      |                | A = P = A nand M[a]             | x        |
-| 00 011 111 | nand0.aps a    |                |                                 |          |
+| 00 011 001 | nor0.s a       |                |                                 |          |
+| 00 011 010 | nor.p a        |                | P = A nor M[a]                  | x        |
+| 00 011 011 | nor0.ps a      |                |                                 |          |
+| 00 011 100 | nor.a a        | nor a          | A = A nor M[a]                  | x        |
+| 00 011 101 | nor0.as a      |                |                                 |          |
+| 00 011 110 | nor.ap a       |                | A = P = A nor M[a]              | x        |
+| 00 011 111 | nor0.aps a     |                |                                 |          |
 | 00 100 000 | [see 00000xxx] |                |                                 |          |
 | 00 100 001 |                |                |                                 |          |
 | 00 100 010 |                |                |                                 |          |
@@ -197,13 +197,13 @@ Gates:
 | 01 010 110 |                |                |                                 |          |
 | 01 010 111 | [see 00010xxx] |                |                                 |          |
 | 01 011 000 | jns a          | jns a          | Jump to a if A[7] not set       | x        |
-| 01 011 001 | nandi.s i      |                | M[i] = A nand i                 |          |
-| 01 011 010 | nandi.p i      |                | P = A nand i                    | x        |
-| 01 011 011 | nandi.ps i     |                | P = M[i] = A nand i             |          |
-| 01 011 100 | nandi.a i      | nandi i        | A = A nand i                    | x        |
-| 01 011 101 | nandi.as i     |                | A = M[i] = A nand i             |          |
-| 01 011 110 | nandi.ap i     |                | A = P = A nand i                | x        |
-| 01 011 111 | nandi.aps i    |                | A = P = M[i] = A nand i         |          |
+| 01 011 001 | nori.s i       |                | M[i] = A nor i                  |          |
+| 01 011 010 | nori.p i       |                | P = A nor i                     | x        |
+| 01 011 011 | nori.ps i      |                | P = M[i] = A nor i              |          |
+| 01 011 100 | nori.a i       | nori i         | A = A nor i                     | x        |
+| 01 011 101 | nori.as i      |                | A = M[i] = A nor i              |          |
+| 01 011 110 | nori.ap i      |                | A = P = A nor i                 | x        |
+| 01 011 111 | nori.aps i     |                | A = P = M[i] = A nor i          |          |
 | 01 100 000 | jz a           | jz a           | Jump to a if A = 0              | x        |
 | 01 100 001 | [see 00000xxx] |                |                                 |          |
 | 01 100 010 |                |                |                                 |          |
@@ -262,13 +262,13 @@ Gates:
 | 10 010 110 | ap.ap x        |                |                                 |          |
 | 10 010 111 | ap.aps x       |                | A = P = M[P] = A                | x        |
 | 10 011 000 | jp x           |                | Jump to P                       |          |
-| 10 011 001 | nand0p.s       |                |                                 |          |
-| 10 011 010 | nandp.p x      |                | P = A nand M[P]                 | x        |
-| 10 011 011 | nand0p.ps x    |                |                                 |          |
-| 10 011 100 | nandp.a x      | nandp a        | A = A nand M[P]                 | x        |
-| 10 011 101 | nand0.as x     |                |                                 |          |
-| 10 011 110 | nandp.ap x     |                | A = P = A nand M[P]             | x        |
-| 10 011 111 | nand0p.asp x   |                |                                 |          |
+| 10 011 001 | nor0p.s        |                |                                 |          |
+| 10 011 010 | norp.p x       |                | P = A nor M[P]                  | x        |
+| 10 011 011 | nor0p.ps x     |                |                                 |          |
+| 10 011 100 | norp.a x       | norp           | A = A nor M[P]                  | x        |
+| 10 011 101 | nor0.as x      |                |                                 |          |
+| 10 011 110 | norp.ap x      |                | A = P = A nor M[P]              | x        |
+| 10 011 111 | nor0p.asp x    |                |                                 |          |
 | 10 100 000 | [see 10000xxx] |                |                                 |          |
 | 10 100 001 |                |                |                                 |          |
 | 10 100 010 |                |                |                                 |          |
@@ -329,13 +329,13 @@ Gates:
 | 11 010 110 |                |                |                                 |          |
 | 11 010 111 | [see 10010xxx] |                |                                 |          |
 | 11 011 000 | jnsp x         |                | Jump to P if A[7] = 0           | x        |
-| 11 011 001 | nandip.s i     |                | M[P] = A nand i                 | x        |
+| 11 011 001 | norip.s i      |                | M[P] = A nor i                  | x        |
 | 11 011 010 |                |                |                                 |          |
-| 11 011 011 | nandip.ps i    |                | P = M[P] = A nand i             | x        |
+| 11 011 011 | norip.ps i     |                | P = M[P] = A nor i              | x        |
 | 11 011 100 |                |                |                                 |          |
-| 11 011 101 | nandip.as i    |                | A = M[P] = A nand i             | x        |
+| 11 011 101 | norip.as i     |                | A = M[P] = A nor i              | x        |
 | 11 011 110 |                |                |                                 |          |
-| 11 011 111 | nandip.aps i   |                | A = P = M[p] = A nand i         | x        |
+| 11 011 111 | norip.aps i    |                | A = P = M[p] = A nor i          | x        |
 | 11 100 000 | jzp x          |                | Jump to P if A = 0              | x        |
 | 11 100 001 | [see 11000xxx] |                |                                 |          |
 | 11 100 010 |                |                |                                 |          |
