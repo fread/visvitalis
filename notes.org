@@ -281,7 +281,7 @@ Gates:
 | 10 101 001 | add0p.s x      |                |                                 |          |
 | 10 101 010 | addp.p x       |                | P = A + M[P]                    | x        |
 | 10 101 011 | add0p.ps x     |                |                                 |          |
-| 10 101 100 | addp.a x       | addp a         | A = A + M[P]                    | x        |
+| 10 101 100 | addp.a x       | addp           | A = A + M[P]                    | x        |
 | 10 101 101 | add0p.as x     |                |                                 |          |
 | 10 101 110 | addp.ap x      |                | A = P = A + M[P]                | x        |
 | 10 101 111 | add0p.aps x    |                |                                 |          |
@@ -297,7 +297,7 @@ Gates:
 | 10 111 001 | sub0p.s x      |                |                                 |          |
 | 10 111 010 | subp.p x       |                | P = A - M[P]                    | x        |
 | 10 111 011 | sub0p.ps x     |                |                                 |          |
-| 10 111 100 | subp.a x       | subp a         | A = A - M[P]                    | x        |
+| 10 111 100 | subp.a x       | subp           | A = A - M[P]                    | x        |
 | 10 111 101 | sub0p.as x     |                |                                 |          |
 | 10 111 110 | subp.ap x      |                | A = P = A - M[P]                | x        |
 | 10 111 111 | sub0p.aps x    |                |                                 |          |
