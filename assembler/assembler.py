@@ -350,5 +350,13 @@ if __name__ == "__main__":
     memory_image = assemble_file(infile)
 
     if memory_image:
+        outfile: TextIO
+        if args.output_file:
+            outfile = open(args.output_file, "w", encoding="utf-8")
+        else:
+            outfile = sys.stdout
+
         for (i, word) in enumerate(memory_image):
-            print(f"{word:04x} ", end="\n" if i % 16 == 15 else "")
+            outfile.write(f"{word:04x} ")
+            if i % 16 == 15:
+                outfile.write("\n")
