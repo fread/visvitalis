@@ -1,5 +1,7 @@
 	;; Find maximum value in a list
-	;; list start in address 0, list end in address 1
+	;;
+	;; start of list at address 0
+	;; end of list at address 1
 
 	.equ list_start 0
 	.equ list_end 1
