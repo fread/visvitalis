@@ -49,6 +49,10 @@ OPCODES = {
     "jnzp": (0b11101000, False),
     "jop":  (0b11110000, False),
     "jnop": (0b11111000, False),
+
+    # For convenience, valid after la x; sub y; checks x <=> y
+    "jge": (0b01000000, True),
+    "jl": (0b01001000, True),
 }
 
 @dataclass
