@@ -16,23 +16,29 @@
 	sta max
 
 	.l loop
-	la list_end
-	sub cursor
-	js end
-	lp cursor
-	lap
-	sub max
-	jns newmax
 	la cursor
-	addi 1
-	sta cursor
+	sub list_end
+	jge end
+	lp cursor
+	la max
+	subp
+	jl newmax
+	jmp inc
 
 	.l newmax
 	lp cursor
 	lap
 	sta max
+
+	.l inc
+	la cursor
+	addi 1
+	sta cursor
 	jmp loop
 
 	.l end
 	la max
 	sta result
+
+	.l stop
+	jmp stop
