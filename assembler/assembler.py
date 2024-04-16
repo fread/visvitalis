@@ -2,7 +2,11 @@
 
 import argparse
 from dataclasses import dataclass
-import os
+from typing import TextIO
+import sys
+
+MAX_POSITION = 255
+MAX_OPERAND = 255
 
 OPCODES = {
     "jmp":  (0b00000000, True),
@@ -81,249 +85,260 @@ class PositionDirective:
     lineno: int
     value: int
 
-@dataclass
-class ParseError:
-    message: str
-
-Statement = Instruction | EquDirective | LabelDirective | PositionDirective | ParseError
+Statement = Instruction | EquDirective | LabelDirective | PositionDirective
 
 
-def strip_comments(string):
-    (string, _, _) = string.partition(";")
-    (string, _, _) = string.partition("#")
-    return string
+class Assembler:
+    ERROR_LABEL = "__error__"
+
+    def __init__(self, infile: TextIO) -> None:
+        self.infile = infile
+        self.has_error: bool = False
+        self.parser_line: int = -1
+        self.errors: list[str] = []
 
 
-def emit_error_at(i, error):
-    return ParseError(message = f"line {i}: {error}")
+    def emit_parser_error(self, message: str) -> None:
+        self.errors.append(f"line {self.parser_line}: {message}")
+        self.has_error = True
 
 
-def parse_argument(i, argument):
-    if argument.isidentifier():
-        return Ref(argument)
-    else:
-        try:
-            value = int(argument, 0)
-            return Numeral(value)
-        except ValueError:
-            return emit_error_at(i, f"\"{value}\" is neither a valid label name nor a numeral")
+    def emit_error_about(self, statement: Statement, message: str) -> None:
+        self.errors.append(f"line {statement.lineno}: {message}")
+        self.has_error = True
 
 
-def parse_line(i, line):
-    line = strip_comments(line)
-    words = line.split()
+    def report_errors(self) -> bool:
+        if self.has_error:
+            for error in self.errors:
+                print(error)
 
-    if len(words) == 0:
-        return None
+        return self.has_error
 
-    opcode = words[0]
-    match opcode:
-        case ".equ":
-            if len(words) != 3:
-                return emit_error_at(i, f".equ directive expects 2 arguments, but {len(words) - 1} were given")
 
-            [_, label, value] = words
-            if not label.isidentifier():
-                return emit_error_at(i, f"\"{label}\" is not a valid label name")
+    def strip_comments(self, line: str) -> str:
+        (line, _, _) = line.partition(";")
+        (line, _, _) = line.partition("#")
+        return line
 
-            argument = parse_argument(i, value)
-            if type(argument) is ParseError:
-                return argument
-            else:
-                return EquDirective(lineno = i, name = label, value = argument)
 
-        case ".l":
-            if len(words) != 2:
-                return emit_error_at(i, f".l directive expects 1 argument, but {len(words) - 1} were given")
-
-            [_, label] = words
-            if not label.isidentifier():
-                return emit_error_at(i, f"\"{label}\" is not a valid label name")
-
-            return LabelDirective(lineno = i, name = label)
-
-        case ".pos":
-            if len(words) != 2:
-                return emit_error_at(i, f".pos directive expects 1 argument, but {len(words) - 1} were given")
-
-            [_, value] = words
+    def parse_argument(self, argument: str) -> Argument:
+        if argument.isidentifier():
+            return Ref(argument)
+        else:
             try:
                 value = int(argument, 0)
-                return PositionDirective(lineno = i, value = value)
+                return Numeral(value)
             except ValueError:
-                return emit_error_at(i, f"\"{value}\" is neither a valid label name nor a numeral")
-
-    # Else assume a normal instruction
-    if len(words) > 2:
-        return emit_error_at(i, f"an instruction expects at most one argument, but {len(words) - 1} were given")
-
-    if len(words) == 1:
-        [opcode] = words
-        argument = None
-    elif len(words) == 2:
-        [opcode, argument] = words
-        argument = parse_argument(i, argument)
-        if type(argument) is ParseError:
-            return argument
-
-    return Instruction(lineno = i, opcode = opcode, argument = argument)
+                self.emit_parser_error(f"\"{value}\" is neither a valid label name nor a numeral")
+                return None
 
 
-def parse_file(f):
-    statements = []
-    have_error = False
+    def parse_line(self, line: str) -> Statement | None:
+        line = self.strip_comments(line)
+        words = line.split()
 
-    for (i, line) in enumerate(f):
-        parsed = parse_line(i, line)
+        if len(words) == 0:
+            return None
 
-        if parsed is not None:
-            statements.append(parsed)
+        opcode = words[0]
+        match opcode:
+            case ".equ":
+                if len(words) != 3:
+                    self.emit_parser_error(f".equ directive expects 2 arguments, but {len(words) - 1} were given")
+                    return None
 
-        if type(parsed) is ParseError:
-            have_error = True
+                [_, label, value] = words
+                if not label.isidentifier():
+                    self.emit_parser_error(f"\"{label}\" is not a valid label name")
+                    label = Assembler.ERROR_LABEL
 
-    if have_error:
+                argument = self.parse_argument(value)
+                return EquDirective(lineno = self.parser_line, name = label, value = argument)
+
+            case ".l":
+                if len(words) != 2:
+                    self.emit_parser_error(f".l directive expects 1 argument, but {len(words) - 1} were given")
+                    return None
+
+                [_, label] = words
+                if not label.isidentifier():
+                    self.emit_parser_error(f"\"{label}\" is not a valid label name")
+                    label = Assembler.ERROR_LABEL
+
+                return LabelDirective(lineno = self.parser_line, name = label)
+
+            case ".pos":
+                if len(words) != 2:
+                    self.emit_parser_error(f".pos directive expects 1 argument, but {len(words) - 1} were given")
+                    return None
+
+                [_, value] = words
+                try:
+                    return PositionDirective(lineno = self.parser_line, value = int(value, 0))
+                except ValueError:
+                    self.emit_parser_error(f"\"{value}\" is not a valid numeral")
+
+        # Else assume a normal instruction
+        if len(words) == 1:
+            [opcode] = words
+            argument = None
+        elif len(words) == 2:
+            [opcode, argument_word] = words
+            argument = self.parse_argument(argument_word)
+        else:
+            self.emit_parser_error(f"an instruction expects at most one argument, but {len(words) - 1} were given")
+
+        return Instruction(lineno = self.parser_line, opcode = opcode, argument = argument)
+
+
+    def parse_file(self, f: TextIO) -> list[Statement]:
+        statements: list[Statement] = []
+
+        for (i, line) in enumerate(f):
+            self.parser_line = i
+
+            parsed = self.parse_line(line)
+
+            if parsed is not None:
+                statements.append(parsed)
+
+        return statements
+
+
+    def layout_statements(self, statements: list[Statement]) -> None:
+        pos = 0
         for s in statements:
-            if type(s) is ParseError:
-                print(s.message)
-
-        return None
-
-    return statements
-
-
-def layout_statements(statements):
-    pos = 0
-    for s in statements:
-        match s:
-            case Instruction():
-                s.position = pos
-                pos += 1
-            case LabelDirective():
-                s.value = pos
-            case PositionDirective(value):
-                pos = value
+            match s:
+                case Instruction():
+                    if pos > MAX_POSITION:
+                        self.emit_error_about(s, f"statement placed outside program memory (requested position {pos}, but maximum is {MAX_POSITION})")
+                    s.position = pos
+                    pos += 1
+                case LabelDirective():
+                    s.value = pos
+                case PositionDirective(value=value):
+                    pos = value
 
 
-def collect_labels(statements):
-    labels = {}
-    have_error = False
+    def collect_labels(self, statements: list[Statement]) -> dict[str, int]:
+        labels: dict[str, int] = {}
 
-    for s in statements:
-        match s:
-            case EquDirective(lineno, name, value):
-                if name in labels:
-                    print(f"line {lineno}: label {name} redefined")
-                    have_error = True
+        for s in statements:
+            match s:
+                case EquDirective(_, name, value):
+                    if name in labels:
+                        self.emit_error_about(s, f"label \"{name}\" redefined")
 
-                match value:
-                    case Numeral(value):
-                        labels[name] = value
-                    case Ref(ref_name):
-                        if ref_name not in labels:
-                            print(f"line {lineno}: .equ directive references unknown label {ref_name}")
-                            have_error = True
-                            labels[name] = -1
-                        else:
-                            labels[name] = labels[ref_name]
+                    match value:
+                        case Numeral(value):
+                            labels[name] = value
+                        case Ref(ref_name):
+                            if ref_name not in labels:
+                                self.emit_error_about(s, f".equ directive references unknown label \"{ref_name}\"")
+                                labels[name] = -1
+                            else:
+                                labels[name] = labels[ref_name]
 
-            case LabelDirective(lineno, name, value):
-                if name in labels:
-                    print(f"line {lineno}: label {name} redefined")
-                    have_error = True
+                case LabelDirective(_, name, value):
+                    if name in labels:
+                        self.emit_error_about(s, f"label \"{name}\" redefined")
 
-                labels[name] = value
+                    labels[name] = value
 
-    if have_error:
-        return None
-    else:
         return labels
 
 
-def resolve_references(statements, labels):
-    have_error = False
-
-    for s in statements:
-        if type(s) is Instruction and type(s.argument) is Ref:
-            ref = s.argument.name
-            if ref not in labels:
-                print(f"line {lineno}: label {name} is not defined")
-                have_error = True
-            else:
-                s.argument = Numeral(value = labels[ref])
-
-    return have_error
+    def resolve_references(self, statements: list[Statement], labels: dict[str, int]) -> None:
+        for s in statements:
+            if isinstance(s, Instruction) and isinstance(s.argument, Ref):
+                ref = s.argument.name
+                if ref not in labels:
+                    self.emit_error_about(s, f"label \"{ref}\" is not defined")
+                else:
+                    s.argument = Numeral(value = labels[ref])
 
 
-def emit_instructions(statements):
-    # The instruction 0x00ii encodes "jmp i", so we fill the memory
-    # with self-jumps. This means that any jump to an invalid location
-    # will stall the program.
-    memory_image = [i for i in range(256)]
-    have_error = False
+    def emit_instructions(self, statements: list[Statement]) -> list[int]:
+        # The instruction 0x00ff encodes "jmp 0xff", so we fill the memory
+        # with jumps to the last address. This means that any jump to an
+        # invalid location will stall the program at address 0xff.
+        memory_image: list[int] = [0x00ff for _ in range(256)]
 
-    for s in statements:
-        if type(s) is Instruction:
-            lineno = s.lineno
-            opcode = s.opcode
-            argument = s.argument
-            position = s.position
+        for s in statements:
+            if isinstance(s, Instruction):
+                opcode = s.opcode
+                argument = s.argument
+                position = s.position
 
-            if opcode not in OPCODES:
-                print(f"line {lineno}: instruction \"{opcode}\" is not known")
-                have_error = True
-                continue
+                try:
+                    (encoding, has_argument) = OPCODES[opcode]
+                except KeyError:
+                    self.emit_error_about(s, f"instruction \"{opcode}\" is not known")
+                    continue
 
-            (encoding, has_argument) = OPCODES[opcode]
+                if has_argument and argument is None:
+                    self.emit_error_about(s, f"instruction \"{opcode}\" expects an argument, but none was given")
+                    continue
+                if not has_argument and argument is not None:
+                    self.emit_error_about(s, f"instruction \"{opcode}\" does not expect an argument, but one was given")
+                    continue
 
-            if has_argument and argument is None:
-                print(f"line {lineno}: instruction \"{opcode}\" expects an argument, but none was given")
-                have_error = True
-                continue
-            if not has_argument and argument is not None:
-                print(f"line {lineno}: instruction \"{opcode}\" does not expect an argument, but one was given")
-                have_error = True
-                continue
+                code = encoding << 8
+                if argument is not None:
+                    assert isinstance(argument, Numeral)
 
-            code = encoding << 8
-            if argument is not None:
-                assert type(argument) is Numeral
-                code |= argument.value
+                    val = argument.value
+                    if val > MAX_OPERAND:
+                        self.emit_error_about(s, f"operand {val} is too large (maximum is {MAX_OPERAND})")
+                        val = 0xff
+                    code |= argument.value
 
-            assert 0 <= code <= 0xffff
+                assert 0 <= code <= 0xffff
 
-            memory_image[position] = code
+                memory_image[position] = code
 
-    if have_error:
-        return None
-    else:
         return memory_image
 
-def assemble_file(f):
-    statements = parse_file(f)
 
-    if statements is None:
-        return None
+    def assemble(self) -> list[int] | None:
+        statements = self.parse_file(self.infile)
+        if self.report_errors():
+            return None
 
-    for s in statements:
-        print(s)
-    print()
+        for s in statements:
+            print(s)
+        print()
 
-    layout_statements(statements)
-    labels = collect_labels(statements)
-    if labels is None:
-        return None
-    have_error = resolve_references(statements, labels)
-    if have_error:
-        return None
+        self.layout_statements(statements)
+        if self.report_errors():
+            return None
 
-    for s in statements:
-        print(s)
-    print()
+        labels = self.collect_labels(statements)
+        if self.report_errors():
+            return None
 
-    print(labels)
+        self.resolve_references(statements, labels)
+        if self.report_errors():
+            return None
 
-    return emit_instructions(statements)
+        for s in statements:
+            print(s)
+        print()
+
+        print(labels)
+
+        memory_image = self.emit_instructions(statements)
+        if self.report_errors():
+            return None
+
+        return memory_image
+
+
+def assemble_file(file: TextIO) -> list[int] | None:
+    a = Assembler(file)
+    return a.assemble()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -336,10 +351,12 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output-file")
     args = parser.parse_args()
 
+    infile: TextIO
     if args.input_file:
         infile = open(args.input_file, encoding="utf-8")
     else:
-        infile = os.stdin
+        infile = sys.stdin
+
     memory_image = assemble_file(infile)
 
     if memory_image:
