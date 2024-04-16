@@ -59,20 +59,20 @@ class Numeral:
 class Ref:
     name: str
 
-Argument = None | Numeral | Ref
+Operand = None | Numeral | Ref
 
 @dataclass
 class Instruction:
     lineno: int
     opcode: str
-    argument: Argument
+    operand: Operand
     position: int = -1
 
 @dataclass
 class EquDirective:
     lineno: int
     name: str
-    value: Argument
+    value: Operand
 
 @dataclass
 class LabelDirective:
@@ -122,12 +122,12 @@ class Assembler:
         return line
 
 
-    def parse_argument(self, argument: str) -> Argument:
-        if argument.isidentifier():
-            return Ref(argument)
+    def parse_operand(self, operand: str) -> Operand:
+        if operand.isidentifier():
+            return Ref(operand)
         else:
             try:
-                value = int(argument, 0)
+                value = int(operand, 0)
                 return Numeral(value)
             except ValueError:
                 self.emit_parser_error(f"\"{value}\" is neither a valid label name nor a numeral")
@@ -153,8 +153,8 @@ class Assembler:
                     self.emit_parser_error(f"\"{label}\" is not a valid label name")
                     label = Assembler.ERROR_LABEL
 
-                argument = self.parse_argument(value)
-                return EquDirective(lineno = self.parser_line, name = label, value = argument)
+                operand = self.parse_operand(value)
+                return EquDirective(lineno = self.parser_line, name = label, value = operand)
 
             case ".l":
                 if len(words) != 2:
@@ -182,14 +182,14 @@ class Assembler:
         # Else assume a normal instruction
         if len(words) == 1:
             [opcode] = words
-            argument = None
+            operand = None
         elif len(words) == 2:
-            [opcode, argument_word] = words
-            argument = self.parse_argument(argument_word)
+            [opcode, operand_word] = words
+            operand = self.parse_operand(operand_word)
         else:
             self.emit_parser_error(f"an instruction expects at most one argument, but {len(words) - 1} were given")
 
-        return Instruction(lineno = self.parser_line, opcode = opcode, argument = argument)
+        return Instruction(lineno = self.parser_line, opcode = opcode, operand = operand)
 
 
     def parse_file(self, f: TextIO) -> list[Statement]:
@@ -251,12 +251,12 @@ class Assembler:
 
     def resolve_references(self, statements: list[Statement], labels: dict[str, int]) -> None:
         for s in statements:
-            if isinstance(s, Instruction) and isinstance(s.argument, Ref):
-                ref = s.argument.name
+            if isinstance(s, Instruction) and isinstance(s.operand, Ref):
+                ref = s.operand.name
                 if ref not in labels:
                     self.emit_error_about(s, f"label \"{ref}\" is not defined")
                 else:
-                    s.argument = Numeral(value = labels[ref])
+                    s.operand = Numeral(value = labels[ref])
 
 
     def emit_instructions(self, statements: list[Statement]) -> list[int]:
@@ -268,31 +268,31 @@ class Assembler:
         for s in statements:
             if isinstance(s, Instruction):
                 opcode = s.opcode
-                argument = s.argument
+                operand = s.operand
                 position = s.position
 
                 try:
-                    (encoding, has_argument) = OPCODES[opcode]
+                    (encoding, has_operand) = OPCODES[opcode]
                 except KeyError:
                     self.emit_error_about(s, f"instruction \"{opcode}\" is not known")
                     continue
 
-                if has_argument and argument is None:
-                    self.emit_error_about(s, f"instruction \"{opcode}\" expects an argument, but none was given")
+                if has_operand and operand is None:
+                    self.emit_error_about(s, f"instruction \"{opcode}\" expects an operand, but none was given")
                     continue
-                if not has_argument and argument is not None:
-                    self.emit_error_about(s, f"instruction \"{opcode}\" does not expect an argument, but one was given")
+                if not has_operand and operand is not None:
+                    self.emit_error_about(s, f"instruction \"{opcode}\" does not expect an operand, but one was given")
                     continue
 
                 code = encoding << 8
-                if argument is not None:
-                    assert isinstance(argument, Numeral)
+                if operand is not None:
+                    assert isinstance(operand, Numeral)
 
-                    val = argument.value
+                    val = operand.value
                     if val > MAX_OPERAND:
                         self.emit_error_about(s, f"operand {val} is too large (maximum is {MAX_OPERAND})")
                         val = 0xff
-                    code |= argument.value
+                    code |= operand.value
 
                 assert 0 <= code <= 0xffff
 
