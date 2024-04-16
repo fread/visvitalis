@@ -43,6 +43,8 @@ class Machine:
         self.register_p: int = 0
         self.carry_flag: bool = False
 
+        self.clock: int = 0
+
 
     def range_check(self, what: str, value: int, maximum: int) -> None:
         if value < 0 or value >= maximum:
@@ -101,6 +103,8 @@ class Machine:
             self.step_jump(instruction)
         else:
             self.step_compute(instruction)
+
+        self.clock += 1
 
 
     def step_compute(self, instruction) -> None:
@@ -278,6 +282,12 @@ class Shell(Cmd):
             print(f"Failed: {e}")
 
 
+    def do_reset(self, arg: str) -> None:
+        "reset: Reset program counter and clock to 0"
+        self.machine.program_counter = 0
+        self.machine.clock = 0
+
+
     def do_show(self, arg: str) -> None:
         "show: Show current machine state"
 
@@ -315,6 +325,8 @@ class Shell(Cmd):
         print("SIGN "  if self.machine.sign_flag() else "     ",  end="")
         print("ODD "   if self.machine.odd_flag()  else "    ",   end="")
         print("CARRY " if self.machine.carry_flag  else "      ")
+        print()
+        print(f"CLOCK = {self.machine.clock}")
 
 
     def do_step(self, arg: str) -> None:
