@@ -4,3 +4,4 @@ fp-info-cache
 /parts
 *-backups
 production
+programs/out
