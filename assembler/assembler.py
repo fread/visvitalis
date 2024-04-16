@@ -306,10 +306,6 @@ class Assembler:
         if self.report_errors():
             return None
 
-        for s in statements:
-            print(s)
-        print()
-
         self.layout_statements(statements)
         if self.report_errors():
             return None
@@ -321,12 +317,6 @@ class Assembler:
         self.resolve_references(statements, labels)
         if self.report_errors():
             return None
-
-        for s in statements:
-            print(s)
-        print()
-
-        print(labels)
 
         memory_image = self.emit_instructions(statements)
         if self.report_errors():
