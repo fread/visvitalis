@@ -1,4 +1,0 @@
-(sym_lib_table
-  (version 0)
-  (lib (name "8mux-rescue")(type "Legacy")(uri "${KIPRJMOD}/8mux-rescue.lib")(options "")(descr ""))
-)
