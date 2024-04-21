@@ -117,7 +117,7 @@ class Assembler:
     def report_errors(self) -> bool:
         if self.has_error:
             for error in self.errors:
-                print(error)
+                print(error, file=sys.stderr)
 
         return self.has_error
 
@@ -344,7 +344,8 @@ if __name__ == "__main__":
                         metavar="input-file",
                         nargs="?",
                         help="defaults to stdin when not given")
-    parser.add_argument("-o", "--output-file")
+    parser.add_argument("-o", "--output-file",
+                        help="default to stdout when not given")
     args = parser.parse_args()
 
     infile: TextIO
@@ -352,6 +353,7 @@ if __name__ == "__main__":
         infile = open(args.input_file, encoding="utf-8")
     else:
         infile = sys.stdin
+        print("Reading from stdin. Hint: Type EOF (^D) to finish the input.", file=sys.stderr)
 
     memory_image = assemble_file(infile)
 
