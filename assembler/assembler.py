@@ -9,10 +9,12 @@ MAX_POSITION = 255
 MAX_OPERAND = 255
 
 OPCODES = {
+    # Simple opcodes
     "jmp":  (0b00000000, True),
     "clm":  (0b00000001, True),
     "lp":   (0b00000010, True),
     "la":   (0b00000100, True),
+    "shrs": (0b00001001, True),
     "shr":  (0b00001100, False),
     "sta":  (0b00010001, True),
     "a2p":  (0b00010010, False),
