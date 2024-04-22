@@ -162,12 +162,12 @@ uint8_t Drv8908::transmit_one_chip(uint8_t address, uint8_t data)
 	return rx_buffer[1];
 }
 
-uint8_t Drv8908::transmit_two_chips(uint8_t address, uint8_t data)
+std::array<uint8_t, 2> Drv8908::transmit_two_chips(uint8_t address, uint8_t data)
 {
 	return transmit_two_chips(address, data, address, data);
 }
 
-uint8_t Drv8908::transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t address2, uint8_t data2)
+std::array<uint8_t, 2> Drv8908::transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t address2, uint8_t data2)
 {
 	static constexpr unsigned BUFFER_LENGTH = 6;
 
@@ -190,7 +190,7 @@ uint8_t Drv8908::transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t add
 	ESP_LOGD(TAG, "Reply: %02x %02x %02x %02x %02x %02x",
 	         rx_buffer[0], rx_buffer[1], rx_buffer[2], rx_buffer[3], rx_buffer[4], rx_buffer[5]);
 
-	return rx_buffer[4];
+	return std::array { rx_buffer[4], rx_buffer[5] };
 }
 
 void Drv8908::set_h_bridges(uint32_t h_bridge_settings)

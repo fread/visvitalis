@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include <driver/gpio.h>
 #include <driver/spi_master.h>
 
@@ -19,8 +21,8 @@ private:
 	void disable_open_load_detection();
 
 	uint8_t transmit_one_chip(uint8_t address, uint8_t data);
-	uint8_t transmit_two_chips(uint8_t address, uint8_t data);
-	uint8_t transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t address2, uint8_t data2);
+	std::array<uint8_t, 2> transmit_two_chips(uint8_t address, uint8_t data);
+	std::array<uint8_t, 2> transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t address2, uint8_t data2);
 
 	void set_h_bridges(uint32_t h_bridge_settings);
 
