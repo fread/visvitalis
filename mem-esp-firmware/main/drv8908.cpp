@@ -5,7 +5,7 @@
 // The DRV8908 datasheet allows frequencies of up to 5 MHz.  However,
 // given that we need nowhere near as much, and the sloppy design of
 // the board, we choose to go considerably lower.
-static const int spi_hz = 1000000;
+static const int SPI_HZ = 1000000;
 
 static const char *TAG = "DRV8908";
 
@@ -46,13 +46,14 @@ Drv8908::Drv8908(spi_host_device_t spi_host,
 {
 	this->fault_pin = fault_pin;
 
-	spi_device_interface_config_t device_config = {};
-	// SPI clock is idle low (CPOL = 0),
-	// data is read on falling edge and written on rising edge (CPHA = 1).
-	device_config.mode = 1;
-	device_config.clock_speed_hz = spi_hz;
-	device_config.spics_io_num = chip_select_pin;
-	device_config.queue_size = 1;
+	spi_device_interface_config_t device_config {
+		// SPI clock is idle low (CPOL = 0),
+		// data is read on falling edge and written on rising edge (CPHA = 1).
+		.mode = 1,
+		.clock_speed_hz = SPI_HZ,
+		.spics_io_num = chip_select_pin,
+		.queue_size = 1,
+	};
 
 	ESP_ERROR_CHECK(spi_bus_add_device(spi_host, &device_config, &spi_device));
 
@@ -79,14 +80,15 @@ BusMode Drv8908::probe_bus_for_chip_count()
 
 	uint8_t test_reply[PATTERN_LENGTH]{};
 
-	spi_transaction_t test_transaction = {};
-	test_transaction.length = PATTERN_LENGTH * CHAR_BIT;
-	test_transaction.tx_buffer = test_pattern;
-	test_transaction.rx_buffer = test_reply;
+	spi_transaction_t test_transaction = {
+		.length = PATTERN_LENGTH * CHAR_BIT,
+		.tx_buffer = test_pattern,
+		.rx_buffer = test_reply,
+	};
 
-	ESP_LOGI(TAG, "Probing bus for chip count");
+	ESP_LOGD(TAG, "Probing bus for chip count");
 	ESP_ERROR_CHECK(spi_device_polling_transmit(spi_device, &test_transaction));
-	ESP_LOGI(TAG, "Reply: %02x %02x %02x %02x %02x %02x",
+	ESP_LOGD(TAG, "Reply: %02x %02x %02x %02x %02x %02x",
 	         test_reply[0], test_reply[1], test_reply[2], test_reply[3], test_reply[4], test_reply[5]);
 
 	bool first_is_status = is_status_byte(test_reply[0]);
@@ -132,8 +134,6 @@ void Drv8908::disable_open_load_detection()
 	switch (bus_mode) {
 	case BusMode::ONE_CHIP:
 		transmit_one_chip(address, data);
-
-		transmit_one_chip(make_register_read(REG_OLD_CTRL_1), 0x00);
 		break;
 
 	case BusMode::TWO_CHIPS:
@@ -149,14 +149,15 @@ uint8_t Drv8908::transmit_one_chip(uint8_t address, uint8_t data)
 	uint8_t tx_buffer[BUFFER_LENGTH] = { address, data };
 	uint8_t rx_buffer[BUFFER_LENGTH]{};
 
-	spi_transaction_t spi_transaction = {};
-	spi_transaction.length = BUFFER_LENGTH * CHAR_BIT;
-	spi_transaction.tx_buffer = tx_buffer;
-	spi_transaction.rx_buffer = rx_buffer;
+	spi_transaction_t spi_transaction = {
+		.length = BUFFER_LENGTH * CHAR_BIT,
+		.tx_buffer = tx_buffer,
+		.rx_buffer = rx_buffer,
+	};
 
-	ESP_LOGI(TAG, "Sending to one chip: %02x %02x", tx_buffer[0], tx_buffer[1]);
+	ESP_LOGD(TAG, "Sending to one chip: %02x %02x", tx_buffer[0], tx_buffer[1]);
 	ESP_ERROR_CHECK(spi_device_polling_transmit(spi_device, &spi_transaction));
-	ESP_LOGI(TAG, "Reply: %02x %02x", rx_buffer[0], rx_buffer[1]);
+	ESP_LOGD(TAG, "Reply: %02x %02x", rx_buffer[0], rx_buffer[1]);
 
 	return rx_buffer[1];
 }
@@ -177,15 +178,16 @@ uint8_t Drv8908::transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t add
 	};
 	uint8_t rx_buffer[BUFFER_LENGTH]{};
 
-	spi_transaction_t spi_transaction = {};
-	spi_transaction.length = BUFFER_LENGTH * CHAR_BIT;
-	spi_transaction.tx_buffer = tx_buffer;
-	spi_transaction.rx_buffer = rx_buffer;
+	spi_transaction_t spi_transaction = {
+		.length = BUFFER_LENGTH * CHAR_BIT,
+		.tx_buffer = tx_buffer,
+		.rx_buffer = rx_buffer,
+	};
 
-	ESP_LOGI(TAG, "Sending to two chips: %02x %02x %02x %02x %02x %02x",
+	ESP_LOGD(TAG, "Sending to two chips: %02x %02x %02x %02x %02x %02x",
 	         tx_buffer[0], tx_buffer[1], tx_buffer[2], tx_buffer[3], tx_buffer[4], tx_buffer[5]);
 	ESP_ERROR_CHECK(spi_device_polling_transmit(spi_device, &spi_transaction));
-	ESP_LOGI(TAG, "Reply: %02x %02x %02x %02x %02x %02x",
+	ESP_LOGD(TAG, "Reply: %02x %02x %02x %02x %02x %02x",
 	         rx_buffer[0], rx_buffer[1], rx_buffer[2], rx_buffer[3], rx_buffer[4], rx_buffer[5]);
 
 	return rx_buffer[4];

@@ -12,11 +12,12 @@ extern "C" void app_main(void)
 {
 	printf("hello world\n");
 
-	spi_bus_config_t spi_config = {};
-	spi_config.mosi_io_num = GpioAssignment::sdi_out;
-	spi_config.miso_io_num = GpioAssignment::sdi_in;
-	spi_config.sclk_io_num = GpioAssignment::sdi_clock;
-	spi_config.max_transfer_sz = 6;
+	spi_bus_config_t spi_config {
+		.mosi_io_num = GpioAssignment::sdi_out,
+		.miso_io_num = GpioAssignment::sdi_in,
+		.sclk_io_num = GpioAssignment::sdi_clock,
+		.max_transfer_sz = 6,
+	};
 
 	ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &spi_config, SPI_DMA_DISABLED));
 
@@ -24,8 +25,6 @@ extern "C" void app_main(void)
 
 	while (true) {
 		for (int i = 0; i < 65536; i++) {
-			ESP_LOGI(TAG, "");
-			ESP_LOGI(TAG, "output %d", i);
 			output_driver.set_output(i);
 
 			vTaskDelay(10 / portTICK_PERIOD_MS);
