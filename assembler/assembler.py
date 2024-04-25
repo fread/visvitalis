@@ -364,7 +364,8 @@ if __name__ == "__main__":
         else:
             outfile = sys.stdout
 
+        outfile.write(" ")
         for (i, word) in enumerate(memory_image):
             outfile.write(f"{word:04x} ")
             if i % 16 == 15:
-                outfile.write("\n")
+                outfile.write("\n ")
