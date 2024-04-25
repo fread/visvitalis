@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 
 #include <ranges>
 
 #include <driver/spi_master.h>
 #include <esp_console.h>
 #include <esp_log.h>
+#include <linenoise/linenoise.h>
 
 #include "drv8908.hpp"
 #include "gpio_assignment.hpp"
@@ -31,14 +33,98 @@ class GpioDebug
 	}
 };
 
+static Memory mem;
+
+static int handle_clear_cmd(int argc, char **argv)
+{
+	for (int i = 0; i < MEMORY_SIZE; i++) {
+		mem.write(i, 0);
+	}
+
+	return 0;
+}
+
+static int handle_write_cmd(int argc, char **argv)
+{
+	if (argc != 3) {
+		printf("Wrong number of arguments (2 expected)\n");
+		return 2;
+	}
+
+	uint8_t address;
+	uint16_t data;
+
+	int success = sscanf(argv[1], "%hhx", &address);
+	if (success != 1) {
+		printf("Cannot parse address\n");
+		return 2;
+	}
+	success = sscanf(argv[2], "%hx", &data);
+	if (success != 1) {
+		printf("Cannot parse address\n");
+		return 2;
+	}
+
+	mem.write(address, data);
+
+	return 0;
+}
+
+static int handle_load_cmd(int argc, char **argv)
+{
+	int addr = 0;
+
+	while (addr < MEMORY_SIZE) {
+		char *line = linenoise("");
+
+		if (line == NULL || strcmp(line, "") == 0) {
+			free(line);
+			return 0;
+		}
+
+		char *argv[257];
+
+		size_t n_args = esp_console_split_argv(line, argv, 257);
+
+		for (int i = 0; i < n_args; i++) {
+			uint16_t data = 0;
+			int success = sscanf(argv[i], "%hx", &data);
+			if (success != 1) {
+				printf("Could not parse value \"%s\"\n", argv[i]);
+				free(line);
+				return 2;
+			}
+
+			mem.write(addr, data);
+			addr++;
+
+			if (addr >= MEMORY_SIZE && i < n_args - 1) {
+				printf("Warning: extra data at end of line\n");
+				free(line);
+				return 0;
+			}
+		}
+
+		free(line);
+	}
+
+	return 0;
+}
+
+static int handle_dump_cmd(int argc, char **argv)
+{
+	std::string contents = mem.show();
+	printf("%s\n", contents.c_str());
+
+	return 0;
+}
+
 extern "C" void app_main(void)
 {
 	printf("hello world\n");
 
-	Memory mem;
-
-	for (int i = 0; i < 255; i++) {
-		mem.write(i, (3 * i) % 256);
+	for (int i = 0; i < MEMORY_SIZE; i++) {
+		mem.write(i, (3 * i) % MEMORY_SIZE);
 	}
 
 	GpioDebug gpio_debug;
@@ -84,18 +170,46 @@ extern "C" void app_main(void)
 
 	ESP_ERROR_CHECK(esp_console_new_repl_uart(&uart_config, &repl_config, &repl));
 
-	// esp_console_start_repl(repl);
+	esp_console_cmd_t clear_cmd {
+		.command = "clear",
+		.help = "Clear memory (reset to 0x00)",
+		.hint = "",
+		.func = handle_clear_cmd,
+		.argtable = NULL,
+	};
+	esp_console_cmd_register(&clear_cmd);
+
+	esp_console_cmd_t write_cmd {
+		.command = "w",
+		.help = "Write into memory",
+		.hint = "",
+		.func = handle_write_cmd,
+		.argtable = NULL,
+	};
+	esp_console_cmd_register(&write_cmd);
+
+	esp_console_cmd_t load_cmd {
+		.command = "load",
+		.help = "Load a memory image",
+		.hint = "",
+		.func = handle_load_cmd,
+		.argtable = NULL,
+	};
+	esp_console_cmd_register(&load_cmd);
+
+	esp_console_cmd_t dump_cmd {
+		.command = "dump",
+		.help = "dump memory contents",
+		.hint = "",
+		.func = handle_dump_cmd,
+		.argtable = NULL,
+	};
+	esp_console_cmd_register(&dump_cmd);
 
 	printf("Setup complete\n");
+
+	esp_console_start_repl(repl);
 	while(1) {
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-		uint8_t new_address = 0;
-		for (gpio_num_t address_pin : std::ranges::reverse_view(GpioAssignment::data_in)) {
-			new_address <<= 1;
-			new_address |= gpio_get_level(address_pin);
-		}
-		ESP_LOGI(TAG, "%02x", new_address);
-
 	}
 }
