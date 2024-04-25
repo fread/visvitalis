@@ -5,6 +5,7 @@
 
 #include "drv8908.hpp"
 #include "gpio_assignment.hpp"
+#include "memory.hpp"
 
 static const char *TAG = "MAIN";
 
@@ -12,6 +13,15 @@ extern "C" void app_main(void)
 {
 	printf("hello world\n");
 
+	Memory mem;
+
+	mem.write(0x42, 0x2342);
+
+	printf("%s", mem.show().c_str());
+}
+
+void output_driver_test()
+{
 	spi_bus_config_t spi_config {
 		.mosi_io_num = GpioAssignment::sdi_out,
 		.miso_io_num = GpioAssignment::sdi_in,
@@ -21,7 +31,9 @@ extern "C" void app_main(void)
 
 	ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &spi_config, SPI_DMA_DISABLED));
 
-	Drv8908 output_driver(SPI2_HOST, GpioAssignment::driver_chip_select, GpioAssignment::driver_fault_in);
+	Drv8908 output_driver(SPI2_HOST,
+	                      GpioAssignment::driver_chip_select,
+	                      GpioAssignment::driver_fault_in);
 
 	while (true) {
 		for (int i = 0; i < 65536; i++) {

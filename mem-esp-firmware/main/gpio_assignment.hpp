@@ -1,9 +1,11 @@
 #pragma once
 
+#include <array>
+
 #include <driver/gpio.h>
 
 struct GpioAssignment {
-	static constexpr gpio_num_t address_in[8] = {
+	static constexpr std::array<gpio_num_t, 8> address_in = {
 		GPIO_NUM_21,
 		GPIO_NUM_47,
 		GPIO_NUM_9,
@@ -14,7 +16,7 @@ struct GpioAssignment {
 		GPIO_NUM_11,
 	};
 
-	static constexpr gpio_num_t data_in[8] = {
+	static constexpr std::array<gpio_num_t, 8> data_in = {
 		GPIO_NUM_1,
 		GPIO_NUM_2,
 		GPIO_NUM_42,
