@@ -27,13 +27,13 @@ struct GpioAssignment {
 		GPIO_NUM_7,
 	};
 
-	static const gpio_num_t clock_in = GPIO_NUM_17;
-	static const gpio_num_t write_not_read_in = GPIO_NUM_15;
+	static constexpr gpio_num_t clock_in = GPIO_NUM_17;
+	static constexpr gpio_num_t write_not_read_in = GPIO_NUM_15;
 
-	static const gpio_num_t driver_fault_in = GPIO_NUM_3;
+	static constexpr gpio_num_t driver_fault_in = GPIO_NUM_3;
 
-	static const gpio_num_t sdi_out = GPIO_NUM_45;
-	static const gpio_num_t sdi_in = GPIO_NUM_46;
-	static const gpio_num_t sdi_clock = GPIO_NUM_40;
-	static const gpio_num_t driver_chip_select = GPIO_NUM_39;
+	static constexpr gpio_num_t sdi_out = GPIO_NUM_45;
+	static constexpr gpio_num_t sdi_in = GPIO_NUM_46;
+	static constexpr gpio_num_t sdi_clock = GPIO_NUM_40;
+	static constexpr gpio_num_t driver_chip_select = GPIO_NUM_39;
 };

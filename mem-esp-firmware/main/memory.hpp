@@ -7,6 +7,7 @@
 
 static constexpr unsigned ADDRESS_BITS = sizeof(uint8_t) * CHAR_BIT;
 static constexpr unsigned DATA_BITS = sizeof(uint16_t) * CHAR_BIT;
+static constexpr unsigned DATA_IN_BITS = sizeof(uint8_t) * CHAR_BIT;
 
 static constexpr unsigned MEMORY_SIZE = 1 << ADDRESS_BITS;
 

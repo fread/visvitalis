@@ -5,9 +5,27 @@
 
 #include "drv8908.hpp"
 #include "gpio_assignment.hpp"
+#include "gpio_interface.hpp"
 #include "memory.hpp"
 
 static const char *TAG = "MAIN";
+
+class GpioDebug
+	: public GpioListener {
+	virtual void on_address_change(uint8_t new_address) {
+		ESP_LOGI(TAG, "address change 0x%02x\n", new_address);
+	}
+	virtual void on_write_pin_change(RwState new_state) {
+		if (new_state == RwState::READ) {
+			ESP_LOGI(TAG, "read\n");
+		} else {
+			ESP_LOGI(TAG, "write\n");
+		}
+	}
+	virtual void on_write_cycle_complete(uint8_t new_data) {
+		ESP_LOGI(TAG, "data write 0x%02x\n", new_data);
+	}
+};
 
 extern "C" void app_main(void)
 {
@@ -15,9 +33,20 @@ extern "C" void app_main(void)
 
 	Memory mem;
 
-	mem.write(0x42, 0x2342);
+	GpioDebug gpio_debug;
 
-	printf("%s", mem.show().c_str());
+	GpioInterface gpios(
+		GpioAssignment::address_in,
+		GpioAssignment::data_in,
+		GpioAssignment::clock_in,
+		GpioAssignment::write_not_read_in,
+		&gpio_debug
+		);
+
+	printf("Setup complete\n");
+	while(1) {
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
 }
 
 void output_driver_test()
