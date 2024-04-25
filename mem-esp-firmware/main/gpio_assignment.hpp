@@ -27,7 +27,7 @@ struct GpioAssignment {
 		GPIO_NUM_7,
 	};
 
-	static constexpr gpio_num_t clock_in = GPIO_NUM_17;
+	static constexpr gpio_num_t clock_in = GPIO_NUM_18;
 	static constexpr gpio_num_t write_not_read_in = GPIO_NUM_15;
 
 	static constexpr gpio_num_t driver_fault_in = GPIO_NUM_3;

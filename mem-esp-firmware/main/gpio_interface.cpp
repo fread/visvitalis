@@ -1,6 +1,7 @@
 #include "gpio_interface.hpp"
 
 #include <algorithm>
+#include <ranges>
 
 #include <esp_log.h>
 
@@ -16,7 +17,10 @@ static void IRAM_ATTR reset_timer_isr(void *arg)
 	TimerHandle_t *timer = (TimerHandle_t*) arg;
 
 	int task_should_yield = false;
-	xTimerResetFromISR(*timer, &task_should_yield);
+	if (xTimerResetFromISR(*timer, &task_should_yield) != pdPASS) {
+		// TODO emergency stop
+		abort();
+	}
 
 	if (task_should_yield == pdTRUE) {
 		portYIELD_FROM_ISR();
@@ -33,7 +37,7 @@ void GpioInterface::on_address_change()
 {
 	uint8_t new_address = 0;
 
-	for (gpio_num_t address_pin : address_pins) {
+	for (gpio_num_t address_pin : std::ranges::reverse_view(address_pins)) {
 		new_address <<= 1;
 		new_address |= gpio_get_level(address_pin);
 	}
@@ -48,7 +52,11 @@ void IRAM_ATTR GpioInterface::write_pin_change_isr(void *arg)
 	int task_should_yield = false;
 	int level = gpio_get_level(_this->write_pin);
 
-	xTimerPendFunctionCallFromISR(on_write_pin_change, _this, level, &task_should_yield);
+	if (xTimerPendFunctionCallFromISR(
+		    on_write_pin_change, _this, level, &task_should_yield) != pdPASS) {
+		// TODO emergency stop
+		abort();
+	}
 
 	if (task_should_yield == pdTRUE) {
 		portYIELD_FROM_ISR();
@@ -58,7 +66,7 @@ void IRAM_ATTR GpioInterface::write_pin_change_isr(void *arg)
 void GpioInterface::on_write_pin_change(void *arg1, uint32_t level)
 {
 	GpioInterface *_this = (GpioInterface*) arg1;
-	RwState state = level == 1 ? RwState::WRITE : RwState::READ;
+	RwState state = (level == 1) ? RwState::WRITE : RwState::READ;
 	_this->listener->on_write_pin_change(state);
 }
 
@@ -80,7 +88,11 @@ void GpioInterface::on_write_sample()
 		}
 		n_write_samples++;
 
-		xTimerReset(write_sample_timer, portMAX_DELAY);
+		if (xTimerReset(write_sample_timer, portMAX_DELAY) != pdPASS) {
+			ESP_LOGE(TAG, "write_sample_timer is stuck");
+			// TODO emergency stop
+			abort();
+		}
 
 	} else {
 		// Write cycle is finished
@@ -124,17 +136,25 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 	  write_samples(),
 	  n_write_samples(0)
 {
-	gpio_install_isr_service(0);
+	ESP_ERROR_CHECK(gpio_install_isr_service(0));
 
 	address_change_timer = xTimerCreate("address change", PIN_CHANGE_DELAY, false, this, address_change_expired);
+	if (address_change_timer == NULL) {
+		ESP_LOGE(TAG, "Could not create address change timer");
+		abort();
+	}
 	for (gpio_num_t address_pin : address_pins) {
-		gpio_isr_handler_add(address_pin, reset_timer_isr, &address_change_timer);
+		ESP_ERROR_CHECK(gpio_isr_handler_add(address_pin, reset_timer_isr, &address_change_timer));
 	}
 
-	gpio_isr_handler_add(write_pin, write_pin_change_isr, this);
+	ESP_ERROR_CHECK(gpio_isr_handler_add(write_pin, write_pin_change_isr, this));
 
 	write_sample_timer = xTimerCreate("write_sample", WRITE_CYCLE_SAMPLE_TIME, false, this, write_sample_expired);
-	gpio_isr_handler_add(clock_pin, reset_timer_isr, &write_sample_timer);
+	if (write_sample_timer == NULL) {
+		ESP_LOGE(TAG, "Could not create write sample timer");
+		abort();
+	}
+	ESP_ERROR_CHECK(gpio_isr_handler_add(clock_pin, reset_timer_isr, &write_sample_timer));
 
 	{
 		uint64_t gpio_mask = 0;
@@ -152,7 +172,22 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 	}
 
 	{
-		uint64_t gpio_mask = 1 << write_pin;
+		uint64_t gpio_mask = 0;
+		for (gpio_num_t data_pin : data_pins) {
+			gpio_mask |= 1ull << data_pin;
+		}
+		gpio_config_t config {
+			.pin_bit_mask = gpio_mask,
+			.mode = GPIO_MODE_INPUT,
+			.pull_up_en = GPIO_PULLUP_DISABLE,
+			.pull_down_en = GPIO_PULLDOWN_ENABLE,
+			.intr_type = GPIO_INTR_DISABLE,
+		};
+		ESP_ERROR_CHECK(gpio_config(&config));
+	}
+
+	{
+		uint64_t gpio_mask = 1ull << write_pin;
 
 		gpio_config_t config {
 			.pin_bit_mask = gpio_mask,
@@ -165,7 +200,7 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 	}
 
 	{
-		uint64_t gpio_mask = 1 << clock_pin;
+		uint64_t gpio_mask = 1ull << clock_pin;
 
 		gpio_config_t config {
 			.pin_bit_mask = gpio_mask,
@@ -177,5 +212,8 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 		ESP_ERROR_CHECK(gpio_config(&config));
 	}
 
+	on_address_change();
 
+	int level = gpio_get_level(write_pin);
+	on_write_pin_change(this, level);
 }
