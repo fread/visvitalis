@@ -6330,7 +6330,7 @@
 		)
 		(uuid "ff420bc8-149f-47c4-a12c-f4d7ecb78996")
 	)
-	(text_box "Unusable GPIOs:\n\n0: boot mode selection, connected to onboard button\n19, 20: USB connection\n35, 36, 37: octal flash or PSRAM, if available\n38: Onboard LED (rev. 1.1)\n43, 44: console, connected to onboard USB serial\n48: Onboard LED (rev. 1)\n\nUsable GPIOs:\n\n3: not for JTAG selection, fuses take priority\n45, 46: pulled down at boot, then safe to use as output (other than ~{cs})"
+	(text_box "Unusable GPIOs:\n\n0: boot mode selection, connected to onboard button\n19, 20: USB connection\n35, 36, 37: octal flash or PSRAM, if available\n38: Onboard LED (rev. 1.1)\n43, 44: console, connected to onboard USB serial\n48: Onboard LED (rev. 1)\n\nUsable GPIOs:\n\n3: not for JTAG selection, fuses take priority\n45, 46: pulled down at boot, then safe to use (other than for ~{cs})"
 		(exclude_from_sim no)
 		(at 102.87 157.48 0)
 		(size 76.2 27.94)
