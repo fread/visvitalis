@@ -44,6 +44,7 @@ OPCODES = {
     "nor":  (0b00111000, True),
     "nori": (0b00111010, True),
     "norp": (0b00111001, False),
+    "nop":  (0b00101000, False),
     "shr":  (0b00110000, False),
     "shrs": (0b10010000, True),
     "sta":  (0b10001000, True),
