@@ -99,7 +99,7 @@ void GpioInterface::on_write_sample()
 		// Write cycle is finished
 		// But only execute the write if we have seen enough samples,
 		// i.e. clock has been high for long enough
-		ESP_LOGI(TAG, "%u samples", n_write_samples);
+		ESP_LOGD(TAG, "%u samples", n_write_samples);
 
 		if (n_write_samples >= MIN_WRITE_SAMPLES) {
 			uint8_t data = 0;
