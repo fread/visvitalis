@@ -43,3 +43,11 @@ void MemoryController::on_write_cycle_complete(uint8_t new_data)
 	ESP_LOGI(TAG, "write cycle %x", new_data);
 	memory.write(current_address, new_data);
 }
+
+void MemoryController::invalidate()
+{
+	if (current_rw_state == RwState::READ) {
+		ESP_LOGI(TAG, "R %02x = %04x", current_address, memory.read(current_address));
+		output_driver.set_output(memory.read(current_address));
+	}
+}

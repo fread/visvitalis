@@ -25,4 +25,6 @@ public:
 	virtual void on_write_pin_change(RwState new_state);
 
 	virtual void on_write_cycle_complete(uint8_t new_data);
+
+	virtual void invalidate();
 };

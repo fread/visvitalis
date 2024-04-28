@@ -31,9 +31,13 @@ class GpioDebug
 	virtual void on_write_cycle_complete(uint8_t new_data) {
 		ESP_LOGI(TAG, "data write 0x%02x\n", new_data);
 	}
+	virtual void invalidate() {
+		ESP_LOGI(TAG, "invalidate\n");
+	}
 };
 
 static Memory mem;
+static MemoryController *controller;
 
 static int handle_clear_cmd(int argc, char **argv)
 {
@@ -66,6 +70,7 @@ static int handle_write_cmd(int argc, char **argv)
 	}
 
 	mem.write(address, data);
+	controller->invalidate();
 
 	return 0;
 }
@@ -73,13 +78,14 @@ static int handle_write_cmd(int argc, char **argv)
 static int handle_load_cmd(int argc, char **argv)
 {
 	int addr = 0;
+	char *line = NULL;
 
 	while (addr < MEMORY_SIZE) {
-		char *line = linenoise("");
+		line = linenoise("");
 
 		if (line == NULL || strcmp(line, "") == 0) {
-			free(line);
-			return 0;
+			goto exit_ok;
+			break;
 		}
 
 		char *argv[257];
@@ -91,8 +97,7 @@ static int handle_load_cmd(int argc, char **argv)
 			int success = sscanf(argv[i], "%hx", &data);
 			if (success != 1) {
 				printf("Could not parse value \"%s\"\n", argv[i]);
-				free(line);
-				return 2;
+				goto exit_error;
 			}
 
 			mem.write(addr, data);
@@ -100,15 +105,22 @@ static int handle_load_cmd(int argc, char **argv)
 
 			if (addr >= MEMORY_SIZE && i < n_args - 1) {
 				printf("Warning: extra data at end of line\n");
-				free(line);
-				return 0;
+				goto exit_ok;
 			}
 		}
 
 		free(line);
 	}
 
+exit_ok:
+	free(line);
+	controller->invalidate();
 	return 0;
+
+exit_error:
+	free(line);
+	controller->invalidate();
+	return 2;
 }
 
 static int handle_dump_cmd(int argc, char **argv)
@@ -143,6 +155,7 @@ extern "C" void app_main(void)
 	                      GpioAssignment::driver_fault_in);
 
 	MemoryController mc(mem, output_driver);
+	controller = &mc;
 
 	GpioInterface gpios(
 		GpioAssignment::address_in,
