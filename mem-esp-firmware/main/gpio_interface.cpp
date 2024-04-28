@@ -79,8 +79,9 @@ void GpioInterface::write_sample_expired(TimerHandle_t timer)
 void GpioInterface::on_write_sample()
 {
 	int clock_pin_state = gpio_get_level(clock_pin);
+	int write_pin_state = gpio_get_level(write_pin);
 
-	if (clock_pin_state == 1) {
+	if (clock_pin_state == 1 && write_pin_state == 1) {
 		for (int i = 0; i < DATA_IN_BITS; i++) {
 			int level = gpio_get_level(data_pins.at(i));
 			write_samples.at(i) <<= 1;
