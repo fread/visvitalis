@@ -9,20 +9,20 @@ DATA_SIZE = 256
 DATA_MAX = 1 << 8
 
 # Control bits for computational instructions
-ADDRESS_SOURCE_BIT = 15
-OPERAND_SOURCE_BIT = 14
-ADD_BIT = 13
-INVERT_BIT = 12
-RESULT_SOURCE_1_BIT = 12
-RESULT_SOURCE_2_BIT = 11
-WRITE_A_BIT = 10
-WRITE_P_BIT = 9
-WRITE_MEMORY_BIT = 8
+ADDRESS_SOURCE_BIT = 8
+OPERAND_SOURCE_BIT = 9
+ADD_BIT = 10
+INVERT_BIT = 11
+RESULT_SOURCE_1_BIT = 11
+RESULT_SOURCE_2_BIT = 12
+WRITE_A_BIT = 13
+WRITE_P_BIT = 14
+WRITE_MEMORY_BIT = 15
 # ... and for jumps
-CONDITIONAL_BIT = 14
-CONDITION_1_BIT = 13
-CONDITION_2_BIT = 12
-CONDITION_INVERT_BIT = 11
+CONDITIONAL_BIT = 9
+CONDITION_1_BIT = 10
+CONDITION_2_BIT = 11
+CONDITION_INVERT_BIT = 12
 
 # Shell stuff
 USE_ANSI = True
@@ -99,7 +99,7 @@ class Machine:
 
     def step(self) -> None:
         instruction = self.program_memory[self.program_counter]
-        if instruction & 0b11100000000 == 0:
+        if instruction & ((1 << WRITE_A_BIT) | (1 << WRITE_P_BIT) | (1 << WRITE_MEMORY_BIT)) == 0:
             self.step_jump(instruction)
         else:
             self.step_compute(instruction)

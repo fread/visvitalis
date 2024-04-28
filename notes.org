@@ -38,333 +38,337 @@ Gates:
 ** Bits Calculate
 | bit | if 0                          | if 1                     | notes                            |
 |-----+-------------------------------+--------------------------+----------------------------------|
-|  15 | RAM address from operand      | RAM address from P       | shared with jumps                |
-|  14 | operand bus from RAM data     | operand bus from operand | immediate                        |
-|  13 | ALU right shift or NOR        | ALU add or subtract      | enable adder                     |
-|  12 | ALU right shift or add        | ALU NOR or subtract      | only if 11 == 1, enable inverter |
-|  12 | result bus from operand bus   | result bus from A        | only if 11 == 0                  |
-|  11 | result bus from operand bus/A | result bus from ALU      |                                  |
-|  10 | keep A                        | write result bus to A    | register clock enable            |
-|   9 | keep P                        | write result bus to P    | register clock enable            |
-|   8 | do not store                  | store result bus to RAM  | jump if 10,9,8 = 0,0,0           |
+|  15 | do not store                  | store result bus to RAM  | jump if 15,14,13 = 0,0,0         |
+|  14 | keep P                        | write result bus to P    | register clock enable            |
+|  13 | keep A                        | write result bus to A    | register clock enable            |
+|  12 | result bus from operand bus/A | result bus from ALU      |                                  |
+|  11 | result bus from operand bus   | result bus from A        | only if 11 == 0                  |
+|  11 | ALU right shift or add        | ALU NOR or subtract      | only if 11 == 1, enable inverter |
+|  10 | ALU right shift or NOR        | ALU add or subtract      | enable adder                     |
+|   9 | operand bus from RAM data     | operand bus from operand | immediate                        |
+|   8 | RAM address from operand      | RAM address from P       | shared with jumps                |
 |-----+-------------------------------+--------------------------+----------------------------------|
 | 7-0 |                               |                          | operand                          |
 
-| 15-14 | note                                  |
-|-------+---------------------------------------|
-|    00 | direct operand                        |
-|    01 | immediate operand                     |
-|    10 | P-indirect operand                    |
-|    11 | P-indirect address, immediate operand |
+| 15-13 | note                     |
+|-------+--------------------------|
+|   000 | jump                     |
+|   001 | write A                  |
+|   010 | write P                  |
+|   011 | write A and P            |
+|   100 | store                    |
+|   101 | write A and store        |
+|   110 | write P and store        |
+|   111 | write A and P, and store |
 
-| 13-11 | note        |
-|-------+-------------|
-|   000 | op. bus     |
-|   001 | right shift |
-|   010 | A           |
-|   011 | nor         |
-|   100 | op. bus     |
-|   101 | add         |
-|   110 | A           |
-|   111 | subtract    |
+| 12-10 | note                            |
+|-------+---------------------------------|
+|   000 | op. bus                         |
+|   001 | op. bus (avoid, clobbers carry) |
+|   010 | A                               |
+|   011 | A (avoid, clobbers carry)       |
+|   100 | right shift                     |
+|   101 | add                             |
+|   110 | nor                             |
+|   111 | subtract                        |
 
-| 10-8 | note                     |
-|------+--------------------------|
-|  000 | jump                     |
-|  001 | store                    |
-|  010 | write P                  |
-|  011 | write P and store        |
-|  100 | write A                  |
-|  101 | write A and store        |
-|  110 | write A and P            |
-|  111 | write A and P, and store |
+| 9-8 | note                                  |
+|-----+---------------------------------------|
+|  00 | direct operand                        |
+|  01 | P-indirect operand                    |
+|  10 | immediate operand                     |
+|  11 | P-indirect address, immediate operand |
+
+
 
 ** Bits Jump
 | bit | if 0                     | if 1               | notes                    |
 |-----+--------------------------+--------------------+--------------------------|
-|  15 | jump target from operand | jump target from P | shared with calculations |
-|  14 | unconditional jump       | conditional jump   |                          |
-|  13 | condition carry/sign     | condition zero/odd |                          |
-|  12 | condition carry/zero     | condition sign/odd |                          |
-|  11 | cond. noninverted        | cond. inverted     |                          |
-|  10 |                          |                    | fixed 0                  |
-|   9 |                          |                    | fixed 0                  |
-|   8 |                          |                    | fixed 0                  |
+|  15 |                          |                    | fixed 0                  |
+|  14 |                          |                    | fixed 0                  |
+|  13 |                          |                    | fixed 0                  |
+|  12 | cond. noninverted        | cond. inverted     |                          |
+|  11 | condition carry/zero     | condition sign/odd |                          |
+|  10 | condition carry/sign     | condition zero/odd |                          |
+|  9  | unconditional jump       | conditional jump   |                          |
+|  8  | jump target from operand | jump target from P | shared with calculations |
 |-----+--------------------------+--------------------+--------------------------|
 | 7-0 | operand                  |                    |                          |
 
-| 13-11 | note                |
-|-------+---------------------|
-|   000 | Jump if carry set   |
-|   001 | Jump if carry clear |
-|   010 | Jump if A negative  |
-|   011 | Jump if A positive  |
-|   100 | Jump if A zero      |
-|   101 | Jump if A not zero  |
-|   110 | Jump if A odd       |
-|   111 | Jump if A even      |
+| 11-9 | note                |
+|------+---------------------|
+|  000 | Jump if carry set   |
+|  001 | Jump if A zero      |
+|  010 | Jump if A negative  |
+|  011 | Jump if A odd       |
+|  100 | Jump if carry clear |
+|  101 | Jump if A not zero  |
+|  110 | Jump if A positive  |
+|  111 | Jump if A even      |
 
 ** Instruction List
-| opcode     | mnemonic       | short mnemonic | instruction                     | sensible |
-|------------+----------------+----------------+---------------------------------+----------|
-| 00 000 000 | jmp a          | jmp a          | Jump to a                       | x        |
-| 00 000 001 | cl.s a         | clm a          | M[a] = 0                        | x        |
-| 00 000 010 | ld.p a         | lp a           | P = M[a]                        | x        |
-| 00 000 011 | cl.ps a        |                | P = M[a] = 0                    | x        |
-| 00 000 100 | ld.a a         | la a           | A = M[a]                        | x        |
-| 00 000 101 | cl.as a        |                | A = M[a] = 0                    | x        |
-| 00 000 110 | ld.ap a        |                | A = P = M[a]                    | x        |
-| 00 000 111 | cl.aps a       |                | A = P = M[a] = 0                | x        |
-| 00 001 000 | jmp a          |                | Jump t a                        |          |
-| 00 001 001 | shr.s a        | shrs a         | M[a] = A >> 1                   | x        |
-| 00 001 010 | shr.p x        |                | P = A >> 1, operand ignored     | x        |
-| 00 001 011 | shr.ps a       |                | P = M[a] = A >> 1               | x        |
-| 00 001 100 | shr.a x        | shr            | A = A >> 1, operand ignored     | x        |
-| 00 001 101 | shr.as a       |                | A = M[a] = A >> 1               | x        |
-| 00 001 110 | shr.ap x       |                | A = P = A >> 1, operand ignored | x        |
-| 00 001 111 | shr.aps a      |                | A = P = M[a] = A >> 1           | x        |
-| 00 010 000 | jmp a          |                | Jump to a                       |          |
-| 00 010 001 | a.s a          | sta a          | M[a] = A                        | x        |
-| 00 010 010 | a.p x          | a2p            | P = A, operand igored           | x        |
-| 00 010 011 | a.ps a         |                | P = M[a] = A                    | x        |
-| 00 010 100 | a.a x          |                |                                 |          |
-| 00 010 101 | a.as a         |                |                                 |          |
-| 00 010 110 | a.ap x         |                |                                 |          |
-| 00 010 111 | a.aps a        |                |                                 |          |
-| 00 011 000 | jmp a          |                | Jump to a                       |          |
-| 00 011 001 | nor0.s a       |                |                                 |          |
-| 00 011 010 | nor.p a        |                | P = A nor M[a]                  | x        |
-| 00 011 011 | nor0.ps a      |                |                                 |          |
-| 00 011 100 | nor.a a        | nor a          | A = A nor M[a]                  | x        |
-| 00 011 101 | nor0.as a      |                |                                 |          |
-| 00 011 110 | nor.ap a       |                | A = P = A nor M[a]              | x        |
-| 00 011 111 | nor0.aps a     |                |                                 |          |
-| 00 100 000 | [see 00000xxx] |                |                                 |          |
-| 00 100 001 |                |                |                                 |          |
-| 00 100 010 |                |                |                                 |          |
-| 00 100 011 |                |                |                                 |          |
-| 00 100 100 |                |                |                                 |          |
-| 00 100 101 |                |                |                                 |          |
-| 00 100 110 |                |                |                                 |          |
-| 00 100 111 | [see 00000xxx] |                |                                 |          |
-| 00 101 000 | jmp a          |                | Jump to a                       |          |
-| 00 101 001 | add0.s a       |                |                                 |          |
-| 00 101 010 | add.p a        |                | P = A + M[a]                    | x        |
-| 00 101 011 | add0.ps a      |                |                                 |          |
-| 00 101 100 | add.a a        | add a          | A = A + M[a]                    | x        |
-| 00 101 101 | add0.as a      |                |                                 |          |
-| 00 101 110 | add.ap a       |                | A = P = A + M[a]                | x        |
-| 00 101 111 | add0.aps a     |                |                                 |          |
-| 00 110 000 | [see 00010xxx] |                |                                 |          |
-| 00 110 001 |                |                |                                 |          |
-| 00 110 010 |                |                |                                 |          |
-| 00 110 011 |                |                |                                 |          |
-| 00 110 100 |                |                |                                 |          |
-| 00 110 101 |                |                |                                 |          |
-| 00 110 110 |                |                |                                 |          |
-| 00 110 111 | [see 00010xxx] |                |                                 |          |
-| 00 111 000 | jmp a          |                | Jump to a                       |          |
-| 00 111 001 | sub0.s a       |                |                                 |          |
-| 00 111 010 | sub.p a        |                | P = A - M[a]                    | x        |
-| 00 111 011 | sub0.ps a      |                |                                 |          |
-| 00 111 100 | sub.a a        | sub a          | A = A - M[a]                    | x        |
-| 00 111 101 | sub0.as a      |                |                                 |          |
-| 00 111 110 | sub.ap a       |                | A = P = A - M[a]                | x        |
-| 00 111 111 | sub0.aps a     |                |                                 |          |
-|------------+----------------+----------------+---------------------------------+----------|
-| 01 000 000 | jc a           | jc a           | Jump to a if carry set          | x        |
-| 01 000 001 | i.s i          |                | M[i] = i                        | ??       |
-| 01 000 010 | i.p i          | lpi i          | P = i                           | x        |
-| 01 000 011 | i.ps i         |                | P = M[i] = i                    |          |
-| 01 000 100 | i.a i          | lai i          | A = i                           | x        |
-| 01 000 101 | i.as i         |                | A = M[i] = i                    |          |
-| 01 000 110 | i.ap i         | lapi i         | A = P = i                       | x        |
-| 01 000 111 | i.aps i        |                | A = P = M[i] = i                |          |
-| 01 001 000 | jnc a          |                | Jump to a if carry unset        | x        |
-| 01 001 001 | [see 00001xxx] |                |                                 |          |
-| 01 001 010 |                |                |                                 |          |
-| 01 001 011 |                |                |                                 |          |
-| 01 001 100 |                |                |                                 |          |
-| 01 001 101 |                |                |                                 |          |
-| 01 001 110 |                |                |                                 |          |
-| 01 001 111 | [see 00001xxx] |                |                                 |          |
-| 01 010 000 | js a           | js a           | Jump to a if A[7] set           | x        |
-| 01 010 001 | [see 00010xxx] |                |                                 |          |
-| 01 010 010 |                |                |                                 |          |
-| 01 010 011 |                |                |                                 |          |
-| 01 010 100 |                |                |                                 |          |
-| 01 010 101 |                |                |                                 |          |
-| 01 010 110 |                |                |                                 |          |
-| 01 010 111 | [see 00010xxx] |                |                                 |          |
-| 01 011 000 | jns a          | jns a          | Jump to a if A[7] not set       | x        |
-| 01 011 001 | nori.s i       |                | M[i] = A nor i                  |          |
-| 01 011 010 | nori.p i       |                | P = A nor i                     | x        |
-| 01 011 011 | nori.ps i      |                | P = M[i] = A nor i              |          |
-| 01 011 100 | nori.a i       | nori i         | A = A nor i                     | x        |
-| 01 011 101 | nori.as i      |                | A = M[i] = A nor i              |          |
-| 01 011 110 | nori.ap i      |                | A = P = A nor i                 | x        |
-| 01 011 111 | nori.aps i     |                | A = P = M[i] = A nor i          |          |
-| 01 100 000 | jz a           | jz a           | Jump to a if A = 0              | x        |
-| 01 100 001 | [see 00000xxx] |                |                                 |          |
-| 01 100 010 |                |                |                                 |          |
-| 01 100 011 |                |                |                                 |          |
-| 01 100 100 |                |                |                                 |          |
-| 01 100 101 |                |                |                                 |          |
-| 01 100 110 |                |                |                                 |          |
-| 01 100 111 | [see 00000xxx] |                |                                 |          |
-| 01 101 000 | jnz a          | jnz a          | Jump to a if A != 0             | x        |
-| 01 101 001 | addi.s i       |                | M[i] = A + i                    |          |
-| 01 101 010 | addi.p i       |                | P = A + i                       | x        |
-| 01 101 011 | addi.ps i      |                | P = M[i] = A + i                |          |
-| 01 101 100 | addi.a i       | addi i         | A = A + i                       | x        |
-| 01 101 101 | addi.as i      |                | A = M[i] = A + i                |          |
-| 01 101 110 | addi.ap i      |                | A = P = A + i                   | x        |
-| 01 101 111 | addi.aps i     |                | A = P = M[i] = A + i            |          |
-| 01 110 000 | jod a          | jnev a         | Jump to a if A[0] = 1           | x        |
-| 01 110 001 | [see 00010xxx] |                |                                 |          |
-| 01 110 010 |                |                |                                 |          |
-| 01 110 011 |                |                |                                 |          |
-| 01 110 100 |                |                |                                 |          |
-| 01 110 101 |                |                |                                 |          |
-| 01 110 110 |                |                |                                 |          |
-| 01 110 111 | [see 00010xxx] |                |                                 |          |
-| 01 111 000 | jnod a         | jev a          | Jump to a if A[0] = 0           | x        |
-| 01 111 001 | subi.s i       |                | M[i] = A - i                    |          |
-| 01 111 010 | subi.p i       |                | P = A - i                       | x        |
-| 01 111 011 | subi.ps i      |                | P = M[i] = A - i                |          |
-| 01 111 100 | subi.a i       | subi i         | A = A - i                       | x        |
-| 01 111 101 | subi.as i      |                | A = M[i] = A - i                |          |
-| 01 111 110 | subi.ap i      |                | A = P = A - i                   | x        |
-| 01 111 111 | subi.aps i     |                | A = P = M[i] = A - i            |          |
-|------------+----------------+----------------+---------------------------------+----------|
-| 10 000 000 | jp x           | jp             | Jump to P                       | x        |
-| 10 000 001 | clp.s x        | clmp           | M[P] = 0                        | x        |
-| 10 000 010 | ldp.p x        | lpp            | P = M[P]                        | x        |
-| 10 000 011 | clp.ps x       |                | P = M[P] = 0                    | x        |
-| 10 000 100 | ldp.a x        | lap            | A = M[P]                        | x        |
-| 10 000 101 | clp.as x       |                | A = M[P] = 0                    | x        |
-| 10 000 110 | ldp.ap x       |                | A = P = M[P]                    | x        |
-| 10 000 111 | clp.aps x      |                | A = P = M[P] = 0                | x        |
-| 10 001 000 | jp x           |                | Jump to P                       |          |
-| 10 001 001 | shrp.s x       |                | M[P] = A >> 1                   | x        |
-| 10 001 010 |                |                |                                 |          |
-| 10 001 011 | shrp.ps x      |                | P = M[P] = A >> 1               | x        |
-| 10 001 100 |                |                |                                 |          |
-| 10 001 101 | shrp.as x      |                | A = M[P] = A >> 1               | x        |
-| 10 001 110 |                |                |                                 |          |
-| 10 001 111 | shrp.aps x     |                | A = P = M[P] = A >> 1           | x        |
-| 10 010 000 | jp x           |                | Jump to P                       |          |
-| 10 010 001 | ap.s x         | stap           | M[P] = A                        | x        |
-| 10 010 010 | ap.p x         |                |                                 |          |
-| 10 010 011 | ap.ps x        |                | P = M[P] = A                    | x        |
-| 10 010 100 | ap.a x         |                |                                 |          |
-| 10 010 101 | ap.as x        |                | A = M[P] = A                    | x        |
-| 10 010 110 | ap.ap x        |                |                                 |          |
-| 10 010 111 | ap.aps x       |                | A = P = M[P] = A                | x        |
-| 10 011 000 | jp x           |                | Jump to P                       |          |
-| 10 011 001 | nor0p.s        |                |                                 |          |
-| 10 011 010 | norp.p x       |                | P = A nor M[P]                  | x        |
-| 10 011 011 | nor0p.ps x     |                |                                 |          |
-| 10 011 100 | norp.a x       | norp           | A = A nor M[P]                  | x        |
-| 10 011 101 | nor0.as x      |                |                                 |          |
-| 10 011 110 | norp.ap x      |                | A = P = A nor M[P]              | x        |
-| 10 011 111 | nor0p.asp x    |                |                                 |          |
-| 10 100 000 | [see 10000xxx] |                |                                 |          |
-| 10 100 001 |                |                |                                 |          |
-| 10 100 010 |                |                |                                 |          |
-| 10 100 011 |                |                |                                 |          |
-| 10 100 100 |                |                |                                 |          |
-| 10 100 101 |                |                |                                 |          |
-| 10 100 110 |                |                |                                 |          |
-| 10 100 111 | [see 10000xxx] |                |                                 |          |
-| 10 101 000 | jp x           |                | Jump to P                       |          |
-| 10 101 001 | add0p.s x      |                |                                 |          |
-| 10 101 010 | addp.p x       |                | P = A + M[P]                    | x        |
-| 10 101 011 | add0p.ps x     |                |                                 |          |
-| 10 101 100 | addp.a x       | addp           | A = A + M[P]                    | x        |
-| 10 101 101 | add0p.as x     |                |                                 |          |
-| 10 101 110 | addp.ap x      |                | A = P = A + M[P]                | x        |
-| 10 101 111 | add0p.aps x    |                |                                 |          |
-| 10 110 000 | [see 10010xxx] |                |                                 |          |
-| 10 110 001 |                |                |                                 |          |
-| 10 110 010 |                |                |                                 |          |
-| 10 110 011 |                |                |                                 |          |
-| 10 110 100 |                |                |                                 |          |
-| 10 110 101 |                |                |                                 |          |
-| 10 110 110 |                |                |                                 |          |
-| 10 110 111 | [see 10010xxx] |                |                                 |          |
-| 10 111 000 | jp x           |                | Jump to P                       |          |
-| 10 111 001 | sub0p.s x      |                |                                 |          |
-| 10 111 010 | subp.p x       |                | P = A - M[P]                    | x        |
-| 10 111 011 | sub0p.ps x     |                |                                 |          |
-| 10 111 100 | subp.a x       | subp           | A = A - M[P]                    | x        |
-| 10 111 101 | sub0p.as x     |                |                                 |          |
-| 10 111 110 | subp.ap x      |                | A = P = A - M[P]                | x        |
-| 10 111 111 | sub0p.aps x    |                |                                 |          |
-|------------+----------------+----------------+---------------------------------+----------|
-| 11 xxx xx0 | [see 01xxxxx0] |                | except jumps                    |          |
-|------------+----------------+----------------+---------------------------------+----------|
-| 11 000 000 | jcp x          |                | Jump to P if carry set          | x        |
-| 11 000 001 | ip.s i         | stip i         | M[P] = i                        | x        |
-| 11 000 010 |                |                |                                 |          |
-| 11 000 011 | ip.ps i        |                | P = M[P] = i                    | x        |
-| 11 000 100 |                |                |                                 |          |
-| 11 000 101 | ip.as i        |                | A = M[P] = i                    | x        |
-| 11 000 110 |                |                |                                 |          |
-| 11 000 111 | ip.aps i       |                | A = P = M[P] = i                | x        |
-| 11 001 000 | jncp x         |                | Jump to P if carry unset        | x        |
-| 11 001 001 | [see 10001xxx] |                |                                 |          |
-| 11 001 010 |                |                |                                 |          |
-| 11 001 011 |                |                |                                 |          |
-| 11 001 100 |                |                |                                 |          |
-| 11 001 101 |                |                |                                 |          |
-| 11 001 110 |                |                |                                 |          |
-| 11 001 111 | [see 10001xxx] |                |                                 |          |
-| 11 010 000 | jsp x          |                | Jump to P if A[7] = 1           | x        |
-| 11 010 001 | [see 10010xxx] |                |                                 |          |
-| 11 010 010 |                |                |                                 |          |
-| 11 010 011 |                |                |                                 |          |
-| 11 010 100 |                |                |                                 |          |
-| 11 010 101 |                |                |                                 |          |
-| 11 010 110 |                |                |                                 |          |
-| 11 010 111 | [see 10010xxx] |                |                                 |          |
-| 11 011 000 | jnsp x         |                | Jump to P if A[7] = 0           | x        |
-| 11 011 001 | norip.s i      |                | M[P] = A nor i                  | x        |
-| 11 011 010 |                |                |                                 |          |
-| 11 011 011 | norip.ps i     |                | P = M[P] = A nor i              | x        |
-| 11 011 100 |                |                |                                 |          |
-| 11 011 101 | norip.as i     |                | A = M[P] = A nor i              | x        |
-| 11 011 110 |                |                |                                 |          |
-| 11 011 111 | norip.aps i    |                | A = P = M[p] = A nor i          | x        |
-| 11 100 000 | jzp x          |                | Jump to P if A = 0              | x        |
-| 11 100 001 | [see 11000xxx] |                |                                 |          |
-| 11 100 010 |                |                |                                 |          |
-| 11 100 011 |                |                |                                 |          |
-| 11 100 100 |                |                |                                 |          |
-| 11 100 101 |                |                |                                 |          |
-| 11 100 110 |                |                |                                 |          |
-| 11 100 111 | [see 11000xxx] |                |                                 |          |
-| 11 101 000 | jnzp x         |                | Jump to P if A != 0             | x        |
-| 11 101 001 | addip.s i      |                | M[P] = A + i                    | x        |
-| 11 101 010 |                |                |                                 |          |
-| 11 101 011 | addip.ps i     |                | P = M[P] = A + i                | x        |
-| 11 101 100 |                |                |                                 |          |
-| 11 101 101 | addip.as i     |                | A = M[P] = A + i                | x        |
-| 11 101 110 |                |                |                                 |          |
-| 11 101 111 | addip.aps i    |                | A = P = M[P] = A + i            | x        |
-| 11 110 000 | jop x          |                | Jump to P if A[0] = 1           | x        |
-| 11 110 001 | [see 10010xxx] |                |                                 |          |
-| 11 110 010 |                |                |                                 |          |
-| 11 110 011 |                |                |                                 |          |
-| 11 110 100 |                |                |                                 |          |
-| 11 110 101 |                |                |                                 |          |
-| 11 110 110 |                |                |                                 |          |
-| 11 110 111 | [see 10010xxx] |                |                                 |          |
-| 11 111 000 | jnop x         |                | Jump to P if A[0] = 0           | x        |
-| 11 111 001 | subip.s i      |                | M[P] = A - i                    | x        |
-| 11 111 010 |                |                |                                 |          |
-| 11 111 011 | subip.ps i     |                | P = M[P] = A - i                | x        |
-| 11 111 100 |                |                |                                 |          |
-| 11 111 101 | subip.as i     |                | A = M[P] = A - i                | x        |
-| 11 111 110 |                |                |                                 |          |
-| 11 111 111 | subip.aps i    |                | A = P = M[P] = A - i            | x        |
+| opcode     | mnemonic    | short mnemonic | instruction                     | sensible |
+|------------+-------------+----------------+---------------------------------+----------|
+| 000 000 00 | jmp a       | jmp a          | Jump to a                       | x        |
+| 000 000 01 | jp x        | jp             | Jump to P                       | x        |
+| 000 000 10 | jc a        | jc a           | Jump to a if carry set          | x        |
+| 000 000 11 | jcp x       |                | Jump to P if carry set          | x        |
+| 000 001 00 |             |                |                                 |          |
+| 000 001 01 |             |                |                                 |          |
+| 000 001 10 | jz a        | jz a           | Jump to a if A = 0              | x        |
+| 000 001 11 | jzp x       |                | Jump to P if A = 0              | x        |
+| 000 010 00 | jmp a       |                | Jump to a                       |          |
+| 000 010 01 | jp x        |                | Jump to P                       |          |
+| 000 010 10 | js a        | js a           | Jump to a if A[7] set           | x        |
+| 000 010 11 | jsp x       |                | Jump to P if A[7] = 1           | x        |
+| 000 011 00 |             |                |                                 |          |
+| 000 011 01 |             |                |                                 |          |
+| 000 011 10 | jod a       | jnev a         | Jump to a if A[0] = 1           | x        |
+| 000 011 11 | jop x       |                | Jump to P if A[0] = 1           | x        |
+| 000 100 00 |             |                |                                 |          |
+| 000 100 01 |             |                |                                 |          |
+| 000 100 10 | jnc a       |                | Jump to a if carry unset        | x        |
+| 000 100 11 | jncp x      |                | Jump to P if carry unset        | x        |
+| 000 101 00 |             |                |                                 |          |
+| 000 101 01 |             |                |                                 |          |
+| 000 101 10 | jnz a       | jnz a          | Jump to a if A != 0             | x        |
+| 000 101 11 | jnzp x      |                | Jump to P if A != 0             | x        |
+| 000 110 00 |             |                |                                 |          |
+| 000 110 01 |             |                |                                 |          |
+| 000 110 10 | jns a       | jns a          | Jump to a if A[7] not set       | x        |
+| 000 110 11 | jnsp x      |                | Jump to P if A[7] = 0           | x        |
+| 000 111 00 |             |                |                                 |          |
+| 000 111 01 |             |                |                                 |          |
+| 000 111 10 | jnod a      | jev a          | Jump to a if A[0] = 0           | x        |
+| 000 111 11 | jnop x      |                | Jump to P if A[0] = 0           | x        |
+|------------+-------------+----------------+---------------------------------+----------|
+| 001 000 00 | ld.a a      | la a           | A = M[a]                        | x        |
+| 001 000 01 | ldp.a x     | lap            | A = M[P]                        | x        |
+| 001 000 10 | i.a i       | lai i          | A = i                           | x        |
+| 001 000 11 |             |                |                                 |          |
+| 001 001 00 |             |                |                                 |          |
+| 001 001 01 |             |                |                                 |          |
+| 001 001 10 |             |                |                                 |          |
+| 001 001 11 |             |                |                                 |          |
+| 001 010 00 | a.a x       | nop            | A = A                           |          |
+| 001 010 01 | ap.a x      |                |                                 |          |
+| 001 010 10 |             |                |                                 |          |
+| 001 010 11 |             |                |                                 |          |
+| 001 011 00 |             |                |                                 |          |
+| 001 011 01 |             |                |                                 |          |
+| 001 011 10 |             |                |                                 |          |
+| 001 011 11 |             |                |                                 |          |
+| 001 100 00 | shr.a x     | shr            | A = A >> 1, operand ignored     | x        |
+| 001 100 01 |             |                |                                 |          |
+| 001 100 10 |             |                |                                 |          |
+| 001 100 11 |             |                |                                 |          |
+| 001 101 00 | add.a a     | add a          | A = A + M[a]                    | x        |
+| 001 101 01 | addp.a x    | addp           | A = A + M[P]                    | x        |
+| 001 101 10 | addi.a i    | addi i         | A = A + i                       | x        |
+| 001 101 11 |             |                |                                 |          |
+| 001 110 00 | nor.a a     | nor a          | A = A nor M[a]                  | x        |
+| 001 110 01 | norp.a x    | norp           | A = A nor M[P]                  | x        |
+| 001 110 10 | nori.a i    | nori i         | A = A nor i                     | x        |
+| 001 110 11 |             |                |                                 |          |
+| 001 111 00 | sub.a a     | sub a          | A = A - M[a]                    | x        |
+| 001 111 01 | subp.a x    | subp           | A = A - M[P]                    | x        |
+| 001 111 10 | subi.a i    | subi i         | A = A - i                       | x        |
+| 001 111 11 |             |                |                                 |          |
+|------------+-------------+----------------+---------------------------------+----------|
+| 010 000 00 | ld.p a      | lp a           | P = M[a]                        | x        |
+| 010 000 01 | ldp.p x     | lpp            | P = M[P]                        | x        |
+| 010 000 10 | i.p i       | lpi i          | P = i                           | x        |
+| 010 000 11 |             |                |                                 |          |
+| 010 001 00 |             |                |                                 |          |
+| 010 001 01 |             |                |                                 |          |
+| 010 001 10 |             |                |                                 |          |
+| 010 001 11 |             |                |                                 |          |
+| 010 010 00 | a.p x       | a2p            | P = A, operand igored           | x        |
+| 010 010 01 | ap.p x      |                |                                 |          |
+| 010 010 10 |             |                |                                 |          |
+| 010 010 11 |             |                |                                 |          |
+| 010 011 00 |             |                |                                 |          |
+| 010 011 01 |             |                |                                 |          |
+| 010 011 10 |             |                |                                 |          |
+| 010 011 11 |             |                |                                 |          |
+| 010 100 00 | shr.p x     |                | P = A >> 1, operand ignored     | x        |
+| 010 100 01 |             |                |                                 |          |
+| 010 100 10 |             |                |                                 |          |
+| 010 100 11 |             |                |                                 |          |
+| 010 101 00 | add.p a     |                | P = A + M[a]                    | x        |
+| 010 101 01 | addp.p x    |                | P = A + M[P]                    | x        |
+| 010 101 10 | addi.p i    |                | P = A + i                       | x        |
+| 010 101 11 |             |                |                                 |          |
+| 010 110 00 | nor.p a     |                | P = A nor M[a]                  | x        |
+| 010 110 01 | norp.p x    |                | P = A nor M[P]                  | x        |
+| 010 110 10 | nori.p i    |                | P = A nor i                     | x        |
+| 010 110 11 |             |                |                                 |          |
+| 010 111 00 | sub.p a     |                | P = A - M[a]                    | x        |
+| 010 111 01 | subp.p x    |                | P = A - M[P]                    | x        |
+| 010 111 10 | subi.p i    |                | P = A - i                       | x        |
+| 010 111 11 |             |                |                                 |          |
+|------------+-------------+----------------+---------------------------------+----------|
+| 011 000 00 | ld.ap a     |                | A = P = M[a]                    | x        |
+| 011 000 01 | ldp.ap x    |                | A = P = M[P]                    | x        |
+| 011 000 10 | i.ap i      | lapi i         | A = P = i                       | x        |
+| 011 000 11 |             |                |                                 |          |
+| 011 001 00 |             |                |                                 |          |
+| 011 001 01 |             |                |                                 |          |
+| 011 001 10 |             |                |                                 |          |
+| 011 001 11 |             |                |                                 |          |
+| 011 010 00 | a.ap x      |                |                                 |          |
+| 011 010 01 | ap.ap x     |                |                                 |          |
+| 011 010 10 |             |                |                                 |          |
+| 011 010 11 |             |                |                                 |          |
+| 011 011 00 |             |                |                                 |          |
+| 011 011 01 |             |                |                                 |          |
+| 011 011 10 |             |                |                                 |          |
+| 011 011 11 |             |                |                                 |          |
+| 011 100 00 | shr.ap x    |                | A = P = A >> 1, operand ignored | x        |
+| 011 100 01 |             |                |                                 |          |
+| 011 100 10 |             |                |                                 |          |
+| 011 100 11 |             |                |                                 |          |
+| 011 101 00 | add.ap a    |                | A = P = A + M[a]                | x        |
+| 011 101 01 | addp.ap x   |                | A = P = A + M[P]                | x        |
+| 011 101 10 | addi.ap i   |                | A = P = A + i                   | x        |
+| 011 101 11 |             |                |                                 |          |
+| 011 110 00 | nor.ap a    |                | A = P = A nor M[a]              | x        |
+| 011 110 01 | norp.ap x   |                | A = P = A nor M[P]              | x        |
+| 011 110 10 | nori.ap i   |                | A = P = A nor i                 | x        |
+| 011 110 11 |             |                |                                 |          |
+| 011 111 00 | sub.ap a    |                | A = P = A - M[a]                | x        |
+| 011 111 01 | subp.ap x   |                | A = P = A - M[P]                | x        |
+| 011 111 10 | subi.ap i   |                | A = P = A - i                   | x        |
+| 011 111 11 |             |                |                                 |          |
+|------------+-------------+----------------+---------------------------------+----------|
+| 100 000 00 | cl.s a      | clm a          | M[a] = 0                        | x        |
+| 100 000 01 | clp.s x     | clmp           | M[P] = 0                        | x        |
+| 100 000 10 | i.s i       |                | M[i] = i                        | ??       |
+| 100 000 11 | ip.s i      | stip i         | M[P] = i                        | x        |
+| 100 001 00 |             |                |                                 |          |
+| 100 001 01 |             |                |                                 |          |
+| 100 001 10 |             |                |                                 |          |
+| 100 001 11 |             |                |                                 |          |
+| 100 010 00 | a.s a       | sta a          | M[a] = A                        | x        |
+| 100 010 01 | ap.s x      | stap           | M[P] = A                        | x        |
+| 100 010 10 |             |                |                                 |          |
+| 100 010 11 |             |                |                                 |          |
+| 100 011 00 |             |                |                                 |          |
+| 100 011 01 |             |                |                                 |          |
+| 100 011 10 |             |                |                                 |          |
+| 100 011 11 |             |                |                                 |          |
+| 100 100 00 | shr.s a     | shrs a         | M[a] = A >> 1                   | x        |
+| 100 100 01 | shrp.s x    |                | M[P] = A >> 1                   | x        |
+| 100 100 10 |             |                |                                 |          |
+| 100 100 11 |             |                |                                 |          |
+| 100 101 00 | add0.s a    |                |                                 |          |
+| 100 101 01 | add0p.s x   |                |                                 |          |
+| 100 101 10 | addi.s i    |                | M[i] = A + i                    |          |
+| 100 101 11 | addip.s i   |                | M[P] = A + i                    | x        |
+| 100 110 00 | nor0.s a    |                |                                 |          |
+| 100 110 01 | nor0p.s     |                |                                 |          |
+| 100 110 10 | nori.s i    |                | M[i] = A nor i                  |          |
+| 100 110 11 | norip.s i   |                | M[P] = A nor i                  | x        |
+| 100 111 00 | sub0.s a    |                |                                 |          |
+| 100 111 01 | sub0p.s x   |                |                                 |          |
+| 100 111 10 | subi.s i    |                | M[i] = A - i                    |          |
+| 100 111 11 | subip.s i   |                | M[P] = A - i                    | x        |
+|------------+-------------+----------------+---------------------------------+----------|
+| 101 000 00 | cl.as a     |                | A = M[a] = 0                    | x        |
+| 101 000 01 | clp.as x    |                | A = M[P] = 0                    | x        |
+| 101 000 10 | i.as i      |                | A = M[i] = i                    |          |
+| 101 000 11 | ip.as i     |                | A = M[P] = i                    | x        |
+| 101 001 00 |             |                |                                 |          |
+| 101 001 01 |             |                |                                 |          |
+| 101 001 10 |             |                |                                 |          |
+| 101 001 11 |             |                |                                 |          |
+| 101 010 00 | a.as a      |                |                                 |          |
+| 101 010 01 | ap.as x     |                | A = M[P] = A                    | x        |
+| 101 010 10 |             |                |                                 |          |
+| 101 010 11 |             |                |                                 |          |
+| 101 011 00 |             |                |                                 |          |
+| 101 011 01 |             |                |                                 |          |
+| 101 011 10 |             |                |                                 |          |
+| 101 011 11 |             |                |                                 |          |
+| 101 100 00 | shr.as a    |                | A = M[a] = A >> 1               | x        |
+| 101 100 01 | shrp.as x   |                | A = M[P] = A >> 1               | x        |
+| 101 100 10 |             |                |                                 |          |
+| 101 100 11 |             |                |                                 |          |
+| 101 101 00 | add0.as a   |                |                                 |          |
+| 101 101 01 | add0p.as x  |                |                                 |          |
+| 101 101 10 | addi.as i   |                | A = M[i] = A + i                |          |
+| 101 101 11 | addip.as i  |                | A = M[P] = A + i                | x        |
+| 101 110 00 | nor0.as a   |                |                                 |          |
+| 101 110 01 | nor0.as x   |                |                                 |          |
+| 101 110 10 | nori.as i   |                | A = M[i] = A nor i              |          |
+| 101 110 11 | norip.as i  |                | A = M[P] = A nor i              | x        |
+| 101 111 00 | sub0.as a   |                |                                 |          |
+| 101 111 01 | sub0p.as x  |                |                                 |          |
+| 101 111 10 | subi.as i   |                | A = M[i] = A - i                |          |
+| 101 111 11 | subip.as i  |                | A = M[P] = A - i                | x        |
+|------------+-------------+----------------+---------------------------------+----------|
+| 110 000 00 | cl.ps a     |                | P = M[a] = 0                    | x        |
+| 110 000 01 | clp.ps x    |                | P = M[P] = 0                    | x        |
+| 110 000 10 | i.ps i      |                | P = M[i] = i                    |          |
+| 110 000 11 | ip.ps i     |                | P = M[P] = i                    | x        |
+| 110 001 00 |             |                |                                 |          |
+| 110 001 01 |             |                |                                 |          |
+| 110 001 10 |             |                |                                 |          |
+| 110 001 11 |             |                |                                 |          |
+| 110 010 00 | a.ps a      |                | P = M[a] = A                    | x        |
+| 110 010 01 | ap.ps x     |                | P = M[P] = A                    | x        |
+| 110 010 10 |             |                |                                 |          |
+| 110 010 11 |             |                |                                 |          |
+| 110 011 00 |             |                |                                 |          |
+| 110 011 01 |             |                |                                 |          |
+| 110 011 10 |             |                |                                 |          |
+| 110 011 11 |             |                |                                 |          |
+| 110 100 00 | shr.ps a    |                | P = M[a] = A >> 1               | x        |
+| 110 100 01 | shrp.ps x   |                | P = M[P] = A >> 1               | x        |
+| 110 100 10 |             |                |                                 |          |
+| 110 100 11 |             |                |                                 |          |
+| 110 101 00 | add0.ps a   |                |                                 |          |
+| 110 101 01 | add0p.ps x  |                |                                 |          |
+| 110 101 10 | addi.ps i   |                | P = M[i] = A + i                |          |
+| 110 101 11 | addip.ps i  |                | P = M[P] = A + i                | x        |
+| 110 110 00 | nor0.ps a   |                |                                 |          |
+| 110 110 01 | nor0p.ps x  |                |                                 |          |
+| 110 110 10 | nori.ps i   |                | P = M[i] = A nor i              |          |
+| 110 110 11 | norip.ps i  |                | P = M[P] = A nor i              | x        |
+| 110 111 00 | sub0.ps a   |                |                                 |          |
+| 110 111 01 | sub0p.ps x  |                |                                 |          |
+| 110 111 10 | subi.ps i   |                | P = M[i] = A - i                |          |
+| 110 111 11 | subip.ps i  |                | P = M[P] = A - i                | x        |
+|------------+-------------+----------------+---------------------------------+----------|
+| 111 000 00 | cl.aps a    |                | A = P = M[a] = 0                | x        |
+| 111 000 01 | clp.aps x   |                | A = P = M[P] = 0                | x        |
+| 111 000 10 | i.aps i     |                | A = P = M[i] = i                |          |
+| 111 000 11 | ip.aps i    |                | A = P = M[P] = i                | x        |
+| 111 001 00 |             |                |                                 |          |
+| 111 001 01 |             |                |                                 |          |
+| 111 001 10 |             |                |                                 |          |
+| 111 001 11 |             |                |                                 |          |
+| 111 010 00 | a.aps a     |                |                                 |          |
+| 111 010 01 | ap.aps x    |                | A = P = M[P] = A                | x        |
+| 111 010 10 |             |                |                                 |          |
+| 111 010 11 |             |                |                                 |          |
+| 111 011 00 |             |                |                                 |          |
+| 111 011 01 |             |                |                                 |          |
+| 111 011 10 |             |                |                                 |          |
+| 111 011 11 |             |                |                                 |          |
+| 111 100 00 | shr.aps a   |                | A = P = M[a] = A >> 1           | x        |
+| 111 100 01 | shrp.aps x  |                | A = P = M[P] = A >> 1           | x        |
+| 111 100 10 |             |                |                                 |          |
+| 111 100 11 |             |                |                                 |          |
+| 111 101 00 | add0.aps a  |                |                                 |          |
+| 111 101 01 | add0p.aps x |                |                                 |          |
+| 111 101 10 | addi.aps i  |                | A = P = M[i] = A + i            |          |
+| 111 101 11 | addip.aps i |                | A = P = M[P] = A + i            | x        |
+| 111 110 00 | nor0.aps a  |                |                                 |          |
+| 111 110 01 | nor0p.asp x |                |                                 |          |
+| 111 110 10 | nori.aps i  |                | A = P = M[i] = A nor i          |          |
+| 111 110 11 | norip.aps i |                | A = P = M[p] = A nor i          | x        |
+| 111 111 00 | sub0.aps a  |                |                                 |          |
+| 111 111 01 | sub0p.aps x |                |                                 |          |
+| 111 111 10 | subi.aps i  |                | A = P = M[i] = A - i            |          |
+| 111 111 11 | subip.aps i |                | A = P = M[P] = A - i            | x        |
