@@ -7,7 +7,7 @@
 
 const char *TAG = "GPIO_INTERFACE";
 
-static constexpr unsigned PIN_CHANGE_DELAY = 100 / portTICK_PERIOD_MS;
+static constexpr unsigned ADDRESS_CHANGE_DELAY = 200 / portTICK_PERIOD_MS;
 static constexpr unsigned WRITE_CYCLE_SAMPLE_TIME = 20 / portTICK_PERIOD_MS;
 
 static constexpr unsigned MIN_WRITE_SAMPLES = 5;
@@ -139,7 +139,7 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 {
 	ESP_ERROR_CHECK(gpio_install_isr_service(0));
 
-	address_change_timer = xTimerCreate("address change", PIN_CHANGE_DELAY, false, this, address_change_expired);
+	address_change_timer = xTimerCreate("address change", ADDRESS_CHANGE_DELAY, false, this, address_change_expired);
 	if (address_change_timer == NULL) {
 		ESP_LOGE(TAG, "Could not create address change timer");
 		abort();
