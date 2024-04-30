@@ -631,6 +631,187 @@
 				)
 			)
 		)
+		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "JP"
+				(at 0 2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SolderJumper_2_Open"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Solder Jumper, 2-pole, open"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "solder jumper SPST"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SolderJumper*Open*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SolderJumper_2_Open_0_1"
+				(arc
+					(start -0.254 1.016)
+					(mid -1.2656 0)
+					(end -0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -0.254 1.016)
+					(mid -1.2656 0)
+					(end -0.254 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.254 1.016) (xy -0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 1.016) (xy 0.254 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.254 -1.016)
+					(mid 1.2656 0)
+					(end 0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.254 -1.016)
+					(mid 1.2656 0)
+					(end 0.254 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "SolderJumper_2_Open_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Relay:Relay_DPDT"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1412,6 +1593,12 @@
 		(uuid "1d69dc50-3774-41a6-883a-40cdabb9e9df")
 	)
 	(junction
+		(at 388.62 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "375971d2-33bb-43d9-8976-8678c24f4dce")
+	)
+	(junction
 		(at 57.15 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1751,6 +1938,16 @@
 	)
 	(wire
 		(pts
+			(xy 383.54 80.01) (xy 383.54 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4872473d-172a-4515-bbd6-e26dd9a693b9")
+	)
+	(wire
+		(pts
 			(xy 210.82 146.05) (xy 313.69 146.05)
 		)
 		(stroke
@@ -1911,7 +2108,7 @@
 	)
 	(wire
 		(pts
-			(xy 388.62 80.01) (xy 388.62 104.14)
+			(xy 388.62 80.01) (xy 388.62 82.55)
 		)
 		(stroke
 			(width 0)
@@ -2038,6 +2235,16 @@
 			(type default)
 		)
 		(uuid "76bb2252-d47c-43e5-8279-eb98a7d3027e")
+	)
+	(wire
+		(pts
+			(xy 388.62 82.55) (xy 388.62 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d648f2b-c72f-4540-a845-540b6a4e749e")
 	)
 	(wire
 		(pts
@@ -2368,6 +2575,16 @@
 			(type default)
 		)
 		(uuid "bb84fbe9-4e69-4a31-be80-2a92c2320690")
+	)
+	(wire
+		(pts
+			(xy 383.54 82.55) (xy 388.62 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bbb35eb6-491c-41da-a02b-409aab1cae6a")
 	)
 	(wire
 		(pts
@@ -2888,6 +3105,76 @@
 			(project "inc"
 				(path "/8e7358e7-c3ef-4f3e-9154-e7eba01c544e"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 383.54 76.2 90)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "0d5bc1dd-49fb-47e0-9ed3-e8e9d108a4b9")
+		(property "Reference" "JP1"
+			(at 378.46 76.2 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "SolderJumper_2_Open"
+			(at 386.08 77.4699 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm"
+			(at 383.54 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 383.54 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 383.54 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "baa183af-dbdd-49e0-bf9d-a11839a7ca33")
+		)
+		(pin "2"
+			(uuid "2ea10ac6-82ad-4ebd-af97-b08fea84bdab")
+		)
+		(instances
+			(project "inc"
+				(path "/8e7358e7-c3ef-4f3e-9154-e7eba01c544e"
+					(reference "JP1")
 					(unit 1)
 				)
 			)
@@ -3781,6 +4068,72 @@
 			(project "inc"
 				(path "/8e7358e7-c3ef-4f3e-9154-e7eba01c544e"
 					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 383.54 72.39 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5fc673ab-f84d-4a6f-8ce4-390d1771ccb1")
+		(property "Reference" "#PWR027"
+			(at 383.54 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 383.54 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 383.54 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 383.54 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 383.54 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f4748b5e-35d3-4d5a-9c8b-dc8724ef6329")
+		)
+		(instances
+			(project "inc"
+				(path "/8e7358e7-c3ef-4f3e-9154-e7eba01c544e"
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
