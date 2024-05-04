@@ -7393,7 +7393,7 @@
 			(justify bottom mirror)
 		)
 	)
-	(gr_text "vis vitalis\nincrementer"
+	(gr_text "vis vitalis\nincrementer r2"
 		(at 172.466 147.32 270)
 		(layer "B.SilkS")
 		(uuid "0fcb3435-05f3-45b2-b548-997da3fd3ead")

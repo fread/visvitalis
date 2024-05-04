@@ -6115,6 +6115,19 @@
 		(layer "Edge.Cuts")
 		(uuid "cc7ff42c-7b41-4f09-aa29-d5eeef1735f9")
 	)
+	(gr_text "\nr2"
+		(at 156.845 104.14 0)
+		(layer "B.SilkS")
+		(uuid "37af9bfc-8714-4884-b766-4533e09a0edf")
+		(effects
+			(font
+				(size 3 3)
+				(thickness 0.6)
+				(bold yes)
+			)
+			(justify left mirror)
+		)
+	)
 	(gr_text "vis vitalis \nswitches"
 		(at 193.04 104.14 0)
 		(layer "B.SilkS")
