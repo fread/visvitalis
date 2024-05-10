@@ -13,5 +13,4 @@
 	nop
 	la 0x02
 
-	.l stop
-	jmp stop
+stop:	jmp stop

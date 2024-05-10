@@ -1,5 +1,4 @@
-.l start
-	lai 3
+start:	lai 3
 	nop
 	nop
 	addi 5

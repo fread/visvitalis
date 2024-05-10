@@ -36,7 +36,7 @@
 	addi 1
 	sta i
 
-	.l outer_loop
+outer_loop:
 	la i
 	sub list_end
 	jge stop
@@ -48,7 +48,7 @@
 	la i
 	sta j
 
-	.l inner_loop
+inner_loop:
 	la j
 	sub list_start
 	jz inner_end
@@ -72,7 +72,7 @@
 
 	jmp inner_loop
 
-	.l inner_end
+inner_end:
 
 	la x
 	lp j
@@ -84,5 +84,5 @@
 
 	jmp outer_loop
 
-	.l stop
+stop:
 	jmp stop

@@ -17,8 +17,7 @@
 	lai 0
 	sta max
 
-	.l loop
-	la cursor
+loop:	la cursor
 	sub list_end
 	jge end
 	lp cursor
@@ -27,20 +26,16 @@
 	jl newmax
 	jmp inc
 
-	.l newmax
-	lp cursor
+newmax:	lp cursor
 	lap
 	sta max
 
-	.l inc
-	la cursor
+inc:	la cursor
 	addi 1
 	sta cursor
 	jmp loop
 
-	.l end
-	la max
+end:	la max
 	sta result
 
-	.l stop
-	jmp stop
+stop:	jmp stop

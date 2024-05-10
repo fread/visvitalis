@@ -16,10 +16,8 @@
 	jnc add2
 	addi 1
 
-	.l add2
-	add highx
+add2:	add highx
 	add highy
 	sta highz
 
-	.l stop
-	jmp stop
+stop:	jmp stop

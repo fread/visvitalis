@@ -142,19 +142,19 @@ class Assembler:
                 return None
 
 
-    def parse_line(self, line: str) -> Statement | None:
+    def parse_line(self, line: str) -> list[Statement]:
         line = self.strip_comments(line)
         words = line.split()
 
         if len(words) == 0:
-            return None
+            return []
 
         opcode = words[0]
         match opcode:
             case ".equ":
                 if len(words) != 3:
                     self.emit_parser_error(f".equ directive expects 2 arguments, but {len(words) - 1} were given")
-                    return None
+                    return []
 
                 [_, label, value] = words
                 if not label.isidentifier():
@@ -162,32 +162,35 @@ class Assembler:
                     label = Assembler.ERROR_LABEL
 
                 operand = self.parse_operand(value)
-                return EquDirective(lineno = self.parser_line, name = label, value = operand)
-
-            case ".l":
-                if len(words) != 2:
-                    self.emit_parser_error(f".l directive expects 1 argument, but {len(words) - 1} were given")
-                    return None
-
-                [_, label] = words
-                if not label.isidentifier():
-                    self.emit_parser_error(f"\"{label}\" is not a valid label name")
-                    label = Assembler.ERROR_LABEL
-
-                return LabelDirective(lineno = self.parser_line, name = label)
+                return [EquDirective(lineno = self.parser_line, name = label, value = operand)]
 
             case ".pos":
                 if len(words) != 2:
                     self.emit_parser_error(f".pos directive expects 1 argument, but {len(words) - 1} were given")
-                    return None
+                    return []
 
                 [_, value] = words
                 try:
-                    return PositionDirective(lineno = self.parser_line, value = int(value, 0))
+                    return [PositionDirective(lineno = self.parser_line, value = int(value, 0))]
                 except ValueError:
                     self.emit_parser_error(f"\"{value}\" is not a valid numeral")
 
-        # Else assume a normal instruction
+        maybe_label = []
+
+        if opcode.endswith(":"):
+            label = opcode[:-1]
+
+            if not label.isidentifier():
+                self.emit_parser_error(f"\"{label}\" is not a valid label name")
+                label = Assembler.ERROR_LABEL
+
+            maybe_label.append(LabelDirective(lineno = self.parser_line, name = label))
+
+            words = words[1:]
+
+        if len(words) == 0:
+            return maybe_label
+
         if len(words) == 1:
             [opcode] = words
             operand = None
@@ -197,7 +200,7 @@ class Assembler:
         else:
             self.emit_parser_error(f"an instruction expects at most one argument, but {len(words) - 1} were given")
 
-        return Instruction(lineno = self.parser_line, opcode = opcode, operand = operand)
+        return maybe_label + [Instruction(lineno = self.parser_line, opcode = opcode, operand = operand)]
 
 
     def parse_file(self, f: TextIO) -> list[Statement]:
@@ -206,10 +209,7 @@ class Assembler:
         for (i, line) in enumerate(f):
             self.parser_line = i
 
-            parsed = self.parse_line(line)
-
-            if parsed is not None:
-                statements.append(parsed)
+            statements += self.parse_line(line)
 
         return statements
 

@@ -21,15 +21,13 @@
 	lai 0
 	sta acc
 
-	.l loop
-	la x
+loop:	la x
 	jz end
 	jev noadd
 	la y
 	add acc
 	sta acc
-	.l noadd
-	la x
+noadd:	la x
 	shr
 	sta x
 	la y
@@ -37,9 +35,7 @@
 	sta y
 	jmp loop
 
-	.l end
-	la acc
+end:	la acc
 	sta r_out
 
-	.l stop
-	jmp stop
+stop:	jmp stop
