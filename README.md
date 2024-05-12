@@ -175,6 +175,8 @@ If it is used for overriding a register, it needs switches with a stable center 
 
 ## The whole thing
 
+[See the module schematic.](./docs/schematic.svg)
+
 ## Errata
 
 - The LEDs specified on the *disp* and *switch* modules are way too bright in this configuration, even when increasing the series resistors to 2.2 kΩ.
