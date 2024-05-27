@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      showguides="true"
      inkscape:zoom="1"
-     inkscape:cx="656.5"
+     inkscape:cx="656"
      inkscape:cy="438"
      inkscape:window-width="2252"
      inkscape:window-height="1454"
@@ -307,13 +307,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#2d2d2d;fill-opacity:1;stroke-width:0.499999;stroke-linecap:round"
-       x="18.231052"
+       x="17.511719"
        y="66.316368"
        id="text2"><tspan
          sodipodi:role="line"
          id="tspan2"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#2d2d2d;stroke-width:0.5"
-         x="18.231052"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#2d2d2d;stroke-width:0.5"
+         x="17.511719"
          y="66.316368">andi ‹andi@entropia.de›</tspan></text>
   </g>
   <g
@@ -1254,12 +1254,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25.4px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.666665"
-       x="151.75885"
+       x="17.189257"
        y="37.391857"
        id="text1"><tspan
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25.4px;font-family:'Libertinus Sans';-inkscape-font-specification:'Libertinus Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.666667"
-         x="151.75885"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25.4px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:0.666667"
+         x="17.189257"
          y="37.391857"
          id="tspan1">Computer selbst bauen</tspan></text>
   </g>
