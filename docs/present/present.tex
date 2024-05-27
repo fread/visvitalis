@@ -1,4 +1,4 @@
-\documentclass[t,aspectratio=169]{beamer}
+\documentclass[t,aspectratio=169,usenames,dvipsnames]{beamer}
 
 \graphicspath{{img/}}
 
@@ -34,16 +34,11 @@
 \setmathfont[Digits]{Liberation Sans}
 
 \usetheme{Madrid}
-\usecolortheme{spruce}
+\usecolortheme{dove}
 \setbeamercovered{invisible}
 \setbeamercolor{alerted text}{fg=blue}
 
 \setbeamertemplate{navigation symbols}{}
-
-\usebeamercolor[bg]{palette primary}
-\usebeamercolor[bg]{palette secondary}
-\usebeamercolor[bg]{palette tertiary}
-
 
 \newenvironment{itemblock}[1]{\begin{block}{#1}\begin{itemize}}{\end{itemize}\end{block}}
 \newenvironment{withtitle}[1]{\begin{description}\item[#1]~\\}{\end{description}}
@@ -220,7 +215,7 @@
         0 + 1 + 0 = 01 \\
         1 + 0 + 0 = 01 \\
         1 + 1 + 0 = 10 \\
-        \textcolor<2->{palette tertiary.bg}{1 + 0 + 1 = 10} \\
+        \textcolor<2->{RoyalBlue}{1 + 0 + 1 = 10} \\
         0 + 1 + 1 = 10 \\
         1 + 1 + 1 = 11
       \end{align*}
@@ -231,11 +226,11 @@
       \begin{center}
         \alt<2->{
           \begin{tabular}{ccccccccc}
-            & 0 & 0 & 1 & 1 & \cellcolor{palette primary.bg}1 & 1 & 1 & 0 \\
-            + & 0 & 0 & 0 & 1 & \cellcolor{palette primary.bg}0 & 1 & 0 & 1 \\
-            &   &   & \scriptsize{1}  & \cellcolor{palette secondary.bg}\scriptsize{1}  & \cellcolor{palette primary.bg}\scriptsize{1}  &   &   &   \\
+            & 0 & 0 & 1 & 1 & \cellcolor{SkyBlue}1 & 1 & 1 & 0 \\
+            + & 0 & 0 & 0 & 1 & \cellcolor{SkyBlue}0 & 1 & 0 & 1 \\
+            &   &   & \scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  &   &   &   \\
             \hline
-            & 0 & 1 & 0 & 1 & \cellcolor{palette secondary.bg}0 & 0 & 1 & 1
+            & 0 & 1 & 0 & 1 & \cellcolor{SkyBlue}0 & 0 & 1 & 1
           \end{tabular}
         }{
           \begin{tabular}{ccccccccc}
