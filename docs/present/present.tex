@@ -139,130 +139,163 @@
       \item \qty{120} Relais
       \item Takt: $\approx$ \qty{1}{\second}
       \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
 
-\begin{frame}
-  \frametitle{0, 1, Logik}
+      \bigskip\pause
 
-  \begin{center}
-    MOSFET, BJT, Röhren, Ringkerne, Opamps, Relais, Hydraulik, Lochbleche, \ldots
-
-    \textit{Alles das Gleiche und sowieso nur Gefrickel!}
-  \end{center}
-
-  \begin{columns}[t]
-    \begin{column}{.45\textwidth}
-      \begin{block}{Signale}
-        \begin{itemize}
-        \item binärer Rechner $\Rightarrow$ 0 und 1\\
-          \uncover<2->{\ldots{} und Z} \uncover<3->{\ldots{} und L und H \ldots}
-        \item Signalübertragung (also Kabel \ldots)
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{.45\textwidth}
-      \begin{block}{Gates}
-        Beliebige Gates sind erlaubt, spezifiziert durch \enquote{kleine} I/O-Tabelle
-
-        \begin{center}
-          \begin{tabular}{ccc}
-            X & Y & out \\
-            \midrule
-            0 & 0 & 1 \\
-            0 & 1 & 0 \\
-            1 & 0 & 0 \\
-            1 & 1 & 0 \\
-          \end{tabular}
-        \end{center}
-      \end{block}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Busse}
-
-  \begin{columns}[T]
-    \begin{column}{.45\textwidth}
       \begin{itemize}
-      \item Signale gehören zusammen und tun \enquote{das Gleiche}
-      \item übersichtlicher mit einer Linie\\
-        (1 fette Linie $\hat=$ 8 dünne)\\
-        und einem Gate
-      \item nur (!) in unserem Kopf:\\
-        Zahl, Adresse, Instruktion \ldots
+      \item auch binäre Schaltung (sort of)
+      \item Kann auch Logik-Gates implementieren
+      \item Details: ignorieren wir
       \end{itemize}
     \end{column}
-
-    \begin{column}{.45\textwidth}
-      \centering\includegraphics[height=.75\textheight]{nor-bus.pdf}
-    \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Rechnen ist nicht schwer}
+  \frametitle{Thinking with Modules}
 
-  \ldots zumindest Addieren:
+  \strut{}\alt<2>{So sehen wir es:}{So sieht es eigentlich aus:}
 
-  \begin{columns}
-    \begin{column}{.45\textwidth}
-      \begin{align*}
-        0 + 0 + 0 = 00 \\
-        0 + 0 + 1 = 01 \\
-        0 + 1 + 0 = 01 \\
-        1 + 0 + 0 = 01 \\
-        1 + 1 + 0 = 10 \\
-        \textcolor<2->{RoyalBlue}{1 + 0 + 1 = 10} \\
-        0 + 1 + 1 = 10 \\
-        1 + 1 + 1 = 11
-      \end{align*}
+  \bigskip
 
-      Auch nur ein Gate!
-    \end{column}
-    \begin{column}{.45\textwidth}
-      \begin{center}
-        \alt<2->{
-          \begin{tabular}{ccccccccc}
-            & 0 & 0 & 1 & 1 & \cellcolor{SkyBlue}1 & 1 & 1 & 0 \\
-            + & 0 & 0 & 0 & 1 & \cellcolor{SkyBlue}0 & 1 & 0 & 1 \\
-            &   &   & \scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  &   &   &   \\
-            \hline
-            & 0 & 1 & 0 & 1 & \cellcolor{SkyBlue}0 & 0 & 1 & 1
-          \end{tabular}
-        }{
-          \begin{tabular}{ccccccccc}
-            & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
-            + & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
-            &   &   & \scriptsize{1}  & \scriptsize{1}  & \scriptsize{1}  &   &   &   \\
-            \hline
-            & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1
-          \end{tabular}
-        }
+  \alt<2>{
+    \centering\includegraphics[width=.8\textwidth]{inc.pdf}
 
-        \bigskip
+    \bigskip
 
-        \uncover<3>{
-          \includegraphics[width=.66\linewidth]{ripple-carry.pdf}
-        }
-      \end{center}
-    \end{column}
-  \end{columns}
+    \begin{itemize}
+    \item 8 Signale auf einmal\\
+      \emph{nur} in unserem Kopf eine Zahl, Adresse, \ldots
+    \item Funktionalität in Module zusammengefasst\\
+      Bits rein, Bits raus, dazwischen Magie
+    \end{itemize}
+  }{
+    \centering\includegraphics[width=\textwidth]{inc-kicad.pdf}
+  }
 
 \end{frame}
 
-\begin{frame}
+% \begin{frame}
+%   \frametitle{0, 1, Logik}
+
+%   \begin{center}
+%     MOSFET, BJT, Röhren, Ringkerne, Opamps, Relais, Hydraulik, Lochbleche, \ldots
+
+%     \textit{Alles das Gleiche und sowieso nur Gefrickel!}
+%   \end{center}
+
+%   \begin{columns}[t]
+%     \begin{column}{.45\textwidth}
+%       \begin{block}{Signale}
+%         \begin{itemize}
+%         \item binärer Rechner $\Rightarrow$ 0 und 1
+%         \item Signalübertragung (also Kabel \ldots)
+%         \end{itemize}
+%       \end{block}
+%     \end{column}
+%     \begin{column}{.45\textwidth}
+%       \begin{block}{Gates}
+%         Beliebige Gates sind erlaubt, spezifiziert durch \enquote{kleine} I/O-Tabelle
+
+%         \begin{center}
+%           \begin{tabular}{ccc}
+%             X & Y & out \\
+%             \midrule
+%             0 & 0 & 1 \\
+%             0 & 1 & 0 \\
+%             1 & 0 & 0 \\
+%             1 & 1 & 0 \\
+%           \end{tabular}
+%         \end{center}
+%       \end{block}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
+
+% \begin{frame}
+%   \frametitle{Busse}
+
+%   \begin{columns}[T]
+%     \begin{column}{.45\textwidth}
+%       \begin{itemize}
+%       \item Signale gehören zusammen und tun \enquote{das Gleiche}
+%       \item übersichtlicher mit einer Linie\\
+%         (1 fette Linie $\hat=$ 8 dünne)\\
+%         und einem Gate
+%       \item nur (!) in unserem Kopf:\\
+%         Zahl, Adresse, Instruktion \ldots
+%       \end{itemize}
+%     \end{column}
+
+%     \begin{column}{.45\textwidth}
+%       \centering\includegraphics[height=.75\textheight]{nor-bus.pdf}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
+
+% \begin{frame}
+%   \frametitle{Rechnen ist nicht schwer}
+
+%   \ldots zumindest Addieren:
+
+%   \begin{columns}
+%     \begin{column}{.45\textwidth}
+%       \begin{align*}
+%         0 + 0 + 0 = 00 \\
+%         0 + 0 + 1 = 01 \\
+%         0 + 1 + 0 = 01 \\
+%         1 + 0 + 0 = 01 \\
+%         1 + 1 + 0 = 10 \\
+%         \textcolor<2->{RoyalBlue}{1 + 0 + 1 = 10} \\
+%         0 + 1 + 1 = 10 \\
+%         1 + 1 + 1 = 11
+%       \end{align*}
+
+%       Auch nur ein Gate!
+%     \end{column}
+%     \begin{column}{.45\textwidth}
+%       \begin{center}
+%         \alt<2->{
+%           \begin{tabular}{ccccccccc}
+%             & 0 & 0 & 1 & 1 & \cellcolor{SkyBlue}1 & 1 & 1 & 0 \\
+%             + & 0 & 0 & 0 & 1 & \cellcolor{SkyBlue}0 & 1 & 0 & 1 \\
+%             &   &   & \scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  &   &   &   \\
+%             \hline
+%             & 0 & 1 & 0 & 1 & \cellcolor{SkyBlue}0 & 0 & 1 & 1
+%           \end{tabular}
+%         }{
+%           \begin{tabular}{ccccccccc}
+%             & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+%             + & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+%             &   &   & \scriptsize{1}  & \scriptsize{1}  & \scriptsize{1}  &   &   &   \\
+%             \hline
+%             & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1
+%           \end{tabular}
+%         }
+
+%         \bigskip
+
+%         \uncover<3>{
+%           \includegraphics[width=.66\linewidth]{ripple-carry.pdf}
+%         }
+%       \end{center}
+%     \end{column}
+%   \end{columns}
+
+% \end{frame}
+
+\begin{frame}[c]
   \frametitle{Rechnen ist nicht schwer}
 
-  \begin{center}
-    \includegraphics[height=.7\textheight]{adder.pdf}
-  \end{center}
+  \strut{}Zwei Eingänge für zwei Operanden, im Prinzip nicht schwieriger, nur mehr Hardware
+
+  \bigskip
+
+  \centering\includegraphics[width=.9\textwidth]{adder.pdf}
 \end{frame}
 
 \begin{frame}
-  \frametitle{\ldots und fertig ist der \enquote{ASIC}}
+  \frametitle{Ist das nicht schon alles?}
 
   \begin{columns}
     \begin{column}{.45\textwidth}
@@ -273,15 +306,17 @@
       \end{center}
     \end{column}
     \begin{column}{.45\textwidth}
-      Was fehlt?
-      \begin{itemize}
-      \item \textbf{Auswahl}\\
-        $x_2$ ohne Neuverkabeln
-      \item \textbf{Speicher}\\
-        $a$, $b$, $c$ weg $\Rightarrow$ $x$ weg\quad :(
-      \item \textbf{Programm}\\
-        \texttt{goto}, \texttt{if}, \texttt{while}, \texttt{for}, \texttt{func}, \ldots
-      \end{itemize}
+      \uncover<2->{
+        Nein, es fehlt \ldots
+        \begin{itemize}
+        \item \textbf{Auswahl}\\
+          $x_2$ ohne Neuverkabeln
+        \item \textbf{Speicher}\\
+          $a$, $b$, $c$ weg $\Rightarrow$ $x$ weg\quad :(
+        \item \textbf{Programm}\\
+          \texttt{goto}, \texttt{if}, \texttt{while}, \texttt{for}, \texttt{func}, \ldots
+        \end{itemize}
+      }
     \end{column}
   \end{columns}
 \end{frame}
@@ -294,26 +329,23 @@
   \begin{columns}
     \begin{column}{.45\textwidth}
       \begin{center}
-        \begin{tabular}{cccc}
-          \toprule
-          select & in 0 & in 1 & out \\
-          \midrule
-          0 & 0 & 0 & 0 \\
-          0 & 0 & 1 & 0 \\
-          0 & 1 & 0 & 1 \\
-          0 & 1 & 1 & 1 \\
-          1 & 0 & 0 & 0 \\
-          1 & 0 & 1 & 1 \\
-          1 & 1 & 0 & 0 \\
-          1 & 1 & 1 & 1 \\
-          \bottomrule
-        \end{tabular}
+        \includegraphics[width=.8\textwidth]{multiplexer.pdf}
       \end{center}
     \end{column}
     \begin{column}{.45\textwidth}
-      \begin{center}
-        \includegraphics[width=.66\textwidth]{multiplexer.pdf}
-      \end{center}
+
+      \textbf{s} ist nur ein Bit
+      \begin{itemize}
+      \item $\mathbf{s} = 0$:\\
+        Eingang 0 mit Ausgang verbunden
+      \item $\mathbf{s} = 1$:\\
+        Eingang 1 mit Ausgang verbunden
+      \end{itemize}
+
+      \bigskip
+
+      Von zwei Bytes eins auswählen
+
     \end{column}
   \end{columns}
 \end{frame}
@@ -354,15 +386,15 @@
 \begin{frame}
   \frametitle{2/3: Speicher}
 
-  \begin{center}
-    Flip-Flop, Inverter-Ring, bistabile Relais, Kondensatoren, Ringkerne, Flipdots \ldots
-
-    \textit{Alles das Gleiche und sowieso nur Gefrickel!}
-  \end{center}
+  Details ignorieren wir wieder (irgendwas mit Kondensatoren und Hysterese)
 
   \bigskip
 
   \includegraphics[width=\linewidth]{reg-waveform.pdf}
+
+  \bigskip
+
+  \enquote{write}-Signal wird Systemtakt/-clock sein
 \end{frame}
 
 \begin{frame}
@@ -375,8 +407,8 @@
     \begin{column}{.45\textwidth}
       \begin{itemize}
       \item erstes Modul mit Takt\\
-        Anschluss mit {\Large$\triangleright$}
-      \item nicht immer jedes Register beschreiben\\
+        (Kennzeichnung mit {\Large$\triangleright$})
+      \item nicht immer jedes Register überschreiben\\
         $\Rightarrow$ \emph{Clock-Gate}
       \item Kontrollsignal \enquote{A enable}
       \end{itemize}
@@ -404,13 +436,13 @@
 
   \begin{itemize}
   \item 1 Register ${} \mathrel{\hat=} \qty{5}{\centi\metre} \times \qty{10}{\centi\metre}$
-  \item 256 Register ($16 \times 16$) ${} \mathrel{\hat=} \qty{80}{\centi\metre} \times \qty{16}{\centi\metre}$
+  \item 256 Register ($16 \times 16$) ${} \mathrel{\hat=} \qty{80}{\centi\metre} \times \qty{160}{\centi\metre}$
   \item \ldots von den Muxen ganz zu schweigen
   \end{itemize}
 
   \bigskip
 
-  $\Rightarrow$ Geht nur mit Mikrochips
+  $\Rightarrow$ Geht nur mit ICs
 
 \end{frame}
 
@@ -462,38 +494,39 @@
   \end{tabular}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Assembler}
+% \begin{frame}
+%   \frametitle{Assembler}
 
-  Wie sollen Instruktionen aussehen?
-  \begin{itemize}
-  \item Wie RISC (ARM, RISC-V, MIPS, SPARC, \ldots): \texttt{add r3, r2, r1}\\
-    16/32 Register, 3 Register in jeder Instruktion, Laden/Speichern anderes Format
-  \item Wie x86: \texttt{addq \%rsi, 42(\%rbx, \%rcx, 4)}\\
-    Nein
-  \item Wie 6502: \texttt{lda \$23; adc \$42}\\
-    4(?) Register, 1 Operand, (fast) immer genau ein Speicherzugriff\\
-    \pause
-    \textbf{Das klingt gut!}
-  \end{itemize}
+%   Wie sollen Instruktionen aussehen?
+%   \begin{itemize}
+%   \item Wie RISC (ARM, RISC-V, MIPS, SPARC, \ldots): \texttt{add r3, r2, r1}\\
+%     16/32 Register, 3 Register in jeder Instruktion, Laden/Speichern anderes Format
+%   \item Wie x86: \texttt{addq \%rsi, 42(\%rbx, \%rcx, 4)}\\
+%     Nein
+%   \item Wie 6502: \texttt{lda \$23; adc \$42}\\
+%     4(?) Register, 1 Operand, (fast) immer genau ein Speicherzugriff\\
+%     \pause
+%     \textbf{Das klingt gut!}
+%   \end{itemize}
 
-  \bigskip
+%   \bigskip
 
-  Unser Plan:
-  \begin{itemize}
-  \item Opcode + 1 Operand
-  \item wenige Register
-  \item einmal Laden/Speichern pro Instruktion
-  \end{itemize}
+%   Unser Plan:
+%   \begin{itemize}
+%   \item Opcode + 1 Operand
+%   \item wenige Register
+%   \item einmal Laden/Speichern pro Instruktion
+%   \end{itemize}
 
-\end{frame}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Akkumulator-Architektur}
 
   \begin{itemize}
+  \item Instruktion = Opcode + 1 Operand
   \item \emph{ein einziges} Register (\texttt{A})
-  \item alle Berechnungen \enquote{\texttt{A} $\circledast$ Speicher}
+  \item alle Berechnungen \enquote{\texttt{A} = \texttt{A} $\circledast$ Speicher}
   \item ein Speicherzugriff pro Instruktion $\checkmark$
   \end{itemize}
 
@@ -533,7 +566,7 @@
 \begin{frame}
   \frametitle{ALU-Aufbau: \texttt{store}}
 
-  \strut{}Ergebnisse müssen in den Speicher zurück
+  \strut{}Operanden kommen aus dem Speicher, Ergebnisse müssen dahin zurück
 
   \begin{center}
     \includegraphics[width=.85\textwidth]{sch-loadstore.pdf}
@@ -582,7 +615,7 @@
 \begin{frame}
   \frametitle{Pointer}
 
-  Manchmal sind Adressen nicht fest:
+  Manchmal sind Adressen nicht konstant:
   \begin{itemize}
   \item \texttt{int *p = lol(); int x = *p;}
   \item \texttt{cpu->bits = 8;}
@@ -592,7 +625,7 @@
   \bigskip
 
   Adresse in A berechnen und dann Laden/Speichern?\\
-  Nope: \texttt{*p = x;} braucht \texttt{p} und \texttt{x} gleichzeitig
+  Leider nein: \texttt{*p = x;} braucht \texttt{p} und \texttt{x} gleichzeitig
 
   \bigskip
   \pause
@@ -712,7 +745,15 @@
 
   und zwar einfacher und besser
   \begin{itemize}
-  \item Simulationen/Spiele
+  \item Simulationen
+    \begin{itemize}
+    \item Paul Falstads Circuit Simulator
+    \item Logisim(-Evolution)
+    \end{itemize}
+  \item FPGAs (jetzt auch in günstig und Open Source)
+    \begin{itemize}
+    \item Yosys OSS CAD Suite
+    \end{itemize}
   \item Chips statt Relais
   \end{itemize}
 \end{frame}
