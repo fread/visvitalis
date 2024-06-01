@@ -1,4 +1,5 @@
 #include "drv8908.hpp"
+#include "gpio_interface.hpp"
 
 #include <esp_log.h>
 
@@ -14,6 +15,10 @@ static const uint8_t DAISY_CHAIN_NO_FAULT_CLEAR = 0b10000000;
 static const uint8_t DAISY_CHAIN_FAULT_CLEAR = 0b10100000;
 
 static const uint8_t DRV8908_CHIP_ID = 0b010;
+static const uint8_t REG_IC_STAT = 0x00;
+static const uint8_t REG_OCP_STAT_1 = 0x01;
+static const uint8_t REG_OCP_STAT_2 = 0x02;
+static const uint8_t REG_CONFIG_CTRL = 0x07;
 static const uint8_t REG_OP_CTRL_1 = 0x08;
 static const uint8_t REG_OP_CTRL_2 = 0x09;
 static const uint8_t REG_OLD_CTRL_1 = 0x1f;
@@ -56,6 +61,21 @@ Drv8908::Drv8908(spi_host_device_t spi_host,
 	};
 
 	ESP_ERROR_CHECK(spi_bus_add_device(spi_host, &device_config, &spi_device));
+
+	ensure_gpio_isr_service_installed();
+	ESP_ERROR_CHECK(gpio_isr_handler_add(fault_pin, fault_pin_change_isr, this));
+	{
+		uint64_t gpio_mask = 1ull << fault_pin;
+
+		gpio_config_t config {
+			.pin_bit_mask = gpio_mask,
+			.mode = GPIO_MODE_INPUT,
+			.pull_up_en = GPIO_PULLUP_DISABLE,
+			.pull_down_en = GPIO_PULLDOWN_DISABLE,
+			.intr_type = GPIO_INTR_ANYEDGE,
+		};
+		ESP_ERROR_CHECK(gpio_config(&config));
+	}
 
 	bus_mode = probe_bus_for_chip_count();
 
@@ -138,6 +158,80 @@ void Drv8908::disable_open_load_detection()
 
 	case BusMode::TWO_CHIPS:
 		transmit_two_chips(address, data);
+		break;
+	}
+}
+
+void Drv8908::fault_pin_change_isr(void *arg)
+{
+	Drv8908 *_this = (Drv8908*) arg;
+
+	int task_should_yield = false;
+	int level = gpio_get_level(_this->fault_pin);
+
+	if (xTimerPendFunctionCallFromISR(
+		    on_fault_pin_change, _this, level, &task_should_yield) != pdPASS) {
+		// TODO emergency stop
+		abort();
+	}
+
+	if (task_should_yield == pdTRUE) {
+		portYIELD_FROM_ISR();
+	}
+}
+
+void Drv8908::on_fault_pin_change(void *arg1, uint32_t level)
+{
+	Drv8908 *_this = (Drv8908*) arg1;
+	if (level == 0) {
+		_this->handle_fault();
+	}
+}
+
+void Drv8908::handle_fault()
+{
+	ESP_LOGE(TAG, "Driver fault");
+
+	uint8_t reg_ic_stat = make_register_read(REG_IC_STAT);
+	uint8_t reg_ocp_stat_1 = make_register_read(REG_OCP_STAT_1);
+	uint8_t reg_ocp_stat_2 = make_register_read(REG_OCP_STAT_2);
+
+	switch (bus_mode) {
+	case BusMode::ONE_CHIP: {
+		uint8_t ic_stat = transmit_one_chip(reg_ic_stat, 0x00);
+		uint8_t ocp_stat_1 = transmit_one_chip(reg_ocp_stat_1, 0x00);
+		uint8_t ocp_stat_2 = transmit_one_chip(reg_ocp_stat_2, 0x00);
+
+		ESP_LOGE(TAG, "IC status 0x%02x, OCP 1 0x%02x, OCP 2 0x%02x\n",
+		         ic_stat, ocp_stat_1, ocp_stat_2);
+
+		break;
+	}
+	case BusMode::TWO_CHIPS: {
+		std::array<uint8_t, 2> ic_stat = transmit_two_chips(reg_ic_stat, 0x00);
+		std::array<uint8_t, 2> ocp_stat_1 = transmit_two_chips(reg_ocp_stat_1, 0x00);
+		std::array<uint8_t, 2> ocp_stat_2 = transmit_two_chips(reg_ocp_stat_2, 0x00);
+
+		ESP_LOGE(TAG, "Chip 1: IC status 0x%02x, OCP 1 0x%02x, OCP 2 0x%02x\n",
+		         ic_stat[0], ocp_stat_1[0], ocp_stat_2[0]);
+		ESP_LOGE(TAG, "Chip 2: IC status 0x%02x, OCP 1 0x%02x, OCP 2 0x%02x\n",
+		         ic_stat[1], ocp_stat_1[1], ocp_stat_2[1]);
+
+		break;
+	}
+	}
+}
+
+void Drv8908::reset_fault()
+{
+	uint8_t reg_config_ctrl = make_register_write(REG_CONFIG_CTRL);
+
+	switch (bus_mode) {
+	case BusMode::ONE_CHIP:
+		transmit_one_chip(reg_config_ctrl, 0x01);
+		break;
+	case BusMode::TWO_CHIPS:
+		transmit_two_chips(reg_config_ctrl, 0x01);
 		break;
 	}
 }

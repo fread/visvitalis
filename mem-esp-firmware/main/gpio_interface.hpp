@@ -56,3 +56,5 @@ public:
 	              gpio_num_t write_pin,
 	              GpioListener *listener);
 };
+
+void ensure_gpio_isr_service_installed();

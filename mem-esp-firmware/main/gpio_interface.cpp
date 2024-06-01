@@ -137,7 +137,7 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 	  write_samples(),
 	  n_write_samples(0)
 {
-	ESP_ERROR_CHECK(gpio_install_isr_service(0));
+	ensure_gpio_isr_service_installed();
 
 	address_change_timer = xTimerCreate("address change", ADDRESS_CHANGE_DELAY, false, this, address_change_expired);
 	if (address_change_timer == NULL) {
@@ -217,4 +217,14 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 
 	int level = gpio_get_level(write_pin);
 	on_write_pin_change(this, level);
+}
+
+void ensure_gpio_isr_service_installed()
+{
+	esp_err_t err = gpio_install_isr_service(0);
+	if (err == ESP_ERR_INVALID_STATE) {
+		// Service is already installed, we can ignore this error.
+	} else {
+		ESP_ERROR_CHECK(err);
+	}
 }

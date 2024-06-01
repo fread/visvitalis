@@ -38,6 +38,7 @@ class GpioDebug
 
 static Memory mem;
 static MemoryController *controller;
+static Drv8908 *driver;
 
 static int handle_clear_cmd(int argc, char **argv)
 {
@@ -131,6 +132,12 @@ static int handle_dump_cmd(int argc, char **argv)
 	return 0;
 }
 
+static int handle_reset_fault_cmd(int argc, char **argv)
+{
+	driver->reset_fault();
+	return 0;
+}
+
 extern "C" void app_main(void)
 {
 	printf("hello world\n");
@@ -153,6 +160,7 @@ extern "C" void app_main(void)
 	Drv8908 output_driver(SPI2_HOST,
 	                      GpioAssignment::driver_chip_select,
 	                      GpioAssignment::driver_fault_in);
+	driver = &output_driver;
 
 	MemoryController mc(mem, output_driver);
 	controller = &mc;
@@ -218,6 +226,15 @@ extern "C" void app_main(void)
 		.argtable = NULL,
 	};
 	esp_console_cmd_register(&dump_cmd);
+
+	esp_console_cmd_t reset_fault_cmd {
+		.command = "reset_fault",
+		.help = "reset driver fault flag",
+		.hint = "",
+		.func = handle_reset_fault_cmd,
+		.argtable = NULL,
+	};
+	esp_console_cmd_register(&reset_fault_cmd);
 
 	printf("Setup complete\n");
 

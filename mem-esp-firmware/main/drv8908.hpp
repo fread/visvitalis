@@ -20,6 +20,10 @@ private:
 
 	void disable_open_load_detection();
 
+	static void fault_pin_change_isr(void *arg);
+	static void on_fault_pin_change(void *arg1, uint32_t level);
+	void handle_fault();
+
 	uint8_t transmit_one_chip(uint8_t address, uint8_t data);
 	std::array<uint8_t, 2> transmit_two_chips(uint8_t address, uint8_t data);
 	std::array<uint8_t, 2> transmit_two_chips(uint8_t address1, uint8_t data1, uint8_t address2, uint8_t data2);
@@ -34,4 +38,6 @@ public:
 	void set_output(uint16_t value);
 
 	void set_high_z();
+
+	void reset_fault();
 };
