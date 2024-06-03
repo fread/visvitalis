@@ -188,6 +188,7 @@ class Machine:
 
 class Shell(Cmd):
     intro = "This is the vis vitalis emulator. Type help or ? to list the commands.\n" \
+        "To step the machine, you may also simply press enter on an empty prompt\n" \
         "Note: All numbers are hexadecimal by default. Prefix decimal numbers with \"0d\"\n"
     prompt = "> "
 
@@ -347,13 +348,25 @@ class Shell(Cmd):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("program_image", nargs="?", default=None)
+    parser.add_argument("images", nargs="*", default=None)
     args = parser.parse_args()
 
     shell = Shell()
     shell.initialize()
 
-    if args.program_image is not None:
-        shell.cmdqueue.append(f"pload {args.program_image}")
+    if len(args.images) > 2:
+        print("Too many image files were given. Expecting either:")
+        print("  - Just a program image")
+        print("  - First a program image, then a data image")
+        sys.exit(1)
+
+    elif len(args.images) == 2:
+        [program_image, data_image] = args.images
+        shell.cmdqueue.append(f"pload {program_image}")
+        shell.cmdqueue.append(f"dload {data_image}")
+
+    elif len(args.images) == 1:
+        [program_image] = args.images
+        shell.cmdqueue.append(f"pload {program_image}")
 
     shell.cmdloop()
