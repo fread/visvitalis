@@ -7,7 +7,7 @@ import sys
 # Bit widths of our memories
 PROGRAM_SIZE = 1 << 8
 PROGRAM_MAX = 1 << 16
-DATA_SIZE = 256
+DATA_SIZE = 1 << 8
 DATA_MAX = 1 << 8
 
 # Control bits for computational instructions
@@ -75,7 +75,7 @@ class Machine:
 
 
     def write_data(self, start: int, words: list[int]) -> None:
-        # We range check the whole program beforehand so we don't end
+        # We range check the whole data beforehand so we don't end
         # up with half of it written to memory.
         self.range_check("data start", start, DATA_SIZE)
         self.range_check("data end", start + len(words) - 1, DATA_SIZE)
@@ -99,6 +99,10 @@ class Machine:
         return ~x & 0xff
 
 
+    def is_bit_set(self, value, bit_index) -> bool:
+        return value & (1 << bit_index) != 0
+
+
     def step(self) -> None:
         instruction = self.program_memory[self.program_counter]
         if instruction & ((1 << WRITE_A_BIT) | (1 << WRITE_P_BIT) | (1 << WRITE_MEMORY_BIT)) == 0:
@@ -110,15 +114,15 @@ class Machine:
 
 
     def step_compute(self, instruction) -> None:
-        insn_address_source = instruction & (1 << ADDRESS_SOURCE_BIT) != 0
-        insn_operand_source = instruction & (1 << OPERAND_SOURCE_BIT) != 0
-        insn_add = instruction & (1 << ADD_BIT) != 0
-        insn_invert = instruction & (1 << INVERT_BIT) != 0
-        insn_result_source_1 = instruction & (1 << RESULT_SOURCE_1_BIT) != 0
-        insn_result_source_2 = instruction & (1 << RESULT_SOURCE_2_BIT) != 0
-        insn_write_a = instruction & (1 << WRITE_A_BIT) != 0
-        insn_write_p = instruction & (1 << WRITE_P_BIT) != 0
-        insn_write_memory = instruction & (1 << WRITE_MEMORY_BIT) != 0
+        insn_address_source = self.is_bit_set(instruction, ADDRESS_SOURCE_BIT)
+        insn_operand_source = self.is_bit_set(instruction, OPERAND_SOURCE_BIT)
+        insn_add = self.is_bit_set(instruction, ADD_BIT)
+        insn_invert = self.is_bit_set(instruction, INVERT_BIT)
+        insn_result_source_1 = self.is_bit_set(instruction, RESULT_SOURCE_1_BIT)
+        insn_result_source_2 = self.is_bit_set(instruction, RESULT_SOURCE_2_BIT)
+        insn_write_a = self.is_bit_set(instruction, WRITE_A_BIT)
+        insn_write_p = self.is_bit_set(instruction, WRITE_P_BIT)
+        insn_write_memory = self.is_bit_set(instruction, WRITE_MEMORY_BIT)
 
         operand = instruction & 0xff
         address = self.register_p if insn_address_source else operand
@@ -151,11 +155,11 @@ class Machine:
 
 
     def step_jump(self, instruction) -> None:
-        insn_address_source = instruction & (1 << ADDRESS_SOURCE_BIT) != 0
-        insn_conditional = instruction & (1 << CONDITIONAL_BIT) != 0
-        insn_condition_1 = instruction & (1 << CONDITION_1_BIT) != 0
-        insn_condition_2 = instruction & (1 << CONDITION_2_BIT) != 0
-        insn_condition_invert = instruction & (1 << CONDITION_INVERT_BIT) != 0
+        insn_address_source = self.is_bit_set(instruction, ADDRESS_SOURCE_BIT)
+        insn_conditional = self.is_bit_set(instruction, CONDITIONAL_BIT)
+        insn_condition_1 = self.is_bit_set(instruction, CONDITION_1_BIT)
+        insn_condition_2 = self.is_bit_set(instruction, CONDITION_2_BIT)
+        insn_condition_invert = self.is_bit_set(instruction, CONDITION_INVERT_BIT)
 
         operand = instruction & 0xff
         target = self.register_p if insn_address_source else operand
@@ -339,11 +343,6 @@ class Shell(Cmd):
 
     def emptyline(self) -> None:
         return self.do_step("")
-
-
-    def do_test(self, arg: str) -> None:
-        self.cmdqueue.append("pload ../programs/out/listmax.o")
-        self.cmdqueue.append("dload ../programs/out/listmaxtest.dat")
 
 
 if __name__ == "__main__":
