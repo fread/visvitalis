@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import argparse
 from cmd import Cmd
+import sys
 
 # Bit widths of our memories
 PROGRAM_SIZE = 1 << 8
@@ -185,7 +187,7 @@ class Shell(Cmd):
         "Note: All numbers are hexadecimal by default. Prefix decimal numbers with \"0d\"\n"
     prompt = "> "
 
-    def preloop(self) -> None:
+    def initialize(self):
         self.machine = Machine()
         self.hex_mode = True
 
@@ -345,4 +347,14 @@ class Shell(Cmd):
 
 
 if __name__ == "__main__":
-    Shell().cmdloop()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("program_image", nargs="?", default=None)
+    args = parser.parse_args()
+
+    shell = Shell()
+    shell.initialize()
+
+    if args.program_image is not None:
+        shell.cmdqueue.append(f"pload {args.program_image}")
+
+    shell.cmdloop()
