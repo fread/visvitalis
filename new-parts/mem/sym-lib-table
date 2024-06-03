@@ -1,5 +1,0 @@
-(sym_lib_table
-  (version 7)
-  (lib (name "drv8908")(type "KiCad")(uri "${KIPRJMOD}/drv8908.kicad_sym")(options "")(descr ""))
-  (lib (name "az1117ch2")(type "KiCad")(uri "${KIPRJMOD}/az1117ch2.kicad_sym")(options "")(descr ""))
-)
