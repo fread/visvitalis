@@ -3759,10 +3759,10 @@
 		)
 		(uuid "ff2cd51c-9652-4b8b-a37e-5b41f3758419")
 	)
-	(text_box "quoth the datasheet:\n- coil resistance is 960Ω ± 10%\n- coil picks up above 9V\n- coil releases below 1.2V\n\nLet's tentatively set the \"idle\" coil voltage to 5V, i.e. use 680Ω series resistance."
+	(text_box "quoth the datasheet:\n- coil resistance is 960Ω ± 10%\n- coil picks up above 9V\n- coil releases below 1.2V\n\nWe use 1kΩ to divide VCC, which puts the \"idle\" coil voltage at about 6V."
 		(exclude_from_sim no)
 		(at 16.51 74.93 0)
-		(size 49.53 25.4)
+		(size 46.99 16.51)
 		(stroke
 			(width 0)
 			(type default)
@@ -3778,14 +3778,13 @@
 		)
 		(uuid "25136f6a-8408-4840-99b0-fae761ae4011")
 	)
-	(text_box "The calculation below is wrong, it gives 5V for the series resistor and 7V for the coil.\n\nShould be 1.2kΩ, 1kΩ also works. "
+	(text_box "To reduce current spikes when the capacitors start (dis)charging, you may want to increase the series resistors R9 to R16 to up to 330Ω.\n\nThis, however, comes at the expense of lower maximum clock rate (if that's a concern at all...)."
 		(exclude_from_sim no)
-		(at 20.32 58.42 0)
-		(size 35.56 12.7)
+		(at 16.51 158.75 0)
+		(size 46.99 17.78)
 		(stroke
 			(width 0)
 			(type default)
-			(color 255 0 0 1)
 		)
 		(fill
 			(type none)
@@ -3793,11 +3792,10 @@
 		(effects
 			(font
 				(size 1.27 1.27)
-				(color 255 0 0 1)
 			)
 			(justify left top)
 		)
-		(uuid "e28a4e00-443b-4e14-98b9-7a3c3ef2d5d1")
+		(uuid "84529be3-2f3c-4e08-9cf1-c10bb0f44681")
 	)
 	(text "override"
 		(exclude_from_sim no)
@@ -3883,7 +3881,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 107.95 102.87 90)
 			(effects
 				(font
@@ -5454,7 +5452,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 214.63 102.87 90)
 			(effects
 				(font
@@ -8109,7 +8107,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 143.51 102.87 90)
 			(effects
 				(font
@@ -8244,7 +8242,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 250.19 102.87 90)
 			(effects
 				(font
@@ -8379,7 +8377,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 72.39 102.87 90)
 			(effects
 				(font
@@ -8988,7 +8986,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 179.07 102.87 90)
 			(effects
 				(font
@@ -9612,7 +9610,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 321.31 102.87 90)
 			(effects
 				(font
@@ -10852,7 +10850,7 @@
 				)
 			)
 		)
-		(property "Value" "680R"
+		(property "Value" "1kR"
 			(at 285.75 102.87 90)
 			(effects
 				(font
