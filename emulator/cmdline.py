@@ -21,7 +21,7 @@ class Shell(Cmd):
         "Note: All numbers are hexadecimal by default. Prefix decimal numbers with \"0d\"\n"
     prompt = "> "
 
-    def initialize(self):
+    def initialize(self) -> None:
         self.machine = Machine()
         self.hex_mode = True
 
@@ -171,8 +171,9 @@ class Shell(Cmd):
         self.cmdqueue.append("show")
 
 
-    def emptyline(self) -> None:
-        return self.do_step("")
+    def emptyline(self) -> bool:
+        self.do_step("")
+        return False
 
 
 if __name__ == "__main__":

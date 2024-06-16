@@ -81,11 +81,11 @@ class Machine:
         return self.register_a & 0b00000001 != 0
 
 
-    def bitinvert(self, x) -> int:
+    def bitinvert(self, x: int) -> int:
         return ~x & 0xff
 
 
-    def is_bit_set(self, value, bit_index) -> bool:
+    def is_bit_set(self, value: int, bit_index: int) -> bool:
         return value & (1 << bit_index) != 0
 
 
@@ -99,7 +99,7 @@ class Machine:
         self.clock += 1
 
 
-    def step_compute(self, instruction) -> None:
+    def step_compute(self, instruction: int) -> None:
         insn_address_source = self.is_bit_set(instruction, ADDRESS_SOURCE_BIT)
         insn_operand_source = self.is_bit_set(instruction, OPERAND_SOURCE_BIT)
         insn_add = self.is_bit_set(instruction, ADD_BIT)
@@ -140,7 +140,7 @@ class Machine:
         self.program_counter &= 0xff
 
 
-    def step_jump(self, instruction) -> None:
+    def step_jump(self, instruction: int) -> None:
         insn_address_source = self.is_bit_set(instruction, ADDRESS_SOURCE_BIT)
         insn_conditional = self.is_bit_set(instruction, CONDITIONAL_BIT)
         insn_condition_1 = self.is_bit_set(instruction, CONDITION_1_BIT)
