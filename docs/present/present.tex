@@ -232,57 +232,6 @@
 %   \end{columns}
 % \end{frame}
 
-% \begin{frame}
-%   \frametitle{Rechnen ist nicht schwer}
-
-%   \ldots zumindest Addieren:
-
-%   \begin{columns}
-%     \begin{column}{.45\textwidth}
-%       \begin{align*}
-%         0 + 0 + 0 = 00 \\
-%         0 + 0 + 1 = 01 \\
-%         0 + 1 + 0 = 01 \\
-%         1 + 0 + 0 = 01 \\
-%         1 + 1 + 0 = 10 \\
-%         \textcolor<2->{RoyalBlue}{1 + 0 + 1 = 10} \\
-%         0 + 1 + 1 = 10 \\
-%         1 + 1 + 1 = 11
-%       \end{align*}
-
-%       Auch nur ein Gate!
-%     \end{column}
-%     \begin{column}{.45\textwidth}
-%       \begin{center}
-%         \alt<2->{
-%           \begin{tabular}{ccccccccc}
-%             & 0 & 0 & 1 & 1 & \cellcolor{SkyBlue}1 & 1 & 1 & 0 \\
-%             + & 0 & 0 & 0 & 1 & \cellcolor{SkyBlue}0 & 1 & 0 & 1 \\
-%             &   &   & \scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  &   &   &   \\
-%             \hline
-%             & 0 & 1 & 0 & 1 & \cellcolor{SkyBlue}0 & 0 & 1 & 1
-%           \end{tabular}
-%         }{
-%           \begin{tabular}{ccccccccc}
-%             & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
-%             + & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
-%             &   &   & \scriptsize{1}  & \scriptsize{1}  & \scriptsize{1}  &   &   &   \\
-%             \hline
-%             & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1
-%           \end{tabular}
-%         }
-
-%         \bigskip
-
-%         \uncover<3>{
-%           \includegraphics[width=.66\linewidth]{ripple-carry.pdf}
-%         }
-%       \end{center}
-%     \end{column}
-%   \end{columns}
-
-% \end{frame}
-
 \begin{frame}[c]
   \frametitle{Rechnen ist nicht schwer}
 
@@ -291,6 +240,99 @@
   \bigskip
 
   \centering\includegraphics[width=.9\textwidth]{adder.pdf}
+\end{frame}
+
+\begin{frame}
+  \frametitle{OK, vielleicht nicht ganz so simplel}
+
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+      \begin{align*}
+        0 + 0 + 0 = 00 \\
+        0 + 0 + 1 = 01 \\
+        0 + 1 + 0 = 01 \\
+        1 + 0 + 0 = 01 \\
+        1 + 1 + 0 = 10 \\
+        \textcolor<2->{RoyalBlue}{1 + 0 + 1 = 10} \\
+        0 + 1 + 1 = 10 \\
+        1 + 1 + 1 = 11
+      \end{align*}
+
+      Drei Eingänge, zwei Ausgänge, aber auch nur ein Gate!
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{center}
+        \alt<2->{
+          \begin{tabular}{ccccccccc}
+            & 0 & 0 & 1 & 1 & \cellcolor{SkyBlue}1 & 1 & 1 & 0 \\
+            + & 0 & 0 & 0 & 1 & \cellcolor{SkyBlue}0 & 1 & 0 & 1 \\
+            &   &   & \scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  & \cellcolor{SkyBlue}\scriptsize{1}  &   &   &   \\
+            \hline
+            & 0 & 1 & 0 & 1 & \cellcolor{SkyBlue}0 & 0 & 1 & 1
+          \end{tabular}
+        }{
+          \begin{tabular}{ccccccccc}
+            & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+            + & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+            &   &   & \scriptsize{1}  & \scriptsize{1}  & \scriptsize{1}  &   &   &   \\
+            \hline
+            & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1
+          \end{tabular}
+        }
+
+        \bigskip
+
+        \uncover<3>{
+          \includegraphics[width=.66\linewidth]{ripple-carry.pdf}
+        }
+      \end{center}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Auftritt Zuse}
+
+  \begin{columns}[T]
+    \begin{column}{.45\textwidth}
+      \begin{tabular}{ccc@{\hskip 2em}c@{\hskip 2em}cc}
+        \toprule
+        $A$ & $B$ & $C_{\text{in}}$ & \uncover<2->{$A \oplus B$} & $A + B$ & $C_{\text{out}}$ \\
+        \midrule
+        0 & 0 & 0 & \uncover<2->{0} & \alt<3->{$C_{in}$}{0}      & \alt<4->{$A$}{0}      \\
+        0 & 0 & 1 & \uncover<2->{0} & \alt<3->{$C_{in}$}{1}      & \alt<4->{$A$}{0}      \\
+        0 & 1 & 0 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{1} & \alt<4->{$C_{in}$}{0} \\
+        0 & 1 & 1 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{0} & \alt<4->{$C_{in}$}{1} \\
+        1 & 0 & 0 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{1} & \alt<4->{$C_{in}$}{0} \\
+        1 & 0 & 1 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{0} & \alt<4->{$C_{in}$}{1} \\
+        1 & 1 & 0 & \uncover<2->{0} & \alt<3->{$C_{in}$}{0}      & \alt<4->{$C_{in}$}{1} \\
+        1 & 1 & 1 & \uncover<2->{0} & \alt<3->{$C_{in}$}{1}      & \alt<4->{$A$}{1}      \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{itemize}
+      \item Wie geht das besser?
+        \pause
+      \item Es muss etwas mit XOR zu tun haben
+        \pause
+      \item $A + B = \begin{cases}
+                       C_{in} & A \oplus B = 0 \\
+                       \neg C_{in} & A \oplus B = 1 \\
+                     \end{cases}$
+        \pause
+      \item $C_{out} = \begin{cases}
+                         A & A \oplus B = 0 \\
+                         C_{in} & A \oplus B = 1 \\
+                       \end{cases}$
+        \pause
+        \bigskip
+      \item Nur $A$ und $B$ fließen in Logik ein!
+      \item Kein Ripple mehr!
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}
@@ -394,6 +436,38 @@
   \bigskip
 
   \enquote{write}-Signal wird Systemtakt/-clock sein
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Doch mit Details}
+
+  \begin{columns}[c]
+    \begin{column}{.45\textwidth}
+      \includegraphics[width=\textwidth]{register-relay.pdf}
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{itemize}
+      \item Was ist Hysterese?
+        \begin{itemize}
+        \item über ca. 9~V: an
+        \item unter ca. 2~V: aus
+        \item dazwischen: nichts passiert
+        \end{itemize}
+
+      \item K2 auf ca. ½ VCC \\
+        $\Rightarrow$ hält Zustand
+
+        \bigskip
+
+      \item Clock-Phasen:
+        \begin{itemize}
+        \item High: d\_in lädt C1 auf GND/VCC
+        \item Low: Puls von C1 bringt K2 über 9~V oder unter 2~V
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
 \end{frame}
 
 \begin{frame}
@@ -540,6 +614,22 @@
     \texttt{add~~~\&y} \qquad \texttt{A = A + y;}\\
     \texttt{store~\&z} \qquad \texttt{z = A;}\\
   }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Plus/Minus}
+
+  Addition und Subtraktion sind fast das Gleiche:
+  \begin{align*}
+    A - B &= A + (-B) \\
+          &= A + (\neg B + 1) \\
+          &= A \mathop{+} \neg B + 1_{\text{carry-in}}
+  \end{align*}
+
+  Also: $B$ negieren und ein Carry eingeben.
+  \begin{align*}
+    A \pm B &= A + \left\lbrace \begin{aligned} B \\ \neg B \end{aligned} \right\rbrace + \left\lbrace \begin{aligned} 0_{\text{carry-in}} \\ 1_{\text{carry-in}} \end{aligned} \right\rbrace\\
+  \end{align*}
 \end{frame}
 
 \begin{frame}
