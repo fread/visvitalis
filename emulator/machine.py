@@ -69,6 +69,21 @@ class Machine:
             self.store_data(address, data)
 
 
+    def set_program_counter(self, pc: int) -> None:
+        self.range_check("program counter", pc, PROGRAM_SIZE)
+        self.program_counter = pc
+
+
+    def set_register_a(self, ra: int) -> None:
+        self.range_check("register A", ra, DATA_MAX)
+        self.register_a = ra
+
+
+    def set_register_p(self, rp: int) -> None:
+        self.range_check("register P", rp, DATA_MAX)
+        self.register_p = rp
+
+
     def zero_flag(self) -> bool:
         return self.register_a == 0
 
