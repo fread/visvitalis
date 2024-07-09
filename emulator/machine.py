@@ -106,7 +106,9 @@ class Machine:
 
     def step(self) -> None:
         instruction = self.program_memory[self.program_counter]
-        if instruction & ((1 << WRITE_A_BIT) | (1 << WRITE_P_BIT) | (1 << WRITE_MEMORY_BIT)) == 0:
+        if instruction & ((1 << WRITE_A_BIT) |
+                          (1 << WRITE_P_BIT) |
+                          (1 << WRITE_MEMORY_BIT)) == 0:
             self.step_jump(instruction)
         else:
             self.step_compute(instruction)
@@ -138,7 +140,8 @@ class Machine:
         if insn_add:
             self.carry_flag = carry_out
 
-        non_adder_result = self.bitinvert(self.register_a | alu_in_2) if insn_invert else self.register_a >> 1
+        non_adder_result = self.bitinvert(self.register_a | alu_in_2) \
+            if insn_invert else self.register_a >> 1
         alu_result = adder_result if insn_add else non_adder_result
 
         intermediate_result = self.register_a if insn_result_source_1 else operand_in

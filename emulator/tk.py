@@ -2,6 +2,7 @@
 
 import argparse
 import itertools
+from math import sqrt
 import sys
 from typing import Optional, List
 
@@ -42,8 +43,10 @@ class UI:
 
         self.progmem_cells = []
 
-        for row in range(16):
-            for col in range(16):
+        grid_size = int(sqrt(machine.PROGRAM_SIZE))
+
+        for row in range(grid_size):
+            for col in range(grid_size):
                 ent = Entry(frm_progmem,
                             width=4,
                             font="TkFixedFont",
@@ -69,8 +72,10 @@ class UI:
 
         self.datamem_cells = []
 
-        for row in range(16):
-            for col in range(16):
+        grid_size = int(sqrt(machine.DATA_SIZE))
+
+        for row in range(grid_size):
+            for col in range(grid_size):
                 ent = Entry(frm_datamem,
                             width=2,
                             font="TkFixedFont",
@@ -169,7 +174,7 @@ class UI:
         assert(ENTRY_DISABLED_BG_DEFAULT is not None)
 
         entry.configure(fg=ENTRY_FG_DEFAULT)
-        entry.configure(disabledforeground="#000")
+        entry.configure(disabledforeground=ENTRY_FG_DEFAULT)
         entry.configure(bg=ENTRY_BG_DEFAULT)
         entry.configure(disabledbackground=ENTRY_DISABLED_BG_DEFAULT)
 
@@ -237,7 +242,7 @@ class UI:
         if was_locked:
             self.unlock_ui(None)
 
-        for i in range(256):
+        for i in range(machine.PROGRAM_SIZE):
             word = self.machine.program_memory[i]
             ent = self.progmem_cells[i]
             ent.delete(0, END)
@@ -247,7 +252,7 @@ class UI:
             else:
                 self.unmark_entry(ent)
 
-        for i in range(256):
+        for i in range(machine.DATA_SIZE):
             word = self.machine.data_memory[i]
             ent = self.datamem_cells[i]
             ent.delete(0, END)
@@ -290,11 +295,11 @@ class UI:
                 self.mark_entry_error(entry)
                 return None
 
-        for i in range(256):
+        for i in range(machine.PROGRAM_SIZE):
             if (word := read_entry(self.progmem_cells[i])) is not None:
                 self.machine.store_program(i, word)
 
-        for i in range(256):
+        for i in range(machine.DATA_SIZE):
             if (word := read_entry(self.datamem_cells[i])) is not None:
                 self.machine.store_data(i, word)
 
@@ -345,7 +350,7 @@ class UI:
             self.machine.step()
             self.machine_to_ui()
         else:
-            messagebox.showerror("Nope", "That's not right")
+            messagebox.showerror("Wrong entry", "The entries made in the cells marked in read are not correct (hexadecimal numbers up to ff or ffff)")
 
 
     def on_focus_entry(self, event: "Event[Entry]") -> None:

@@ -104,7 +104,7 @@ void GpioInterface::on_write_sample()
 		if (n_write_samples >= MIN_WRITE_SAMPLES) {
 			uint8_t data = 0;
 
-			unsigned limit = std::min(32u, n_write_samples) / 2;
+			unsigned limit = std::min(CHAR_BIT * sizeof(uint32_t), n_write_samples) / 2;
 
 			for (int i = 0; i < DATA_IN_BITS; i++) {
 				uint32_t sample = write_samples.at(i);
