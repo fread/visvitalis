@@ -4,7 +4,6 @@ import argparse
 import itertools
 from math import sqrt
 import sys
-from typing import Optional, List
 
 from tkinter import *
 from tkinter import messagebox
@@ -322,7 +321,7 @@ class UI:
         return success
 
 
-    def load_from_file_into_entries(self, entries: List[Entry], width: int) -> None:
+    def load_from_file_into_entries(self, entries: list[Entry], width: int) -> None:
         filename = filedialog.askopenfilename()
         # When no file is selected, the dialog returns () on first use and "" thereafter.
         # Therefore, do *not* put a more explicit check here (also, don't tell mypy...)
