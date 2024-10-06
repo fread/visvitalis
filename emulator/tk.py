@@ -16,6 +16,8 @@ ENTRY_FG_DEFAULT: str | None = None
 ENTRY_BG_DEFAULT: str | None = None
 ENTRY_DISABLED_BG_DEFAULT: str | None = None
 
+CYCLE_TIME = 100 # milliseconds
+
 class UI:
     def spacer(self, parent: Frame, row: int, col: int, width: int=20) -> None:
         Frame(parent, width=width).grid(row=row, column=col)
@@ -24,6 +26,8 @@ class UI:
         self.machine = Machine()
 
         self.is_locked = False
+
+        self.cycle_event: str | None = None
 
         self.frm = Frame(root)
         self.frm.pack()
@@ -131,11 +135,11 @@ class UI:
 
         self.btn_start = Button(frm_buttons, text="Start")
         self.btn_start.grid(row=0, column=next(col_count))
-        self.btn_start.bind("<ButtonRelease-1>", self.lock_ui)
+        self.btn_start.bind("<ButtonRelease-1>", self.on_start_button)
 
         self.btn_stop = Button(frm_buttons, text="Stop")
         self.btn_stop.grid(row=0, column=next(col_count))
-        self.btn_stop.bind("<ButtonRelease-1>", self.unlock_ui)
+        self.btn_stop.bind("<ButtonRelease-1>", self.on_stop_button)
         self.btn_stop.configure(state=DISABLED)
 
         self.btn_step = Button(frm_buttons, text="Step")
@@ -195,7 +199,7 @@ class UI:
             self.flag_off(lbl_flag)
 
 
-    def lock_ui(self, event: "Event[Button] | None") -> None:
+    def lock_ui(self) -> None:
         for i in range(machine.PROGRAM_SIZE):
             self.progmem_cells[i].configure(state=DISABLED)
 
@@ -208,14 +212,14 @@ class UI:
         self.btn_load_prog.configure(state=DISABLED)
         self.btn_load_data.configure(state=DISABLED)
         self.btn_start.configure(state=DISABLED)
-        # self.btn_step.configure(state=DISABLED)
+        self.btn_step.configure(state=DISABLED)
 
         self.btn_stop.configure(state=NORMAL)
 
         self.is_locked = True
 
 
-    def unlock_ui(self, event: "Event[Button] | None") -> None:
+    def unlock_ui(self) -> None:
         for i in range(machine.PROGRAM_SIZE):
             self.progmem_cells[i].configure(state=NORMAL)
 
@@ -239,7 +243,7 @@ class UI:
         was_locked = self.is_locked
 
         if was_locked:
-            self.unlock_ui(None)
+            self.unlock_ui()
 
         for i in range(machine.PROGRAM_SIZE):
             word = self.machine.program_memory[i]
@@ -276,7 +280,7 @@ class UI:
         self.set_flag(self.lbl_carryflag, self.machine.carry_flag)
 
         if was_locked:
-            self.lock_ui(None)
+            self.lock_ui()
 
 
     def ui_to_machine(self) -> bool:
@@ -355,8 +359,26 @@ class UI:
         if self.ui_to_machine():
             self.machine.step()
             self.machine_to_ui()
-        else:
-            messagebox.showerror("Wrong entry", "The entries made in the cells marked in read are not correct (hexadecimal numbers up to ff or ffff)")
+
+
+    def on_start_button(self, event: "Event[Button]") -> None:
+        if self.ui_to_machine():
+            self.lock_ui()
+            self.cycle_event = self.frm.after(CYCLE_TIME, self.perform_cycle)
+
+
+    def perform_cycle(self) -> None:
+        self.machine.step()
+        self.machine_to_ui()
+        self.cycle_event = self.frm.after(CYCLE_TIME, self.perform_cycle)
+
+
+    def on_stop_button(self, event: "Event[Button]") -> None:
+        assert(self.cycle_event is not None)
+        self.frm.after_cancel(self.cycle_event)
+        self.cycle_event = None
+
+        self.unlock_ui()
 
 
     def on_focus_entry(self, event: "Event[Entry]") -> None:
