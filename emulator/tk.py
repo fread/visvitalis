@@ -283,12 +283,16 @@ class UI:
     def ui_to_machine(self) -> bool:
         success = True
 
-        def read_entry(entry: Entry) -> Optional[int]:
+        def read_entry(entry: Entry, max_value: int) -> int | None:
             nonlocal success
 
             contents = entry.get()
             try:
                 word = int(contents, 16)
+
+                if word > max_value:
+                    raise ValueError("")
+
                 return word
             except ValueError:
                 success = False
@@ -296,21 +300,24 @@ class UI:
                 return None
 
         for i in range(machine.PROGRAM_SIZE):
-            if (word := read_entry(self.progmem_cells[i])) is not None:
+            if (word := read_entry(self.progmem_cells[i], machine.PROGRAM_MAX)) is not None:
                 self.machine.store_program(i, word)
 
         for i in range(machine.DATA_SIZE):
-            if (word := read_entry(self.datamem_cells[i])) is not None:
+            if (word := read_entry(self.datamem_cells[i], machine.DATA_MAX)) is not None:
                 self.machine.store_data(i, word)
 
-        if (pc := read_entry(self.ent_pc)) is not None:
+        if (pc := read_entry(self.ent_pc, machine.PROGRAM_SIZE)) is not None:
             self.machine.set_program_counter(pc)
 
-        if (ra := read_entry(self.ent_a)) is not None:
+        if (ra := read_entry(self.ent_a, machine.DATA_MAX)) is not None:
             self.machine.set_register_a(ra)
 
-        if (rp := read_entry(self.ent_p)) is not None:
+        if (rp := read_entry(self.ent_p, machine.DATA_SIZE)) is not None:
             self.machine.set_register_p(rp)
+
+        if not success:
+            messagebox.showerror("Wrong entry", "The entries made in the cells marked in red are not correct (hexadecimal numbers up to ff or ffff)")
 
         return success
 
