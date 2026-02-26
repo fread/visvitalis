@@ -7,7 +7,7 @@
 
 const char *TAG = "GPIO_INTERFACE";
 
-static constexpr unsigned ADDRESS_CHANGE_DELAY = 200 / portTICK_PERIOD_MS;
+static constexpr unsigned ADDRESS_CHANGE_DELAY = 100 / portTICK_PERIOD_MS;
 static constexpr unsigned WRITE_CYCLE_SAMPLE_TIME = 20 / portTICK_PERIOD_MS;
 
 static constexpr unsigned MIN_WRITE_SAMPLES = 5;
@@ -52,15 +52,33 @@ void IRAM_ATTR GpioInterface::write_pin_change_isr(void *arg)
 	int task_should_yield = false;
 	int level = gpio_get_level(_this->write_pin);
 
-	if (xTimerPendFunctionCallFromISR(
-		    on_write_pin_change, _this, level, &task_should_yield) != pdPASS) {
-		// TODO emergency stop
-		abort();
+	if (level == 0) {
+		// Going from write to read means turning on the
+		// data output. Delay this until the muxes have switched.
+		if (xTimerResetFromISR(_this->write_pin_change_timer, &task_should_yield) != pdPASS) {
+			// TODO emergency stop
+			abort();
+		}
+	} else {
+		// Going from read to write means shutting off the
+		// data output. Do that immediately.
+		if (xTimerPendFunctionCallFromISR(
+			    on_write_pin_change, _this, level, &task_should_yield) != pdPASS) {
+			// TODO emergency stop
+			abort();
+		}
 	}
 
 	if (task_should_yield == pdTRUE) {
 		portYIELD_FROM_ISR();
 	}
+}
+
+void GpioInterface::write_pin_change_expired(TimerHandle_t timer)
+{
+	GpioInterface *_this = (GpioInterface*) pvTimerGetTimerID(timer);
+	int level = gpio_get_level(_this->write_pin);
+	on_write_pin_change(_this, level);
 }
 
 void GpioInterface::on_write_pin_change(void *arg1, uint32_t level)
@@ -148,6 +166,7 @@ GpioInterface::GpioInterface(std::array<gpio_num_t, ADDRESS_BITS> address_pins,
 		ESP_ERROR_CHECK(gpio_isr_handler_add(address_pin, reset_timer_isr, &address_change_timer));
 	}
 
+	write_pin_change_timer = xTimerCreate("write pin change", ADDRESS_CHANGE_DELAY, false, this, write_pin_change_expired);
 	ESP_ERROR_CHECK(gpio_isr_handler_add(write_pin, write_pin_change_isr, this));
 
 	write_sample_timer = xTimerCreate("write_sample", WRITE_CYCLE_SAMPLE_TIME, false, this, write_sample_expired);

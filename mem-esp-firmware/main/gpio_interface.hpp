@@ -33,6 +33,7 @@ private:
 	GpioListener *listener;
 
 	TimerHandle_t address_change_timer;
+	TimerHandle_t write_pin_change_timer;
 	TimerHandle_t write_sample_timer;
 
 	std::array<uint32_t, DATA_IN_BITS> write_samples;
@@ -42,6 +43,7 @@ private:
 	void on_address_change();
 
 	static void write_pin_change_isr(void *arg);
+	static void write_pin_change_expired(TimerHandle_t timer);
 	static void on_write_pin_change(void *arg1, uint32_t level);
 
 	static void clock_pin_change_isr(void *arg);
