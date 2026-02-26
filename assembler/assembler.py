@@ -282,8 +282,12 @@ class Assembler:
                 try:
                     (encoding, has_operand) = OPCODES[opcode]
                 except KeyError:
-                    self.emit_error_about(s, f"instruction \"{opcode}\" is not known")
-                    continue
+                    try:
+                        encoding = int(opcode, 0)
+                        has_operand = True
+                    except ValueError:
+                        self.emit_error_about(s, f"instruction \"{opcode}\" is not known")
+                        continue
 
                 if has_operand and operand is None:
                     self.emit_error_about(s, f"instruction \"{opcode}\" expects an operand, but none was given")
