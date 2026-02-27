@@ -21,6 +21,8 @@
 \usepackage{tikz}
 \usepackage[table]{xcolor}
 \usepackage{siunitx}
+\usepackage{arev}
+\usepackage{qrcode}
 
 % \setmainfont{Libertinus Serif}
 % \setsansfont{Libertinus Sans}
@@ -47,6 +49,8 @@
 
 \newcommand{\uexplain}[2]{\underbrace{\mathtt{#1}}_{\hidewidth \mathsf{#2}\hidewidth} \hskip 0.5em}
 \newcommand{\oexplain}[2]{\overbrace{\mathtt{#1}}^{\hidewidth \mathsf{#2}\hidewidth} \hskip 0.5em}
+
+\newcommand{\extraslide}{\textcolor{orange}{$\warning$}}
 
 \definecollection{picture-sources}
 
@@ -114,14 +118,6 @@
       \item Taktzeit:\\
         \qty{0.2}{\nano\second} $\hat=$ \qty{6.4} Licht-cm $\approx$ \qty{4} Strom-cm
       \end{itemize}
-
-      \bigskip
-
-      Mehr dazu:
-
-      \smallskip
-
-      \includegraphics[width=\textwidth]{talk-jadyn}
     \end{column}
   \end{columns}
 \end{frame}
@@ -243,7 +239,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{OK, vielleicht nicht ganz so simplel}
+  \frametitle{\extraslide{} OK, vielleicht nicht ganz so simplel}
 
   \begin{columns}
     \begin{column}{.45\textwidth}
@@ -292,13 +288,13 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Auftritt Zuse}
+  \frametitle{\extraslide{} Auftritt Zuse}
 
   \begin{columns}[T]
-    \begin{column}{.45\textwidth}
+    \begin{column}{.50\textwidth}
       \begin{tabular}{ccc@{\hskip 2em}c@{\hskip 2em}cc}
         \toprule
-        $A$ & $B$ & $C_{\text{in}}$ & \uncover<2->{$A \oplus B$} & $A + B$ & $C_{\text{out}}$ \\
+        $A$ & $B$ & $C_{\text{in}}$ & \uncover<2->{$A \oplus B$} & $A + B + C_{\text{in}}$ & $C_{\text{out}}$ \\
         \midrule
         0 & 0 & 0 & \uncover<2->{0} & \alt<3->{$C_{in}$}{0}      & \alt<4->{$A$}{0}      \\
         0 & 0 & 1 & \uncover<2->{0} & \alt<3->{$C_{in}$}{1}      & \alt<4->{$A$}{0}      \\
@@ -306,7 +302,7 @@
         0 & 1 & 1 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{0} & \alt<4->{$C_{in}$}{1} \\
         1 & 0 & 0 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{1} & \alt<4->{$C_{in}$}{0} \\
         1 & 0 & 1 & \uncover<2->{1} & \alt<3->{$\neg C_{in}$}{0} & \alt<4->{$C_{in}$}{1} \\
-        1 & 1 & 0 & \uncover<2->{0} & \alt<3->{$C_{in}$}{0}      & \alt<4->{$C_{in}$}{1} \\
+        1 & 1 & 0 & \uncover<2->{0} & \alt<3->{$C_{in}$}{0}      & \alt<4->{$A$}{1} \\
         1 & 1 & 1 & \uncover<2->{0} & \alt<3->{$C_{in}$}{1}      & \alt<4->{$A$}{1}      \\
         \bottomrule
       \end{tabular}
@@ -439,7 +435,7 @@
 \end{frame}
 
 \begin{frame}[c]
-  \frametitle{Doch mit Details}
+  \frametitle{\extraslide{} Doch mit Details}
 
   \begin{columns}[c]
     \begin{column}{.45\textwidth}
@@ -517,6 +513,15 @@
 
   $\Rightarrow$ Geht nur mit ICs
 
+  \bigskip
+
+  Außerdem:
+  \begin{itemize}
+  \item Programme Laden
+  \item Debugging
+  \item Speichermonitor
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -567,31 +572,31 @@
   \end{tabular}
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{Assembler}
+\begin{frame}
+  \frametitle{\extraslide{} Assembler}
 
-%   Wie sollen Instruktionen aussehen?
-%   \begin{itemize}
-%   \item Wie RISC (ARM, RISC-V, MIPS, SPARC, \ldots): \texttt{add r3, r2, r1}\\
-%     16/32 Register, 3 Register in jeder Instruktion, Laden/Speichern anderes Format
-%   \item Wie x86: \texttt{addq \%rsi, 42(\%rbx, \%rcx, 4)}\\
-%     Nein
-%   \item Wie 6502: \texttt{lda \$23; adc \$42}\\
-%     4(?) Register, 1 Operand, (fast) immer genau ein Speicherzugriff\\
-%     \pause
-%     \textbf{Das klingt gut!}
-%   \end{itemize}
+  Wie sollen Instruktionen aussehen?
+  \begin{itemize}
+  \item Wie RISC (ARM, RISC-V, MIPS, SPARC, \ldots): \texttt{add r3, r2, r1}\\
+    16/32 Register, 3 Register in jeder Instruktion, Laden/Speichern anderes Format
+  \item Wie x86: \texttt{addq \%rsi, 42(\%rbx, \%rcx, 4)}\\
+    Nein
+  \item Wie 6502: \texttt{lda \$23; adc \$42}\\
+    4(?) Register, 1 Operand, (fast) immer genau ein Speicherzugriff\\
+    \pause
+    \textbf{Das klingt gut!}
+  \end{itemize}
 
-%   \bigskip
+  \bigskip
 
-%   Unser Plan:
-%   \begin{itemize}
-%   \item Opcode + 1 Operand
-%   \item wenige Register
-%   \item einmal Laden/Speichern pro Instruktion
-%   \end{itemize}
+  Unser Plan:
+  \begin{itemize}
+  \item Opcode + 1 Operand
+  \item wenige Register
+  \item einmal Laden/Speichern pro Instruktion
+  \end{itemize}
 
-% \end{frame}
+\end{frame}
 
 \begin{frame}
   \frametitle{Akkumulator-Architektur}
@@ -617,7 +622,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Plus/Minus}
+  \frametitle{\extraslide{} Plus/Minus}
 
   Addition und Subtraktion sind fast das Gleiche:
   \begin{align*}
@@ -679,7 +684,7 @@
   \medskip
 
   {\Large
-    \begin{tabular}{ll}
+    \begin{tabular}{l@{\hskip 4em}l}
       \texttt{add 19} & \texttt{addi 19} \\
       \texttt{load 0} & \texttt{loadi 0} \\
     \end{tabular}
@@ -806,12 +811,6 @@
   \end{center}
 \end{frame}
 
-\begin{frame}[c]
-  \begin{center}
-    \Huge{Klick-Klack}
-  \end{center}
-\end{frame}
-
 \begin{frame}
   \frametitle{Was fehlt?}
 
@@ -838,12 +837,59 @@
     \begin{itemize}
     \item Paul Falstads Circuit Simulator
     \item Logisim(-Evolution)
+    \item Turing Complete
     \end{itemize}
   \item FPGAs (jetzt auch in günstig und Open Source)
     \begin{itemize}
     \item Yosys OSS CAD Suite
     \end{itemize}
   \item Chips statt Relais
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Wie geht es weiter}
+
+  Gerät ist im Nebenraum aufgebaut.
+
+  \bigskip
+
+  \begin{description}[ca. 20:00:]
+  \item[Jetzt:] Q\&A
+  \item[19:00:] Pause, Abendessen
+  \item[ca. 20:00:] Assembler-Workshop
+  \end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Repository}
+  \begin{center}
+    \texttt{https://github.com/fread/visvitalis}
+
+    \bigskip
+
+    \qrcode[height=0.5\textheight]{https://github.com/fread/visvitalis}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Assembler}
+
+  \begin{itemize}
+  \item Eine Instruktion pro Zeile
+  \item (Mnemonic/Opcode) + Argument\\
+    \texttt{~~lai 17}\\
+    \texttt{~~addi 6}
+  \item Werte definieren und benutzen (\texttt{\#define})\\
+    \texttt{~~.equ x 2~~~~~~~~\# Adresse einer Variable}\\
+    \texttt{~~.equ answer 42~~\# Konstante}\\
+    \texttt{~~lai answer}\\
+    \texttt{~~sta x~~~~~~~~~~~\# x = 42}\\
+  \item Label vor Instruktion mit Doppelpunkt\\
+    Expandiert zu Adresse der Instruktion\\
+    \texttt{~~loop: subi 1}\\
+    \texttt{~~~~~~~~jmp loop}
+  \item Alles ein Namensraum
   \end{itemize}
 \end{frame}
 
