@@ -113,6 +113,9 @@ static int handle_load_cmd(int argc, char **argv)
 		free(line);
 	}
 
+	controller->invalidate();
+	return 0;
+
 exit_ok:
 	free(line);
 	controller->invalidate();
