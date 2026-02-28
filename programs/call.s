@@ -33,10 +33,13 @@ push:
 ; pop a from stack
 pop:
   la sp
-  addi 1
-  sta sp
   a2p
   lap
+  sta temp
+  la sp
+  addi 1
+  sta sp
+  la temp
   lp noret
   jp
 
