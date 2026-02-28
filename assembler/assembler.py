@@ -304,7 +304,12 @@ class Assembler:
                     if val > MAX_OPERAND:
                         self.emit_error_about(s, f"operand {val} is too large (maximum is {MAX_OPERAND})")
                         val = 0xff
-                    code |= operand.value
+                    if val < 0:
+                        if val < -MAX_OPERAND:
+                            self.emit_error_about(s, f"operand {val} is too large (maximum is {MAX_OPERAND})")
+                            val = -0xff
+                    val = (val + 256) % 256
+                    code |= val
 
                 assert 0 <= code <= 0xffff
 
