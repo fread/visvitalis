@@ -112,7 +112,7 @@ class Assembler:
 
 
     def emit_error_about(self, statement: Statement, message: str) -> None:
-        self.errors.append(f"line {statement.lineno}: {message}")
+        self.errors.append(f"line {statement.lineno + 1}: {message}")
         self.has_error = True
 
 
